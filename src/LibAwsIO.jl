@@ -1,4 +1,4 @@
-module LibAwsCommon
+module LibAwsIO
 
 using aws_c_common_jll
 
