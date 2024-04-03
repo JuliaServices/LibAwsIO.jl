@@ -1,0 +1,20 @@
+name = "LibAwsCommon"
+uuid = "c6e421ba-b5f8-4792-a1c4-42948de3ed9d"
+version = "1.0.0"
+
+[deps]
+CEnum = "fa961155-64e5-5f13-b03f-caf6b980ea82"
+aws_c_common_jll = "73048d1d-b8c4-5092-a58d-866c5e8d1e50"
+
+[compat]
+Aqua = "0.7"
+CEnum = "0.5"
+aws_c_common_jll = "=0.9.14"
+julia = "1.6"
+
+[extras]
+Aqua = "4c88cf16-eb10-579e-8560-4a9242c79595"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Aqua", "Test"]
