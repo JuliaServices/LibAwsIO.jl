@@ -1,5 +1,5 @@
-name = "LibAwsCommon"
-uuid = "c6e421ba-b5f8-4792-a1c4-42948de3ed9d"
+name = "LibAwsIO"
+uuid = "a5388770-19df-4151-b103-3d71de896ddf"
 version = "1.0.0"
 
 [deps]
