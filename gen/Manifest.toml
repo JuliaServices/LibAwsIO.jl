@@ -2,7 +2,7 @@
 
 julia_version = "1.10.2"
 manifest_format = "2.0"
-project_hash = "17529965341e648e57dcbc863dd11933859fd679"
+project_hash = "997070a7b558e8e0faa0754e60e6833e12cbc2b5"
 
 [[deps.ArgTools]]
 uuid = "0dad84c5-d112-42e6-8d28-ef12dabb789f"
@@ -207,11 +207,23 @@ deps = ["Libdl"]
 uuid = "83775a58-1f1d-513f-b197-d71354ab007a"
 version = "1.2.13+1"
 
+[[deps.aws_c_cal_jll]]
+deps = ["Artifacts", "JLLWrappers", "Libdl", "aws_c_common_jll"]
+git-tree-sha1 = "6b8ba9b8d5dfc8d9573a0c591bab74e40442a432"
+uuid = "70f11efc-bab2-57f1-b0f3-22aad4e67c4b"
+version = "0.6.10+0"
+
 [[deps.aws_c_common_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl"]
 git-tree-sha1 = "586a1aa2fdda172c45587b52f5329fedde14f44c"
 uuid = "73048d1d-b8c4-5092-a58d-866c5e8d1e50"
 version = "0.9.14+0"
+
+[[deps.aws_c_io_jll]]
+deps = ["Artifacts", "JLLWrappers", "Libdl", "aws_c_cal_jll", "aws_c_common_jll", "s2n_tls_jll"]
+git-tree-sha1 = "9b62874ea33012d3ad904e4b5fb9c887441e2c9b"
+uuid = "13c41daa-f319-5298-b5eb-5754e0170d52"
+version = "0.14.6+0"
 
 [[deps.libLLVM_jll]]
 deps = ["Artifacts", "Libdl"]
@@ -227,3 +239,9 @@ version = "1.52.0+1"
 deps = ["Artifacts", "Libdl"]
 uuid = "3f19e933-33d8-53b3-aaab-bd5110c3b7a0"
 version = "17.4.0+2"
+
+[[deps.s2n_tls_jll]]
+deps = ["Artifacts", "JLLWrappers", "Libdl"]
+git-tree-sha1 = "a9772e5e8c2c6e2c45b1d59b35f4847d22bb8516"
+uuid = "cddc5d3d-934d-5d3a-9747-62fc12ea3f48"
+version = "1.4.8+0"
