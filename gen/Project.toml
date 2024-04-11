@@ -5,6 +5,7 @@ aws_c_common_jll = "73048d1d-b8c4-5092-a58d-866c5e8d1e50"
 aws_c_io_jll = "13c41daa-f319-5298-b5eb-5754e0170d52"
 
 [compat]
-Clang = "0.17"
+Clang = "0.18.2"
 JLLPrefixes = "0.3"
-aws_c_io_jll = "=0.14.6"
+aws_c_common_jll = "=0.9.14"
+aws_c_io_jll = "=0.14.7"

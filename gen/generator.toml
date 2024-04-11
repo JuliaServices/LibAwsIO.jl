@@ -14,6 +14,7 @@ output_ignorelist = [
     "IGNORED",
     "STDCALL",
 ]
+generate_isystem_symbols = false
 
 auto_mutability = false
 auto_mutability_with_new = false
