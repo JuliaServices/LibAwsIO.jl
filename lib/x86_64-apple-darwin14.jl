@@ -1,5 +1,10 @@
 using CEnum
 
+"""
+    __JL_Ctag_220
+
+Documentation not found.
+"""
 struct __JL_Ctag_220
     data::NTuple{8, UInt8}
 end
@@ -21,11 +26,21 @@ function Base.setproperty!(x::Ptr{__JL_Ctag_220}, f::Symbol, v)
     unsafe_store!(getproperty(x, f), v)
 end
 
+"""
+    aws_async_input_stream_vtable
+
+Documentation not found.
+"""
 struct aws_async_input_stream_vtable
     destroy::Ptr{Cvoid}
     read::Ptr{Cvoid}
 end
 
+"""
+    aws_async_input_stream
+
+Documentation not found.
+"""
 struct aws_async_input_stream
     vtable::Ptr{aws_async_input_stream_vtable}
     alloc::Ptr{aws_allocator}
@@ -75,6 +90,9 @@ function aws_async_input_stream_release(stream)
     ccall((:aws_async_input_stream_release, libaws_c_io), Ptr{aws_async_input_stream}, (Ptr{aws_async_input_stream},), stream)
 end
 
+"""
+Documentation not found.
+"""
 mutable struct aws_future_bool end
 
 """
@@ -109,19 +127,38 @@ function aws_async_input_stream_read_to_fill(stream, dest)
     ccall((:aws_async_input_stream_read_to_fill, libaws_c_io), Ptr{aws_future_bool}, (Ptr{aws_async_input_stream}, Ptr{aws_byte_buf}), stream, dest)
 end
 
+"""
+    aws_channel_direction
+
+Documentation not found.
+"""
 @cenum aws_channel_direction::UInt32 begin
     AWS_CHANNEL_DIR_READ = 0
     AWS_CHANNEL_DIR_WRITE = 1
 end
 
 # typedef void ( aws_channel_on_setup_completed_fn ) ( struct aws_channel * channel , int error_code , void * user_data )
+"""
+Documentation not found.
+"""
 const aws_channel_on_setup_completed_fn = Cvoid
 
 # typedef void ( aws_channel_on_shutdown_completed_fn ) ( struct aws_channel * channel , int error_code , void * user_data )
+"""
+Documentation not found.
+"""
 const aws_channel_on_shutdown_completed_fn = Cvoid
 
+"""
+Documentation not found.
+"""
 mutable struct aws_channel end
 
+"""
+    aws_channel_handler_vtable
+
+Documentation not found.
+"""
 struct aws_channel_handler_vtable
     process_read_message::Ptr{Cvoid}
     process_write_message::Ptr{Cvoid}
@@ -135,6 +172,11 @@ struct aws_channel_handler_vtable
     trigger_read::Ptr{Cvoid}
 end
 
+"""
+    aws_channel_handler
+
+Documentation not found.
+"""
 struct aws_channel_handler
     vtable::Ptr{aws_channel_handler_vtable}
     alloc::Ptr{aws_allocator}
@@ -147,6 +189,11 @@ function Base.getproperty(x::aws_channel_handler, f::Symbol)
     return getfield(x, f)
 end
 
+"""
+    aws_channel_slot
+
+Documentation not found.
+"""
 struct aws_channel_slot
     alloc::Ptr{aws_allocator}
     channel::Ptr{aws_channel}
@@ -159,8 +206,16 @@ struct aws_channel_slot
 end
 
 # typedef void ( aws_channel_task_fn ) ( struct aws_channel_task * channel_task , void * arg , enum aws_task_status status )
+"""
+Documentation not found.
+"""
 const aws_channel_task_fn = Cvoid
 
+"""
+    aws_channel_task
+
+Documentation not found.
+"""
 struct aws_channel_task
     data::NTuple{104, UInt8}
 end
@@ -185,6 +240,11 @@ function Base.setproperty!(x::Ptr{aws_channel_task}, f::Symbol, v)
     unsafe_store!(getproperty(x, f), v)
 end
 
+"""
+    aws_event_loop_vtable
+
+Documentation not found.
+"""
 struct aws_event_loop_vtable
     destroy::Ptr{Cvoid}
     run::Ptr{Cvoid}
@@ -200,8 +260,16 @@ struct aws_event_loop_vtable
 end
 
 # typedef int ( aws_io_clock_fn ) ( uint64_t * timestamp )
+"""
+Documentation not found.
+"""
 const aws_io_clock_fn = Cvoid
 
+"""
+    aws_event_loop
+
+Documentation not found.
+"""
 struct aws_event_loop
     vtable::Ptr{aws_event_loop_vtable}
     alloc::Ptr{aws_allocator}
@@ -361,8 +429,16 @@ function aws_channel_current_clock_time(channel, time_nanos)
 end
 
 # typedef void ( aws_event_loop_on_local_object_removed_fn ) ( struct aws_event_loop_local_object * )
+"""
+Documentation not found.
+"""
 const aws_event_loop_on_local_object_removed_fn = Cvoid
 
+"""
+    aws_event_loop_local_object
+
+Documentation not found.
+"""
 struct aws_event_loop_local_object
     key::Ptr{Cvoid}
     object::Ptr{Cvoid}
@@ -411,13 +487,26 @@ function aws_channel_remove_local_object(channel, key, removed_obj)
     ccall((:aws_channel_remove_local_object, libaws_c_io), Cint, (Ptr{aws_channel}, Ptr{Cvoid}, Ptr{aws_event_loop_local_object}), channel, key, removed_obj)
 end
 
+"""
+    aws_io_message_type
+
+Documentation not found.
+"""
 @cenum aws_io_message_type::UInt32 begin
     AWS_IO_MESSAGE_APPLICATION_DATA = 0
 end
 
 # typedef void ( aws_channel_on_message_write_completed_fn ) ( struct aws_channel * channel , struct aws_io_message * message , int err_code , void * user_data )
+"""
+Documentation not found.
+"""
 const aws_channel_on_message_write_completed_fn = Cvoid
 
+"""
+    aws_io_message
+
+Documentation not found.
+"""
 struct aws_io_message
     allocator::Ptr{aws_allocator}
     message_data::aws_byte_buf
@@ -801,6 +890,7 @@ end
 """
     aws_channel_get_first_slot(channel)
 
+Documentation not found.
 ### Prototype
 ```c
 struct aws_channel_slot *aws_channel_get_first_slot(struct aws_channel *channel);
@@ -848,6 +938,11 @@ Called after client bootstrap has been completely cleaned up, after its last ref
 """
 const aws_client_bootstrap_shutdown_complete_fn = Cvoid
 
+"""
+    aws_event_loop_group
+
+Documentation not found.
+"""
 struct aws_event_loop_group
     allocator::Ptr{aws_allocator}
     event_loops::aws_array_list
@@ -870,6 +965,11 @@ struct aws_host_resolver_vtable
     get_host_address_count::Ptr{Cvoid}
 end
 
+"""
+    aws_host_resolver
+
+Documentation not found.
+"""
 struct aws_host_resolver
     allocator::Ptr{aws_allocator}
     impl::Ptr{Cvoid}
@@ -884,6 +984,11 @@ Function signature for configuring your own resolver (the default just uses geta
 """
 const aws_resolve_host_implementation_fn = Cvoid
 
+"""
+    aws_host_resolution_config
+
+Documentation not found.
+"""
 struct aws_host_resolution_config
     impl::Ptr{aws_resolve_host_implementation_fn}
     max_ttl::Csize_t
@@ -962,11 +1067,21 @@ struct aws_server_bootstrap
     ref_count::aws_ref_count
 end
 
+"""
+    aws_socket_type
+
+Documentation not found.
+"""
 @cenum aws_socket_type::UInt32 begin
     AWS_SOCKET_STREAM = 0
     AWS_SOCKET_DGRAM = 1
 end
 
+"""
+    aws_socket_domain
+
+Documentation not found.
+"""
 @cenum aws_socket_domain::UInt32 begin
     AWS_SOCKET_IPV4 = 0
     AWS_SOCKET_IPV6 = 1
@@ -974,6 +1089,11 @@ end
     AWS_SOCKET_VSOCK = 3
 end
 
+"""
+    aws_socket_options
+
+Documentation not found.
+"""
 struct aws_socket_options
     type::aws_socket_type
     domain::aws_socket_domain
@@ -1002,12 +1122,22 @@ Invoked when an error occurs in the TLS state machine AFTER the handshake has co
 """
 const aws_tls_on_error_fn = Cvoid
 
+"""
+    aws_tls_ctx
+
+Documentation not found.
+"""
 struct aws_tls_ctx
     alloc::Ptr{aws_allocator}
     impl::Ptr{Cvoid}
     ref_count::aws_ref_count
 end
 
+"""
+    aws_tls_connection_options
+
+Documentation not found.
+"""
 struct aws_tls_connection_options
     alpn_list::Ptr{aws_string}
     server_name::Ptr{aws_string}
@@ -1196,11 +1326,21 @@ function aws_server_bootstrap_set_alpn_callback(bootstrap, on_protocol_negotiate
     ccall((:aws_server_bootstrap_set_alpn_callback, libaws_c_io), Cint, (Ptr{aws_server_bootstrap}, Ptr{aws_channel_on_protocol_negotiated_fn}), bootstrap, on_protocol_negotiated)
 end
 
+"""
+    aws_socket_endpoint
+
+Documentation not found.
+"""
 struct aws_socket_endpoint
     address::NTuple{104, Cchar}
     port::UInt32
 end
 
+"""
+    __JL_Ctag_221
+
+Documentation not found.
+"""
 struct __JL_Ctag_221
     data::NTuple{8, UInt8}
 end
@@ -1222,6 +1362,11 @@ function Base.setproperty!(x::Ptr{__JL_Ctag_221}, f::Symbol, v)
     unsafe_store!(getproperty(x, f), v)
 end
 
+"""
+    aws_io_handle
+
+Documentation not found.
+"""
 struct aws_io_handle
     data::NTuple{16, UInt8}
 end
@@ -1271,6 +1416,11 @@ Do not call [`aws_socket_clean_up`](@ref)() from this callback.
 """
 const aws_socket_on_accept_result_fn = Cvoid
 
+"""
+    aws_socket
+
+Documentation not found.
+"""
 struct aws_socket
     data::NTuple{336, UInt8}
 end
@@ -1336,6 +1486,11 @@ function aws_server_bootstrap_destroy_socket_listener(bootstrap, listener)
     ccall((:aws_server_bootstrap_destroy_socket_listener, libaws_c_io), Cvoid, (Ptr{aws_server_bootstrap}, Ptr{aws_socket}), bootstrap, listener)
 end
 
+"""
+    aws_io_event_type
+
+Documentation not found.
+"""
 @cenum aws_io_event_type::UInt32 begin
     AWS_IO_EVENT_TYPE_READABLE = 1
     AWS_IO_EVENT_TYPE_WRITABLE = 2
@@ -1345,14 +1500,25 @@ end
 end
 
 # typedef void ( aws_event_loop_on_event_fn ) ( struct aws_event_loop * event_loop , struct aws_io_handle * handle , int events , void * user_data )
+"""
+Documentation not found.
+"""
 const aws_event_loop_on_event_fn = Cvoid
 
+"""
+    aws_event_loop_options
+
+Documentation not found.
+"""
 struct aws_event_loop_options
     clock::Ptr{aws_io_clock_fn}
     thread_options::Ptr{aws_thread_options}
 end
 
 # typedef struct aws_event_loop * ( aws_new_event_loop_fn ) ( struct aws_allocator * alloc , const struct aws_event_loop_options * options , void * new_loop_user_data )
+"""
+Documentation not found.
+"""
 const aws_new_event_loop_fn = Cvoid
 
 """
@@ -1766,6 +1932,7 @@ end
 """
     aws_event_loop_group_get_loop_at(el_group, index)
 
+Documentation not found.
 ### Prototype
 ```c
 struct aws_event_loop *aws_event_loop_group_get_loop_at(struct aws_event_loop_group *el_group, size_t index);
@@ -1778,6 +1945,7 @@ end
 """
     aws_event_loop_group_get_loop_count(el_group)
 
+Documentation not found.
 ### Prototype
 ```c
 size_t aws_event_loop_group_get_loop_count(struct aws_event_loop_group *el_group);
@@ -1807,11 +1975,15 @@ Completion callback for aws\\_future<T>
 """
 const aws_future_callback_fn = Cvoid
 
+"""
+Documentation not found.
+"""
 mutable struct aws_future_impl end
 
 """
     aws_future_impl_acquire(promise)
 
+Documentation not found.
 ### Prototype
 ```c
 struct aws_future_impl *aws_future_impl_acquire(struct aws_future_impl *promise);
@@ -1824,6 +1996,7 @@ end
 """
     aws_future_impl_release(promise)
 
+Documentation not found.
 ### Prototype
 ```c
 struct aws_future_impl *aws_future_impl_release(struct aws_future_impl *promise);
@@ -1836,6 +2009,7 @@ end
 """
     aws_future_impl_set_error(promise, error_code)
 
+Documentation not found.
 ### Prototype
 ```c
 void aws_future_impl_set_error(struct aws_future_impl *promise, int error_code);
@@ -1848,6 +2022,7 @@ end
 """
     aws_future_impl_is_done(future)
 
+Documentation not found.
 ### Prototype
 ```c
 bool aws_future_impl_is_done(const struct aws_future_impl *future);
@@ -1860,6 +2035,7 @@ end
 """
     aws_future_impl_get_error(future)
 
+Documentation not found.
 ### Prototype
 ```c
 int aws_future_impl_get_error(const struct aws_future_impl *future);
@@ -1872,6 +2048,7 @@ end
 """
     aws_future_impl_register_callback(future, on_done, user_data)
 
+Documentation not found.
 ### Prototype
 ```c
 void aws_future_impl_register_callback( struct aws_future_impl *future, aws_future_callback_fn *on_done, void *user_data);
@@ -1884,6 +2061,7 @@ end
 """
     aws_future_impl_register_callback_if_not_done(future, on_done, user_data)
 
+Documentation not found.
 ### Prototype
 ```c
 bool aws_future_impl_register_callback_if_not_done( struct aws_future_impl *future, aws_future_callback_fn *on_done, void *user_data);
@@ -1896,6 +2074,7 @@ end
 """
     aws_future_impl_register_event_loop_callback(future, event_loop, on_done, user_data)
 
+Documentation not found.
 ### Prototype
 ```c
 void aws_future_impl_register_event_loop_callback( struct aws_future_impl *future, struct aws_event_loop *event_loop, aws_future_callback_fn *on_done, void *user_data);
@@ -1908,6 +2087,7 @@ end
 """
     aws_future_impl_register_channel_callback(future, channel, on_done, user_data)
 
+Documentation not found.
 ### Prototype
 ```c
 void aws_future_impl_register_channel_callback( struct aws_future_impl *future, struct aws_channel *channel, aws_future_callback_fn *on_done, void *user_data);
@@ -1920,6 +2100,7 @@ end
 """
     aws_future_impl_wait(future, timeout_ns)
 
+Documentation not found.
 ### Prototype
 ```c
 bool aws_future_impl_wait(const struct aws_future_impl *future, uint64_t timeout_ns);
@@ -1932,6 +2113,7 @@ end
 """
     aws_future_impl_new_by_value(alloc, sizeof_result)
 
+Documentation not found.
 ### Prototype
 ```c
 struct aws_future_impl *aws_future_impl_new_by_value(struct aws_allocator *alloc, size_t sizeof_result);
@@ -1944,6 +2126,7 @@ end
 """
     aws_future_impl_set_result_by_move(promise, src_address)
 
+Documentation not found.
 ### Prototype
 ```c
 void aws_future_impl_set_result_by_move(struct aws_future_impl *promise, void *src_address);
@@ -1956,6 +2139,7 @@ end
 """
     aws_future_impl_get_result_address(future)
 
+Documentation not found.
 ### Prototype
 ```c
 void *aws_future_impl_get_result_address(const struct aws_future_impl *future);
@@ -1966,11 +2150,15 @@ function aws_future_impl_get_result_address(future)
 end
 
 # typedef void ( aws_future_impl_result_clean_up_fn ) ( void * result_addr )
+"""
+Documentation not found.
+"""
 const aws_future_impl_result_clean_up_fn = Cvoid
 
 """
     aws_future_impl_new_by_value_with_clean_up(alloc, sizeof_result, result_clean_up)
 
+Documentation not found.
 ### Prototype
 ```c
 struct aws_future_impl *aws_future_impl_new_by_value_with_clean_up( struct aws_allocator *alloc, size_t sizeof_result, aws_future_impl_result_clean_up_fn *result_clean_up);
@@ -1983,6 +2171,7 @@ end
 """
     aws_future_impl_get_result_by_move(future, dst_address)
 
+Documentation not found.
 ### Prototype
 ```c
 void aws_future_impl_get_result_by_move(struct aws_future_impl *future, void *dst_address);
@@ -1995,6 +2184,7 @@ end
 """
     aws_future_impl_new_pointer(alloc)
 
+Documentation not found.
 ### Prototype
 ```c
 struct aws_future_impl *aws_future_impl_new_pointer(struct aws_allocator *alloc);
@@ -2005,11 +2195,15 @@ function aws_future_impl_new_pointer(alloc)
 end
 
 # typedef void ( aws_future_impl_result_destroy_fn ) ( void * result )
+"""
+Documentation not found.
+"""
 const aws_future_impl_result_destroy_fn = Cvoid
 
 """
     aws_future_impl_new_pointer_with_destroy(alloc, result_destroy)
 
+Documentation not found.
 ### Prototype
 ```c
 struct aws_future_impl *aws_future_impl_new_pointer_with_destroy( struct aws_allocator *alloc, aws_future_impl_result_destroy_fn *result_destroy);
@@ -2020,11 +2214,15 @@ function aws_future_impl_new_pointer_with_destroy(alloc, result_destroy)
 end
 
 # typedef void * ( aws_future_impl_result_release_fn ) ( void * result )
+"""
+Documentation not found.
+"""
 const aws_future_impl_result_release_fn = Cvoid
 
 """
     aws_future_impl_new_pointer_with_release(alloc, result_release)
 
+Documentation not found.
 ### Prototype
 ```c
 struct aws_future_impl *aws_future_impl_new_pointer_with_release( struct aws_allocator *alloc, aws_future_impl_result_release_fn *result_release);
@@ -2034,11 +2232,15 @@ function aws_future_impl_new_pointer_with_release(alloc, result_release)
     ccall((:aws_future_impl_new_pointer_with_release, libaws_c_io), Ptr{aws_future_impl}, (Ptr{aws_allocator}, Ptr{aws_future_impl_result_release_fn}), alloc, result_release)
 end
 
+"""
+Documentation not found.
+"""
 mutable struct aws_future_size end
 
 """
     aws_future_size_new(alloc)
 
+Documentation not found.
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_size, size_t, AWS_IO_API);
@@ -2051,6 +2253,7 @@ end
 """
     aws_future_size_set_result(future, result)
 
+Documentation not found.
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_size, size_t, AWS_IO_API);
@@ -2063,6 +2266,7 @@ end
 """
     aws_future_size_get_result(future)
 
+Documentation not found.
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_size, size_t, AWS_IO_API);
@@ -2075,6 +2279,7 @@ end
 """
     aws_future_size_acquire(future)
 
+Documentation not found.
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_size, size_t, AWS_IO_API);
@@ -2087,6 +2292,7 @@ end
 """
     aws_future_size_release(future)
 
+Documentation not found.
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_size, size_t, AWS_IO_API);
@@ -2099,6 +2305,7 @@ end
 """
     aws_future_size_set_error(future, error_code)
 
+Documentation not found.
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_size, size_t, AWS_IO_API);
@@ -2111,6 +2318,7 @@ end
 """
     aws_future_size_is_done(future)
 
+Documentation not found.
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_size, size_t, AWS_IO_API);
@@ -2123,6 +2331,7 @@ end
 """
     aws_future_size_get_error(future)
 
+Documentation not found.
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_size, size_t, AWS_IO_API);
@@ -2135,6 +2344,7 @@ end
 """
     aws_future_size_register_callback(future, on_done, user_data)
 
+Documentation not found.
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_size, size_t, AWS_IO_API);
@@ -2147,6 +2357,7 @@ end
 """
     aws_future_size_register_callback_if_not_done(future, on_done, user_data)
 
+Documentation not found.
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_size, size_t, AWS_IO_API);
@@ -2159,6 +2370,7 @@ end
 """
     aws_future_size_register_event_loop_callback(future, event_loop, on_done, user_data)
 
+Documentation not found.
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_size, size_t, AWS_IO_API);
@@ -2171,6 +2383,7 @@ end
 """
     aws_future_size_register_channel_callback(future, channel, on_done, user_data)
 
+Documentation not found.
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_size, size_t, AWS_IO_API);
@@ -2183,6 +2396,7 @@ end
 """
     aws_future_size_wait(future, timeout_ns)
 
+Documentation not found.
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_size, size_t, AWS_IO_API);
@@ -2195,6 +2409,7 @@ end
 """
     aws_future_bool_new(alloc)
 
+Documentation not found.
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_bool, bool, AWS_IO_API);
@@ -2207,6 +2422,7 @@ end
 """
     aws_future_bool_set_result(future, result)
 
+Documentation not found.
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_bool, bool, AWS_IO_API);
@@ -2219,6 +2435,7 @@ end
 """
     aws_future_bool_get_result(future)
 
+Documentation not found.
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_bool, bool, AWS_IO_API);
@@ -2231,6 +2448,7 @@ end
 """
     aws_future_bool_acquire(future)
 
+Documentation not found.
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_bool, bool, AWS_IO_API);
@@ -2243,6 +2461,7 @@ end
 """
     aws_future_bool_release(future)
 
+Documentation not found.
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_bool, bool, AWS_IO_API);
@@ -2255,6 +2474,7 @@ end
 """
     aws_future_bool_set_error(future, error_code)
 
+Documentation not found.
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_bool, bool, AWS_IO_API);
@@ -2267,6 +2487,7 @@ end
 """
     aws_future_bool_is_done(future)
 
+Documentation not found.
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_bool, bool, AWS_IO_API);
@@ -2279,6 +2500,7 @@ end
 """
     aws_future_bool_get_error(future)
 
+Documentation not found.
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_bool, bool, AWS_IO_API);
@@ -2291,6 +2513,7 @@ end
 """
     aws_future_bool_register_callback(future, on_done, user_data)
 
+Documentation not found.
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_bool, bool, AWS_IO_API);
@@ -2303,6 +2526,7 @@ end
 """
     aws_future_bool_register_callback_if_not_done(future, on_done, user_data)
 
+Documentation not found.
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_bool, bool, AWS_IO_API);
@@ -2315,6 +2539,7 @@ end
 """
     aws_future_bool_register_event_loop_callback(future, event_loop, on_done, user_data)
 
+Documentation not found.
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_bool, bool, AWS_IO_API);
@@ -2327,6 +2552,7 @@ end
 """
     aws_future_bool_register_channel_callback(future, channel, on_done, user_data)
 
+Documentation not found.
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_bool, bool, AWS_IO_API);
@@ -2339,6 +2565,7 @@ end
 """
     aws_future_bool_wait(future, timeout_ns)
 
+Documentation not found.
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_bool, bool, AWS_IO_API);
@@ -2348,6 +2575,9 @@ function aws_future_bool_wait(future, timeout_ns)
     ccall((:aws_future_bool_wait, libaws_c_io), Bool, (Ptr{aws_future_bool}, UInt64), future, timeout_ns)
 end
 
+"""
+Documentation not found.
+"""
 mutable struct aws_future_void end
 
 """
@@ -2367,6 +2597,7 @@ end
 """
     aws_future_void_set_result(future)
 
+Documentation not found.
 ### Prototype
 ```c
 void aws_future_void_set_result(struct aws_future_void *future);
@@ -2379,6 +2610,7 @@ end
 """
     aws_future_void_acquire(future)
 
+Documentation not found.
 ### Prototype
 ```c
 AWS_FUTURE_T_DECLARATION_END(aws_future_void, AWS_IO_API);
@@ -2391,6 +2623,7 @@ end
 """
     aws_future_void_release(future)
 
+Documentation not found.
 ### Prototype
 ```c
 AWS_FUTURE_T_DECLARATION_END(aws_future_void, AWS_IO_API);
@@ -2403,6 +2636,7 @@ end
 """
     aws_future_void_set_error(future, error_code)
 
+Documentation not found.
 ### Prototype
 ```c
 AWS_FUTURE_T_DECLARATION_END(aws_future_void, AWS_IO_API);
@@ -2415,6 +2649,7 @@ end
 """
     aws_future_void_is_done(future)
 
+Documentation not found.
 ### Prototype
 ```c
 AWS_FUTURE_T_DECLARATION_END(aws_future_void, AWS_IO_API);
@@ -2427,6 +2662,7 @@ end
 """
     aws_future_void_get_error(future)
 
+Documentation not found.
 ### Prototype
 ```c
 AWS_FUTURE_T_DECLARATION_END(aws_future_void, AWS_IO_API);
@@ -2439,6 +2675,7 @@ end
 """
     aws_future_void_register_callback(future, on_done, user_data)
 
+Documentation not found.
 ### Prototype
 ```c
 AWS_FUTURE_T_DECLARATION_END(aws_future_void, AWS_IO_API);
@@ -2451,6 +2688,7 @@ end
 """
     aws_future_void_register_callback_if_not_done(future, on_done, user_data)
 
+Documentation not found.
 ### Prototype
 ```c
 AWS_FUTURE_T_DECLARATION_END(aws_future_void, AWS_IO_API);
@@ -2463,6 +2701,7 @@ end
 """
     aws_future_void_register_event_loop_callback(future, event_loop, on_done, user_data)
 
+Documentation not found.
 ### Prototype
 ```c
 AWS_FUTURE_T_DECLARATION_END(aws_future_void, AWS_IO_API);
@@ -2475,6 +2714,7 @@ end
 """
     aws_future_void_register_channel_callback(future, channel, on_done, user_data)
 
+Documentation not found.
 ### Prototype
 ```c
 AWS_FUTURE_T_DECLARATION_END(aws_future_void, AWS_IO_API);
@@ -2487,6 +2727,7 @@ end
 """
     aws_future_void_wait(future, timeout_ns)
 
+Documentation not found.
 ### Prototype
 ```c
 AWS_FUTURE_T_DECLARATION_END(aws_future_void, AWS_IO_API);
@@ -2496,16 +2737,31 @@ function aws_future_void_wait(future, timeout_ns)
     ccall((:aws_future_void_wait, libaws_c_io), Bool, (Ptr{aws_future_void}, UInt64), future, timeout_ns)
 end
 
+"""
+    aws_address_record_type
+
+Documentation not found.
+"""
 @cenum aws_address_record_type::UInt32 begin
     AWS_ADDRESS_RECORD_TYPE_A = 0
     AWS_ADDRESS_RECORD_TYPE_AAAA = 1
 end
 
+"""
+    aws_get_host_address_flags
+
+Documentation not found.
+"""
 @cenum aws_get_host_address_flags::UInt32 begin
     AWS_GET_HOST_ADDRESS_COUNT_RECORD_TYPE_A = 1
     AWS_GET_HOST_ADDRESS_COUNT_RECORD_TYPE_AAAA = 2
 end
 
+"""
+    aws_host_address
+
+Documentation not found.
+"""
 struct aws_host_address
     allocator::Ptr{aws_allocator}
     host::Ptr{aws_string}
@@ -2523,16 +2779,32 @@ Invoked once an address has been resolved for host. The type in host\\_addresses
 """
 const aws_on_host_resolved_result_fn = Cvoid
 
+"""
+Documentation not found.
+"""
 mutable struct aws_host_listener end
 
+"""
+Documentation not found.
+"""
 mutable struct aws_host_listener_options end
 
+"""
+    aws_host_resolver_purge_host_options
+
+Documentation not found.
+"""
 struct aws_host_resolver_purge_host_options
     host::Ptr{aws_string}
     on_host_purge_complete_callback::Ptr{aws_simple_completion_callback}
     user_data::Ptr{Cvoid}
 end
 
+"""
+    aws_host_resolver_default_options
+
+Documentation not found.
+"""
 struct aws_host_resolver_default_options
     max_entries::Csize_t
     el_group::Ptr{aws_event_loop_group}
@@ -2760,6 +3032,11 @@ function aws_host_resolver_init_default_resolution_config()
     ccall((:aws_host_resolver_init_default_resolution_config, libaws_c_io), aws_host_resolution_config, ())
 end
 
+"""
+    aws_io_errors
+
+Documentation not found.
+"""
 @cenum aws_io_errors::UInt32 begin
     AWS_IO_CHANNEL_ERROR_ERROR_CANT_ACCEPT_INPUT = 1024
     AWS_IO_CHANNEL_UNKNOWN_MESSAGE_TYPE = 1025
@@ -2952,6 +3229,7 @@ end
 """
     aws_io_fatal_assert_library_initialized()
 
+Documentation not found.
 ### Prototype
 ```c
 void aws_io_fatal_assert_library_initialized(void);
@@ -2961,6 +3239,11 @@ function aws_io_fatal_assert_library_initialized()
     ccall((:aws_io_fatal_assert_library_initialized, libaws_c_io), Cvoid, ())
 end
 
+"""
+    aws_io_log_subject
+
+Documentation not found.
+"""
 @cenum aws_io_log_subject::UInt32 begin
     AWS_LS_IO_GENERAL = 1024
     AWS_LS_IO_EVENT_LOOP = 1025
@@ -2981,6 +3264,11 @@ end
     AWS_IO_LS_LAST = 2047
 end
 
+"""
+    aws_memory_pool
+
+Documentation not found.
+"""
 struct aws_memory_pool
     alloc::Ptr{aws_allocator}
     stack::aws_array_list
@@ -2989,12 +3277,22 @@ struct aws_memory_pool
     data_ptr::Ptr{Cvoid}
 end
 
+"""
+    aws_message_pool
+
+Documentation not found.
+"""
 struct aws_message_pool
     alloc::Ptr{aws_allocator}
     application_data_pool::aws_memory_pool
     small_block_pool::aws_memory_pool
 end
 
+"""
+    aws_message_pool_creation_args
+
+Documentation not found.
+"""
 struct aws_message_pool_creation_args
     application_data_msg_data_size::Csize_t
     application_data_msg_count::UInt8
@@ -3005,6 +3303,7 @@ end
 """
     aws_memory_pool_init(mempool, alloc, ideal_segment_count, segment_size)
 
+Documentation not found.
 ### Prototype
 ```c
 int aws_memory_pool_init( struct aws_memory_pool *mempool, struct aws_allocator *alloc, uint16_t ideal_segment_count, size_t segment_size);
@@ -3017,6 +3316,7 @@ end
 """
     aws_memory_pool_clean_up(mempool)
 
+Documentation not found.
 ### Prototype
 ```c
 void aws_memory_pool_clean_up(struct aws_memory_pool *mempool);
@@ -3071,6 +3371,7 @@ end
 """
     aws_message_pool_clean_up(msg_pool)
 
+Documentation not found.
 ### Prototype
 ```c
 void aws_message_pool_clean_up(struct aws_message_pool *msg_pool);
@@ -3110,6 +3411,11 @@ function aws_message_pool_release(msg_pool, message)
     ccall((:aws_message_pool_release, libaws_c_io), Cvoid, (Ptr{aws_message_pool}, Ptr{aws_io_message}), msg_pool, message)
 end
 
+"""
+    aws_pem_object_type
+
+Documentation not found.
+"""
 @cenum aws_pem_object_type::UInt32 begin
     AWS_PEM_TYPE_UNKNOWN = 0
     AWS_PEM_TYPE_X509_OLD = 1
@@ -3140,6 +3446,11 @@ end
     AWS_PEM_TYPE_SM2_PARAMETERS = 26
 end
 
+"""
+    aws_pem_object
+
+Documentation not found.
+"""
 struct aws_pem_object
     type::aws_pem_object_type
     type_string::Ptr{aws_string}
@@ -3188,10 +3499,20 @@ function aws_pem_objects_init_from_file_path(pem_objects, allocator, filename)
     ccall((:aws_pem_objects_init_from_file_path, libaws_c_io), Cint, (Ptr{aws_array_list}, Ptr{aws_allocator}, Ptr{Cchar}), pem_objects, allocator, filename)
 end
 
+"""
+    aws_pipe_read_end
+
+Documentation not found.
+"""
 struct aws_pipe_read_end
     impl_data::Ptr{Cvoid}
 end
 
+"""
+    aws_pipe_write_end
+
+Documentation not found.
+"""
 struct aws_pipe_write_end
     impl_data::Ptr{Cvoid}
 end
@@ -3355,6 +3676,9 @@ struct aws_pkcs11_lib_options
     initialize_finalize_behavior::aws_pkcs11_lib_behavior
 end
 
+"""
+Documentation not found.
+"""
 mutable struct aws_pkcs11_lib end
 
 """
@@ -3419,6 +3743,11 @@ Optional function to supply your own generate random implementation
 """
 const aws_generate_random_fn = Cvoid
 
+"""
+    aws_retry_error_type
+
+Documentation not found.
+"""
 @cenum aws_retry_error_type::UInt32 begin
     AWS_RETRY_ERROR_TYPE_TRANSIENT = 0
     AWS_RETRY_ERROR_TYPE_THROTTLING = 1
@@ -3426,6 +3755,11 @@ const aws_generate_random_fn = Cvoid
     AWS_RETRY_ERROR_TYPE_CLIENT_ERROR = 3
 end
 
+"""
+    aws_retry_strategy_vtable
+
+Documentation not found.
+"""
 struct aws_retry_strategy_vtable
     destroy::Ptr{Cvoid}
     acquire_token::Ptr{Cvoid}
@@ -3434,6 +3768,11 @@ struct aws_retry_strategy_vtable
     release_token::Ptr{Cvoid}
 end
 
+"""
+    aws_retry_strategy
+
+Documentation not found.
+"""
 struct aws_retry_strategy
     allocator::Ptr{aws_allocator}
     vtable::Ptr{aws_retry_strategy_vtable}
@@ -3441,6 +3780,11 @@ struct aws_retry_strategy
     impl::Ptr{Cvoid}
 end
 
+"""
+    aws_retry_token
+
+Documentation not found.
+"""
 struct aws_retry_token
     allocator::Ptr{aws_allocator}
     retry_strategy::Ptr{aws_retry_strategy}
@@ -3479,6 +3823,11 @@ struct aws_exponential_backoff_retry_options
     shutdown_options::Ptr{aws_shutdown_callback_options}
 end
 
+"""
+    aws_standard_retry_options
+
+Documentation not found.
+"""
 struct aws_standard_retry_options
     backoff_retry_options::aws_exponential_backoff_retry_options
     initial_bucket_capacity::Csize_t
@@ -3620,16 +3969,25 @@ function aws_retry_strategy_new_standard(allocator, config)
     ccall((:aws_retry_strategy_new_standard, libaws_c_io), Ptr{aws_retry_strategy}, (Ptr{aws_allocator}, Ptr{aws_standard_retry_options}), allocator, config)
 end
 
+"""
+    aws_shared_library
+
+Documentation not found.
+"""
 struct aws_shared_library
     library_handle::Ptr{Cvoid}
 end
 
 # typedef void ( * aws_generic_function ) ( void )
+"""
+Documentation not found.
+"""
 const aws_generic_function = Ptr{Cvoid}
 
 """
     aws_shared_library_init(library, library_path)
 
+Documentation not found.
 ### Prototype
 ```c
 int aws_shared_library_init(struct aws_shared_library *library, const char *library_path);
@@ -3642,6 +4000,7 @@ end
 """
     aws_shared_library_clean_up(library)
 
+Documentation not found.
 ### Prototype
 ```c
 void aws_shared_library_clean_up(struct aws_shared_library *library);
@@ -3654,6 +4013,7 @@ end
 """
     aws_shared_library_find_function(library, symbol_name, function_address)
 
+Documentation not found.
 ### Prototype
 ```c
 int aws_shared_library_find_function( struct aws_shared_library *library, const char *symbol_name, aws_generic_function *function_address);
@@ -4006,6 +4366,7 @@ end
 """
     aws_socket_handler_get_socket(handler)
 
+Documentation not found.
 ### Prototype
 ```c
 const struct aws_socket *aws_socket_handler_get_socket(const struct aws_channel_handler *handler);
@@ -4015,6 +4376,11 @@ function aws_socket_handler_get_socket(handler)
     ccall((:aws_socket_handler_get_socket, libaws_c_io), Ptr{aws_socket}, (Ptr{aws_channel_handler},), handler)
 end
 
+"""
+    aws_crt_io_statistics_category
+
+Documentation not found.
+"""
 @cenum aws_crt_io_statistics_category::UInt32 begin
     AWSCRT_STAT_CAT_SOCKET = 256
     AWSCRT_STAT_CAT_TLS = 257
@@ -4139,16 +4505,31 @@ function aws_crt_statistics_tls_reset(stats)
     ccall((:aws_crt_statistics_tls_reset, libaws_c_io), Cvoid, (Ptr{aws_crt_statistics_tls},), stats)
 end
 
+"""
+    aws_stream_seek_basis
+
+Documentation not found.
+"""
 @cenum aws_stream_seek_basis::UInt32 begin
     AWS_SSB_BEGIN = 0
     AWS_SSB_END = 2
 end
 
+"""
+    aws_stream_status
+
+Documentation not found.
+"""
 struct aws_stream_status
     is_end_of_stream::Bool
     is_valid::Bool
 end
 
+"""
+    aws_input_stream_vtable
+
+Documentation not found.
+"""
 struct aws_input_stream_vtable
     seek::Ptr{Cvoid}
     read::Ptr{Cvoid}
@@ -4204,6 +4585,7 @@ end
 """
     aws_input_stream_seek(stream, offset, basis)
 
+Documentation not found.
 ### Prototype
 ```c
 int aws_input_stream_seek(struct aws_input_stream *stream, int64_t offset, enum aws_stream_seek_basis basis);
@@ -4216,6 +4598,7 @@ end
 """
     aws_input_stream_read(stream, dest)
 
+Documentation not found.
 ### Prototype
 ```c
 int aws_input_stream_read(struct aws_input_stream *stream, struct aws_byte_buf *dest);
@@ -4228,6 +4611,7 @@ end
 """
     aws_input_stream_get_status(stream, status)
 
+Documentation not found.
 ### Prototype
 ```c
 int aws_input_stream_get_status(struct aws_input_stream *stream, struct aws_stream_status *status);
@@ -4240,6 +4624,7 @@ end
 """
     aws_input_stream_get_length(stream, out_length)
 
+Documentation not found.
 ### Prototype
 ```c
 int aws_input_stream_get_length(struct aws_input_stream *stream, int64_t *out_length);
@@ -4252,6 +4637,7 @@ end
 """
     aws_input_stream_destroy(stream)
 
+Documentation not found.
 ### Prototype
 ```c
 void aws_input_stream_destroy(struct aws_input_stream *stream);
@@ -4264,6 +4650,7 @@ end
 """
     aws_input_stream_new_from_cursor(allocator, cursor)
 
+Documentation not found.
 ### Prototype
 ```c
 struct aws_input_stream *aws_input_stream_new_from_cursor( struct aws_allocator *allocator, const struct aws_byte_cursor *cursor);
@@ -4276,6 +4663,7 @@ end
 """
     aws_input_stream_new_from_file(allocator, file_name)
 
+Documentation not found.
 ### Prototype
 ```c
 struct aws_input_stream *aws_input_stream_new_from_file( struct aws_allocator *allocator, const char *file_name);
@@ -4288,6 +4676,7 @@ end
 """
     aws_input_stream_new_from_open_file(allocator, file)
 
+Documentation not found.
 ### Prototype
 ```c
 struct aws_input_stream *aws_input_stream_new_from_open_file(struct aws_allocator *allocator, FILE *file);
@@ -4297,8 +4686,16 @@ function aws_input_stream_new_from_open_file(allocator, file)
     ccall((:aws_input_stream_new_from_open_file, libaws_c_io), Ptr{aws_input_stream}, (Ptr{aws_allocator}, Ptr{Libc.FILE}), allocator, file)
 end
 
+"""
+Documentation not found.
+"""
 mutable struct aws_pkcs11_session end
 
+"""
+    aws_tls_versions
+
+Documentation not found.
+"""
 @cenum aws_tls_versions::UInt32 begin
     AWS_IO_SSLv3 = 0
     AWS_IO_TLSv1 = 1
@@ -4308,6 +4705,11 @@ mutable struct aws_pkcs11_session end
     AWS_IO_TLS_VER_SYS_DEFAULTS = 128
 end
 
+"""
+    aws_tls_cipher_pref
+
+Documentation not found.
+"""
 @cenum aws_tls_cipher_pref::UInt32 begin
     AWS_IO_TLS_CIPHER_PREF_SYSTEM_DEFAULT = 0
     AWS_IO_TLS_CIPHER_PREF_KMS_PQ_TLSv1_0_2019_06 = 1
@@ -4380,6 +4782,11 @@ struct aws_custom_key_op_handler
     ref_count::aws_ref_count
 end
 
+"""
+    aws_tls_ctx_options
+
+Documentation not found.
+"""
 struct aws_tls_ctx_options
     allocator::Ptr{aws_allocator}
     minimum_tls_version::aws_tls_versions
@@ -4398,11 +4805,19 @@ struct aws_tls_ctx_options
     custom_key_op_handler::Ptr{aws_custom_key_op_handler}
 end
 
+"""
+    aws_tls_negotiated_protocol_message
+
+Documentation not found.
+"""
 struct aws_tls_negotiated_protocol_message
     protocol::aws_byte_buf
 end
 
 # typedef struct aws_channel_handler * ( * aws_tls_on_protocol_negotiated ) ( struct aws_channel_slot * new_slot , struct aws_byte_buf * protocol , void * user_data )
+"""
+Documentation not found.
+"""
 const aws_tls_on_protocol_negotiated = Ptr{Cvoid}
 
 """
@@ -5233,6 +5648,11 @@ There are a few ways to set what gets streamed. - source\\_bytes: if set, stream
     AWS_AUTOGEN_NUMBERS = 2
 end
 
+"""
+    aws_input_stream_tester_options
+
+Documentation not found.
+"""
 struct aws_input_stream_tester_options
     source_bytes::aws_byte_cursor
     source_stream::Ptr{aws_input_stream}
@@ -5245,12 +5665,22 @@ struct aws_input_stream_tester_options
     fail_with_error_code::Cint
 end
 
+"""
+    aws_async_input_stream_tester_options
+
+Documentation not found.
+"""
 struct aws_async_input_stream_tester_options
     base::aws_input_stream_tester_options
     completion_strategy::aws_async_read_completion_strategy
     read_duration_ns::UInt64
 end
 
+"""
+    __JL_Ctag_222
+
+Documentation not found.
+"""
 struct __JL_Ctag_222
     lock::aws_mutex
     cvar::aws_condition_variable
@@ -5279,6 +5709,11 @@ function Base.setproperty!(x::Ptr{__JL_Ctag_222}, f::Symbol, v)
 end
 
 
+"""
+    aws_async_input_stream_tester
+
+Documentation not found.
+"""
 struct aws_async_input_stream_tester
     data::NTuple{344, UInt8}
 end
@@ -5308,6 +5743,7 @@ end
 """
     s_async_input_stream_tester_do_actual_read(impl, dest, read_future)
 
+Documentation not found.
 ### Prototype
 ```c
 static inline void s_async_input_stream_tester_do_actual_read( struct aws_async_input_stream_tester *impl, struct aws_byte_buf *dest, struct aws_future_bool *read_future);
@@ -5320,6 +5756,7 @@ end
 """
     s_async_input_stream_tester_read(stream, dest)
 
+Documentation not found.
 ### Prototype
 ```c
 static inline struct aws_future_bool *s_async_input_stream_tester_read( struct aws_async_input_stream *stream, struct aws_byte_buf *dest);
@@ -5332,6 +5769,7 @@ end
 """
     s_async_input_stream_tester_do_actual_destroy(impl)
 
+Documentation not found.
 ### Prototype
 ```c
 static inline void s_async_input_stream_tester_do_actual_destroy(struct aws_async_input_stream_tester *impl);
@@ -5344,6 +5782,7 @@ end
 """
     s_async_input_stream_tester_destroy(async_stream)
 
+Documentation not found.
 ### Prototype
 ```c
 static inline void s_async_input_stream_tester_destroy(struct aws_async_input_stream *async_stream);
@@ -5356,6 +5795,7 @@ end
 """
     s_async_input_stream_tester_thread_pred(arg)
 
+Documentation not found.
 ### Prototype
 ```c
 static inline bool s_async_input_stream_tester_thread_pred(void *arg);
@@ -5368,6 +5808,7 @@ end
 """
     s_async_input_stream_tester_thread(arg)
 
+Documentation not found.
 ### Prototype
 ```c
 static inline void s_async_input_stream_tester_thread(void *arg);
@@ -5380,6 +5821,7 @@ end
 """
     aws_async_input_stream_tester_total_bytes_read(async_stream)
 
+Documentation not found.
 ### Prototype
 ```c
 static inline uint64_t aws_async_input_stream_tester_total_bytes_read( const struct aws_async_input_stream *async_stream);
@@ -5392,6 +5834,7 @@ end
 """
     aws_async_input_stream_new_tester(alloc, options)
 
+Documentation not found.
 ### Prototype
 ```c
 static inline struct aws_async_input_stream *aws_async_input_stream_new_tester( struct aws_allocator *alloc, const struct aws_async_input_stream_tester_options *options);
@@ -5401,6 +5844,11 @@ function aws_async_input_stream_new_tester(alloc, options)
     ccall((:aws_async_input_stream_new_tester, libaws_c_io), Ptr{aws_async_input_stream}, (Ptr{aws_allocator}, Ptr{aws_async_input_stream_tester_options}), alloc, options)
 end
 
+"""
+    testing_loop
+
+Documentation not found.
+"""
 struct testing_loop
     scheduler::aws_task_scheduler
     mock_on_callers_thread::Bool
@@ -5409,6 +5857,7 @@ end
 """
     s_testing_loop_run(event_loop)
 
+Documentation not found.
 ### Prototype
 ```c
 static int s_testing_loop_run(struct aws_event_loop *event_loop);
@@ -5421,6 +5870,7 @@ end
 """
     s_testing_loop_stop(event_loop)
 
+Documentation not found.
 ### Prototype
 ```c
 static int s_testing_loop_stop(struct aws_event_loop *event_loop);
@@ -5433,6 +5883,7 @@ end
 """
     s_testing_loop_wait_for_stop_completion(event_loop)
 
+Documentation not found.
 ### Prototype
 ```c
 static int s_testing_loop_wait_for_stop_completion(struct aws_event_loop *event_loop);
@@ -5445,6 +5896,7 @@ end
 """
     s_testing_loop_schedule_task_now(event_loop, task)
 
+Documentation not found.
 ### Prototype
 ```c
 static void s_testing_loop_schedule_task_now(struct aws_event_loop *event_loop, struct aws_task *task);
@@ -5457,6 +5909,7 @@ end
 """
     s_testing_loop_schedule_task_future(event_loop, task, run_at_nanos)
 
+Documentation not found.
 ### Prototype
 ```c
 static void s_testing_loop_schedule_task_future( struct aws_event_loop *event_loop, struct aws_task *task, uint64_t run_at_nanos);
@@ -5469,6 +5922,7 @@ end
 """
     s_testing_loop_cancel_task(event_loop, task)
 
+Documentation not found.
 ### Prototype
 ```c
 static void s_testing_loop_cancel_task(struct aws_event_loop *event_loop, struct aws_task *task);
@@ -5481,6 +5935,7 @@ end
 """
     s_testing_loop_is_on_callers_thread(event_loop)
 
+Documentation not found.
 ### Prototype
 ```c
 static bool s_testing_loop_is_on_callers_thread(struct aws_event_loop *event_loop);
@@ -5493,6 +5948,7 @@ end
 """
     s_testing_loop_destroy(event_loop)
 
+Documentation not found.
 ### Prototype
 ```c
 static void s_testing_loop_destroy(struct aws_event_loop *event_loop);
@@ -5505,6 +5961,7 @@ end
 """
     s_testing_loop_new(allocator, clock)
 
+Documentation not found.
 ### Prototype
 ```c
 static struct aws_event_loop *s_testing_loop_new(struct aws_allocator *allocator, aws_io_clock_fn clock);
@@ -5515,8 +5972,16 @@ function s_testing_loop_new(allocator, clock)
 end
 
 # typedef void ( testing_channel_handler_on_shutdown_fn ) ( enum aws_channel_direction dir , int error_code , bool free_scarce_resources_immediately , void * user_data )
+"""
+Documentation not found.
+"""
 const testing_channel_handler_on_shutdown_fn = Cvoid
 
+"""
+    testing_channel_handler
+
+Documentation not found.
+"""
 struct testing_channel_handler
     messages::aws_linked_list
     latest_window_update::Csize_t
@@ -5531,6 +5996,7 @@ end
 """
     s_testing_channel_handler_process_read_message(handler, slot, message)
 
+Documentation not found.
 ### Prototype
 ```c
 static int s_testing_channel_handler_process_read_message( struct aws_channel_handler *handler, struct aws_channel_slot *slot, struct aws_io_message *message);
@@ -5543,6 +6009,7 @@ end
 """
     s_testing_channel_handler_process_write_message(handler, slot, message)
 
+Documentation not found.
 ### Prototype
 ```c
 static int s_testing_channel_handler_process_write_message( struct aws_channel_handler *handler, struct aws_channel_slot *slot, struct aws_io_message *message);
@@ -5555,6 +6022,7 @@ end
 """
     s_testing_channel_handler_increment_read_window(handler, slot, size)
 
+Documentation not found.
 ### Prototype
 ```c
 static int s_testing_channel_handler_increment_read_window( struct aws_channel_handler *handler, struct aws_channel_slot *slot, size_t size);
@@ -5567,6 +6035,7 @@ end
 """
     s_testing_channel_handler_shutdown(handler, slot, dir, error_code, free_scarce_resources_immediately)
 
+Documentation not found.
 ### Prototype
 ```c
 static int s_testing_channel_handler_shutdown( struct aws_channel_handler *handler, struct aws_channel_slot *slot, enum aws_channel_direction dir, int error_code, bool free_scarce_resources_immediately);
@@ -5579,6 +6048,7 @@ end
 """
     s_testing_channel_handler_initial_window_size(handler)
 
+Documentation not found.
 ### Prototype
 ```c
 static size_t s_testing_channel_handler_initial_window_size(struct aws_channel_handler *handler);
@@ -5591,6 +6061,7 @@ end
 """
     s_testing_channel_handler_message_overhead(handler)
 
+Documentation not found.
 ### Prototype
 ```c
 static size_t s_testing_channel_handler_message_overhead(struct aws_channel_handler *handler);
@@ -5603,6 +6074,7 @@ end
 """
     s_testing_channel_handler_destroy(handler)
 
+Documentation not found.
 ### Prototype
 ```c
 static void s_testing_channel_handler_destroy(struct aws_channel_handler *handler);
@@ -5615,6 +6087,7 @@ end
 """
     s_testing_channel_handler_reset_statistics(handler)
 
+Documentation not found.
 ### Prototype
 ```c
 static void s_testing_channel_handler_reset_statistics(struct aws_channel_handler *handler);
@@ -5627,6 +6100,7 @@ end
 """
     s_testing_channel_handler_gather_statistics(handler, stats)
 
+Documentation not found.
 ### Prototype
 ```c
 static void s_testing_channel_handler_gather_statistics( struct aws_channel_handler *handler, struct aws_array_list *stats);
@@ -5639,6 +6113,7 @@ end
 """
     s_new_testing_channel_handler(allocator, initial_window)
 
+Documentation not found.
 ### Prototype
 ```c
 static struct aws_channel_handler *s_new_testing_channel_handler( struct aws_allocator *allocator, size_t initial_window);
@@ -5648,6 +6123,11 @@ function s_new_testing_channel_handler(allocator, initial_window)
     ccall((:s_new_testing_channel_handler, libaws_c_io), Ptr{aws_channel_handler}, (Ptr{aws_allocator}, Csize_t), allocator, initial_window)
 end
 
+"""
+    testing_channel
+
+Documentation not found.
+"""
 struct testing_channel
     loop::Ptr{aws_event_loop}
     loop_impl::Ptr{testing_loop}
@@ -5666,6 +6146,7 @@ end
 """
     s_testing_channel_on_setup_completed(channel, error_code, user_data)
 
+Documentation not found.
 ### Prototype
 ```c
 static void s_testing_channel_on_setup_completed(struct aws_channel *channel, int error_code, void *user_data);
@@ -5678,6 +6159,7 @@ end
 """
     s_testing_channel_on_shutdown_completed(channel, error_code, user_data)
 
+Documentation not found.
 ### Prototype
 ```c
 static void s_testing_channel_on_shutdown_completed(struct aws_channel *channel, int error_code, void *user_data);
@@ -5827,6 +6309,11 @@ function testing_channel_set_is_on_users_thread(testing, on_users_thread)
     ccall((:testing_channel_set_is_on_users_thread, libaws_c_io), Cvoid, (Ptr{testing_channel}, Bool), testing, on_users_thread)
 end
 
+"""
+    aws_testing_channel_options
+
+Documentation not found.
+"""
 struct aws_testing_channel_options
     clock_fn::Ptr{aws_io_clock_fn}
 end
@@ -5834,6 +6321,7 @@ end
 """
     testing_channel_init(testing, allocator, options)
 
+Documentation not found.
 ### Prototype
 ```c
 static inline int testing_channel_init( struct testing_channel *testing, struct aws_allocator *allocator, struct aws_testing_channel_options *options);
@@ -5846,6 +6334,7 @@ end
 """
     testing_channel_clean_up(testing)
 
+Documentation not found.
 ### Prototype
 ```c
 static inline int testing_channel_clean_up(struct testing_channel *testing);
@@ -5914,6 +6403,7 @@ end
 """
     testing_channel_check_written_message(channel, expected)
 
+Documentation not found.
 ### Prototype
 ```c
 static inline int testing_channel_check_written_message( struct testing_channel *channel, struct aws_byte_cursor expected);
@@ -5926,6 +6416,7 @@ end
 """
     testing_channel_check_written_message_str(channel, expected)
 
+Documentation not found.
 ### Prototype
 ```c
 static inline int testing_channel_check_written_message_str(struct testing_channel *channel, const char *expected);
@@ -5938,6 +6429,7 @@ end
 """
     testing_channel_drain_messages(msgs, buffer)
 
+Documentation not found.
 ### Prototype
 ```c
 static inline int testing_channel_drain_messages(struct aws_linked_list *msgs, struct aws_byte_buf *buffer);
@@ -5950,6 +6442,7 @@ end
 """
     testing_channel_check_messages_ex(msgs, allocator, expected)
 
+Documentation not found.
 ### Prototype
 ```c
 static inline int testing_channel_check_messages_ex( struct aws_linked_list *msgs, struct aws_allocator *allocator, struct aws_byte_cursor expected);
@@ -5962,6 +6455,7 @@ end
 """
     testing_channel_check_written_messages(channel, allocator, expected)
 
+Documentation not found.
 ### Prototype
 ```c
 static inline int testing_channel_check_written_messages( struct testing_channel *channel, struct aws_allocator *allocator, struct aws_byte_cursor expected);
@@ -5974,6 +6468,7 @@ end
 """
     testing_channel_check_written_messages_str(channel, allocator, expected)
 
+Documentation not found.
 ### Prototype
 ```c
 static inline int testing_channel_check_written_messages_str( struct testing_channel *channel, struct aws_allocator *allocator, const char *expected);
@@ -5986,6 +6481,7 @@ end
 """
     testing_channel_drain_written_messages(channel, output)
 
+Documentation not found.
 ### Prototype
 ```c
 static inline int testing_channel_drain_written_messages(struct testing_channel *channel, struct aws_byte_buf *output);
@@ -5998,6 +6494,7 @@ end
 """
     testing_channel_check_midchannel_read_messages(channel, allocator, expected)
 
+Documentation not found.
 ### Prototype
 ```c
 static inline int testing_channel_check_midchannel_read_messages( struct testing_channel *channel, struct aws_allocator *allocator, struct aws_byte_cursor expected);
@@ -6010,6 +6507,7 @@ end
 """
     testing_channel_check_midchannel_read_messages_str(channel, allocator, expected)
 
+Documentation not found.
 ### Prototype
 ```c
 static inline int testing_channel_check_midchannel_read_messages_str( struct testing_channel *channel, struct aws_allocator *allocator, const char *expected);
@@ -6022,6 +6520,7 @@ end
 """
     testing_channel_send_data(channel, data, dir, ignore_send_message_errors)
 
+Documentation not found.
 ### Prototype
 ```c
 static inline int testing_channel_send_data( struct testing_channel *channel, struct aws_byte_cursor data, enum aws_channel_direction dir, bool ignore_send_message_errors);
@@ -6101,6 +6600,11 @@ function testing_channel_push_write_str(channel, str)
     ccall((:testing_channel_push_write_str, libaws_c_io), Cint, (Ptr{testing_channel}, Ptr{Cchar}), channel, str)
 end
 
+"""
+    aws_input_stream_tester
+
+Documentation not found.
+"""
 struct aws_input_stream_tester
     base::aws_input_stream
     alloc::Ptr{aws_allocator}
@@ -6115,6 +6619,7 @@ end
 """
     s_input_stream_tester_seek(stream, offset, basis)
 
+Documentation not found.
 ### Prototype
 ```c
 static inline int s_input_stream_tester_seek( struct aws_input_stream *stream, int64_t offset, enum aws_stream_seek_basis basis);
@@ -6127,6 +6632,7 @@ end
 """
     s_input_stream_tester_read(stream, original_dest)
 
+Documentation not found.
 ### Prototype
 ```c
 static inline int s_input_stream_tester_read(struct aws_input_stream *stream, struct aws_byte_buf *original_dest);
@@ -6139,6 +6645,7 @@ end
 """
     s_input_stream_tester_get_status(stream, status)
 
+Documentation not found.
 ### Prototype
 ```c
 static inline int s_input_stream_tester_get_status(struct aws_input_stream *stream, struct aws_stream_status *status);
@@ -6151,6 +6658,7 @@ end
 """
     s_input_stream_tester_get_length(stream, out_length)
 
+Documentation not found.
 ### Prototype
 ```c
 static inline int s_input_stream_tester_get_length(struct aws_input_stream *stream, int64_t *out_length);
@@ -6163,6 +6671,7 @@ end
 """
     s_byte_buf_init_autogenned(buf, alloc, length, style)
 
+Documentation not found.
 ### Prototype
 ```c
 static inline void s_byte_buf_init_autogenned( struct aws_byte_buf *buf, struct aws_allocator *alloc, size_t length, enum aws_autogen_style style);
@@ -6175,6 +6684,7 @@ end
 """
     aws_input_stream_tester_total_bytes_read(stream)
 
+Documentation not found.
 ### Prototype
 ```c
 static inline uint64_t aws_input_stream_tester_total_bytes_read(const struct aws_input_stream *stream);
@@ -6187,6 +6697,7 @@ end
 """
     s_input_stream_tester_destroy(user_data)
 
+Documentation not found.
 ### Prototype
 ```c
 static inline void s_input_stream_tester_destroy(void *user_data);
@@ -6199,6 +6710,7 @@ end
 """
     aws_input_stream_new_tester(alloc, options)
 
+Documentation not found.
 ### Prototype
 ```c
 static inline struct aws_input_stream *aws_input_stream_new_tester( struct aws_allocator *alloc, const struct aws_input_stream_tester_options *options);
@@ -6208,19 +6720,20 @@ function aws_input_stream_new_tester(alloc, options)
     ccall((:aws_input_stream_new_tester, libaws_c_io), Ptr{aws_input_stream}, (Ptr{aws_allocator}, Ptr{aws_input_stream_tester_options}), alloc, options)
 end
 
+"""
+Documentation not found.
+"""
 const AWS_C_IO_PACKAGE_ID = 1
 
+"""
+Documentation not found.
+"""
 const aws_pcks11_lib_behavior = aws_pkcs11_lib_behavior
 
 # Skipping MacroDefinition: AWS_ADDRESS_MAX_LEN sizeof ( ( ( struct sockaddr_un * ) 0 ) -> sun_path )
 
+"""
+Documentation not found.
+"""
 const AWS_TLS_NEGOTIATED_PROTOCOL_MESSAGE = 0x01
-
-# exports
-const PREFIXES = ["AWS_", "aws_"]
-for name in names(@__MODULE__; all=true), prefix in PREFIXES
-    if startswith(string(name), prefix)
-        @eval export $name
-    end
-end
 

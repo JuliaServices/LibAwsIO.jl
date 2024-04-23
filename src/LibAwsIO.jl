@@ -11,15 +11,15 @@ elseif Sys.islinux() && Sys.ARCH === :aarch64 && !IS_LIBC_MUSL
 elseif Sys.islinux() && Sys.ARCH === :aarch64 && IS_LIBC_MUSL
     include("../lib/aarch64-linux-musl.jl")
 elseif Sys.islinux() && startswith(string(Sys.ARCH), "arm") && !IS_LIBC_MUSL
-    error("LibAwsCommon.jl does not support armv7l-linux-gnueabihf")
+    include("../lib/armv7l-linux-gnueabihf.jl")
 elseif Sys.islinux() && startswith(string(Sys.ARCH), "arm") && IS_LIBC_MUSL
-    error("LibAwsCommon.jl does not support armv7l-linux-musleabihf")
+    include("../lib/armv7l-linux-musleabihf.jl")
 elseif Sys.islinux() && Sys.ARCH === :i686 && !IS_LIBC_MUSL
     include("../lib/i686-linux-gnu.jl")
 elseif Sys.islinux() && Sys.ARCH === :i686 && IS_LIBC_MUSL
     include("../lib/i686-linux-musl.jl")
 elseif Sys.iswindows() && Sys.ARCH === :i686
-    error("LibAwsCommon.jl does not support i686-w64-mingw32 https://github.com/JuliaPackaging/Yggdrasil/blob/bbab3a916ae5543902b025a4a873cf9ee4a7de68/A/aws_c_common/build_tarballs.jl#L48-L49")
+    error("LibAwsCommon.jl does not support i686 windows https://github.com/JuliaPackaging/Yggdrasil/blob/bbab3a916ae5543902b025a4a873cf9ee4a7de68/A/aws_c_common/build_tarballs.jl#L48-L49")
 elseif Sys.islinux() && Sys.ARCH === :powerpc64le
     include("../lib/powerpc64le-linux-gnu.jl")
 elseif Sys.isapple() && Sys.ARCH === :x86_64
@@ -29,7 +29,7 @@ elseif Sys.islinux() && Sys.ARCH === :x86_64 && !IS_LIBC_MUSL
 elseif Sys.islinux() && Sys.ARCH === :x86_64 && IS_LIBC_MUSL
     include("../lib/x86_64-linux-musl.jl")
 elseif Sys.isbsd() && !Sys.isapple()
-    error("LibAwsCommon.jl does not support x86_64-unknown-freebsd")
+    include("../lib/x86_64-unknown-freebsd13.2.jl")
 elseif Sys.iswindows() && Sys.ARCH === :x86_64
     include("../lib/x86_64-w64-mingw32.jl")
 else
@@ -38,10 +38,10 @@ end
 
 # exports
 for name in names(@__MODULE__; all=true)
-    nm = string(name)
-    if startswith(nm, "aws_") || startswith(nm, "AWS_")
-        @eval export $name
+    if name == :eval || name == :include || contains(string(name), "#")
+        continue
     end
+    @eval export $name
 end
 
 end

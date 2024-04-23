@@ -2,7 +2,7 @@
 
 julia_version = "1.10.2"
 manifest_format = "2.0"
-project_hash = "ed66d29a35bb1bd1a9281ec1bb3637813d6488e5"
+project_hash = "91c208284b82a779e5b263a7d22a3c34a0736693"
 
 [[deps.ArgTools]]
 uuid = "0dad84c5-d112-42e6-8d28-ef12dabb789f"
@@ -21,9 +21,9 @@ version = "0.5.0"
 
 [[deps.Clang]]
 deps = ["CEnum", "Clang_jll", "Downloads", "Pkg", "TOML"]
-git-tree-sha1 = "cc5bcd0b7a373e59a0c4d754276c074733471c98"
+git-tree-sha1 = "2397d5da17ba4970f772a9888b208a0a1d77eb5d"
 uuid = "40e3b903-d033-50b4-a0cc-940c62c95e31"
-version = "0.18.2"
+version = "0.18.3"
 
 [[deps.Clang_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "TOML", "Zlib_jll", "libLLVM_jll"]
