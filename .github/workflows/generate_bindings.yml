@@ -26,6 +26,9 @@ jobs:
         with:
           version: "1.10.2"
 
+      # TODO remove once registered
+      - run: julia --project -e 'using Pkg; Pkg.add(url="https://github.com/JuliaServices/LibAwsCommon.jl")'
+
       - name: Run the generator
         run: ./gen/generate.sh
 

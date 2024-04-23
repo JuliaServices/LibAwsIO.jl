@@ -13,6 +13,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      # TODO remove once registered
+      - run: julia --project -e 'using Pkg; Pkg.add(url="https://github.com/JuliaServices/LibAwsCommon.jl")'
+
       - uses: julia-actions/julia-buildpkg@v1
       - uses: julia-actions/julia-docdeploy@v1
         env:

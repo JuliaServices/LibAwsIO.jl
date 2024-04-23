@@ -1,4 +1,4 @@
-using Test, Aqua, LibAwsIO
+using Test, Aqua, LibAwsIO, LibAwsCommon
 
 @testset "LibAwsIO" begin
     @testset "aqua" begin
