@@ -1,82 +1,28 @@
 using CEnum
 
 """
-    __JL_Ctag_207
+    __JL_Ctag_235
 
 Documentation not found.
 """
-struct __JL_Ctag_207
-    data::NTuple{4, UInt8}
+struct __JL_Ctag_235
+    data::NTuple{8, UInt8}
 end
 
-function Base.getproperty(x::Ptr{__JL_Ctag_207}, f::Symbol)
+function Base.getproperty(x::Ptr{__JL_Ctag_235}, f::Symbol)
     f === :scheduled && return Ptr{Bool}(x + 0)
     f === :reserved && return Ptr{Csize_t}(x + 0)
     return getfield(x, f)
 end
 
-function Base.getproperty(x::__JL_Ctag_207, f::Symbol)
-    r = Ref{__JL_Ctag_207}(x)
-    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_207}, r)
+function Base.getproperty(x::__JL_Ctag_235, f::Symbol)
+    r = Ref{__JL_Ctag_235}(x)
+    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_235}, r)
     fptr = getproperty(ptr, f)
     GC.@preserve r unsafe_load(fptr)
 end
 
-function Base.setproperty!(x::Ptr{__JL_Ctag_207}, f::Symbol, v)
-    unsafe_store!(getproperty(x, f), v)
-end
-
-"""
-    __JL_Ctag_210
-
-Documentation not found.
-"""
-struct __JL_Ctag_210
-    data::NTuple{24, UInt8}
-end
-
-function Base.getproperty(x::Ptr{__JL_Ctag_210}, f::Symbol)
-    f === :__i && return Ptr{NTuple{6, Cint}}(x + 0)
-    f === :__vi && return Ptr{NTuple{6, Cint}}(x + 0)
-    f === :__p && return Ptr{NTuple{6, Ptr{Cvoid}}}(x + 0)
-    return getfield(x, f)
-end
-
-function Base.getproperty(x::__JL_Ctag_210, f::Symbol)
-    r = Ref{__JL_Ctag_210}(x)
-    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_210}, r)
-    fptr = getproperty(ptr, f)
-    GC.@preserve r unsafe_load(fptr)
-end
-
-function Base.setproperty!(x::Ptr{__JL_Ctag_210}, f::Symbol, v)
-    unsafe_store!(getproperty(x, f), v)
-end
-
-"""
-    __JL_Ctag_206
-
-Documentation not found.
-"""
-struct __JL_Ctag_206
-    data::NTuple{48, UInt8}
-end
-
-function Base.getproperty(x::Ptr{__JL_Ctag_206}, f::Symbol)
-    f === :__i && return Ptr{NTuple{12, Cint}}(x + 0)
-    f === :__vi && return Ptr{NTuple{12, Cint}}(x + 0)
-    f === :__p && return Ptr{NTuple{12, Ptr{Cvoid}}}(x + 0)
-    return getfield(x, f)
-end
-
-function Base.getproperty(x::__JL_Ctag_206, f::Symbol)
-    r = Ref{__JL_Ctag_206}(x)
-    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_206}, r)
-    fptr = getproperty(ptr, f)
-    GC.@preserve r unsafe_load(fptr)
-end
-
-function Base.setproperty!(x::Ptr{__JL_Ctag_206}, f::Symbol, v)
+function Base.setproperty!(x::Ptr{__JL_Ctag_235}, f::Symbol, v)
     unsafe_store!(getproperty(x, f), v)
 end
 
@@ -271,15 +217,15 @@ const aws_channel_task_fn = Cvoid
 Documentation not found.
 """
 struct aws_channel_task
-    data::NTuple{56, UInt8}
+    data::NTuple{104, UInt8}
 end
 
 function Base.getproperty(x::Ptr{aws_channel_task}, f::Symbol)
     f === :wrapper_task && return Ptr{aws_task}(x + 0)
-    f === :task_fn && return Ptr{Ptr{aws_channel_task_fn}}(x + 36)
-    f === :arg && return Ptr{Ptr{Cvoid}}(x + 40)
-    f === :type_tag && return Ptr{Ptr{Cchar}}(x + 44)
-    f === :node && return Ptr{aws_linked_list_node}(x + 48)
+    f === :task_fn && return Ptr{Ptr{aws_channel_task_fn}}(x + 64)
+    f === :arg && return Ptr{Ptr{Cvoid}}(x + 72)
+    f === :type_tag && return Ptr{Ptr{Cchar}}(x + 80)
+    f === :node && return Ptr{aws_linked_list_node}(x + 88)
     return getfield(x, f)
 end
 
@@ -1386,33 +1332,33 @@ end
 Documentation not found.
 """
 struct aws_socket_endpoint
-    address::NTuple{108, Cchar}
+    address::NTuple{104, Cchar}
     port::UInt32
 end
 
 """
-    __JL_Ctag_212
+    __JL_Ctag_236
 
 Documentation not found.
 """
-struct __JL_Ctag_212
-    data::NTuple{4, UInt8}
+struct __JL_Ctag_236
+    data::NTuple{8, UInt8}
 end
 
-function Base.getproperty(x::Ptr{__JL_Ctag_212}, f::Symbol)
+function Base.getproperty(x::Ptr{__JL_Ctag_236}, f::Symbol)
     f === :fd && return Ptr{Cint}(x + 0)
     f === :handle && return Ptr{Ptr{Cvoid}}(x + 0)
     return getfield(x, f)
 end
 
-function Base.getproperty(x::__JL_Ctag_212, f::Symbol)
-    r = Ref{__JL_Ctag_212}(x)
-    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_212}, r)
+function Base.getproperty(x::__JL_Ctag_236, f::Symbol)
+    r = Ref{__JL_Ctag_236}(x)
+    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_236}, r)
     fptr = getproperty(ptr, f)
     GC.@preserve r unsafe_load(fptr)
 end
 
-function Base.setproperty!(x::Ptr{__JL_Ctag_212}, f::Symbol, v)
+function Base.setproperty!(x::Ptr{__JL_Ctag_236}, f::Symbol, v)
     unsafe_store!(getproperty(x, f), v)
 end
 
@@ -1422,12 +1368,12 @@ end
 Documentation not found.
 """
 struct aws_io_handle
-    data::NTuple{8, UInt8}
+    data::NTuple{16, UInt8}
 end
 
 function Base.getproperty(x::Ptr{aws_io_handle}, f::Symbol)
-    f === :data && return Ptr{__JL_Ctag_212}(x + 0)
-    f === :additional_data && return Ptr{Ptr{Cvoid}}(x + 4)
+    f === :data && return Ptr{__JL_Ctag_236}(x + 0)
+    f === :additional_data && return Ptr{Ptr{Cvoid}}(x + 8)
     return getfield(x, f)
 end
 
@@ -1476,24 +1422,24 @@ const aws_socket_on_accept_result_fn = Cvoid
 Documentation not found.
 """
 struct aws_socket
-    data::NTuple{292, UInt8}
+    data::NTuple{336, UInt8}
 end
 
 function Base.getproperty(x::Ptr{aws_socket}, f::Symbol)
     f === :allocator && return Ptr{Ptr{aws_allocator}}(x + 0)
-    f === :local_endpoint && return Ptr{aws_socket_endpoint}(x + 4)
+    f === :local_endpoint && return Ptr{aws_socket_endpoint}(x + 8)
     f === :remote_endpoint && return Ptr{aws_socket_endpoint}(x + 116)
-    f === :options && return Ptr{aws_socket_options}(x + 228)
+    f === :options && return Ptr{aws_socket_options}(x + 224)
     f === :io_handle && return Ptr{aws_io_handle}(x + 248)
-    f === :event_loop && return Ptr{Ptr{aws_event_loop}}(x + 256)
-    f === :handler && return Ptr{Ptr{aws_channel_handler}}(x + 260)
-    f === :state && return Ptr{Cint}(x + 264)
-    f === :readable_fn && return Ptr{Ptr{aws_socket_on_readable_fn}}(x + 268)
-    f === :readable_user_data && return Ptr{Ptr{Cvoid}}(x + 272)
-    f === :connection_result_fn && return Ptr{Ptr{aws_socket_on_connection_result_fn}}(x + 276)
-    f === :accept_result_fn && return Ptr{Ptr{aws_socket_on_accept_result_fn}}(x + 280)
-    f === :connect_accept_user_data && return Ptr{Ptr{Cvoid}}(x + 284)
-    f === :impl && return Ptr{Ptr{Cvoid}}(x + 288)
+    f === :event_loop && return Ptr{Ptr{aws_event_loop}}(x + 264)
+    f === :handler && return Ptr{Ptr{aws_channel_handler}}(x + 272)
+    f === :state && return Ptr{Cint}(x + 280)
+    f === :readable_fn && return Ptr{Ptr{aws_socket_on_readable_fn}}(x + 288)
+    f === :readable_user_data && return Ptr{Ptr{Cvoid}}(x + 296)
+    f === :connection_result_fn && return Ptr{Ptr{aws_socket_on_connection_result_fn}}(x + 304)
+    f === :accept_result_fn && return Ptr{Ptr{aws_socket_on_accept_result_fn}}(x + 312)
+    f === :connect_accept_user_data && return Ptr{Ptr{Cvoid}}(x + 320)
+    f === :impl && return Ptr{Ptr{Cvoid}}(x + 328)
     return getfield(x, f)
 end
 
@@ -5728,34 +5674,34 @@ struct aws_async_input_stream_tester_options
 end
 
 """
-    __JL_Ctag_213
+    __JL_Ctag_237
 
 Documentation not found.
 """
-struct __JL_Ctag_213
+struct __JL_Ctag_237
     lock::aws_mutex
     cvar::aws_condition_variable
     read_dest::Ptr{aws_byte_buf}
     read_future::Ptr{aws_future_bool}
     do_shutdown::Bool
 end
-function Base.getproperty(x::Ptr{__JL_Ctag_213}, f::Symbol)
+function Base.getproperty(x::Ptr{__JL_Ctag_237}, f::Symbol)
     f === :lock && return Ptr{aws_mutex}(x + 0)
-    f === :cvar && return Ptr{aws_condition_variable}(x + 28)
-    f === :read_dest && return Ptr{Ptr{aws_byte_buf}}(x + 80)
-    f === :read_future && return Ptr{Ptr{aws_future_bool}}(x + 84)
-    f === :do_shutdown && return Ptr{Bool}(x + 88)
+    f === :cvar && return Ptr{aws_condition_variable}(x + 16)
+    f === :read_dest && return Ptr{Ptr{aws_byte_buf}}(x + 32)
+    f === :read_future && return Ptr{Ptr{aws_future_bool}}(x + 40)
+    f === :do_shutdown && return Ptr{Bool}(x + 48)
     return getfield(x, f)
 end
 
-function Base.getproperty(x::__JL_Ctag_213, f::Symbol)
-    r = Ref{__JL_Ctag_213}(x)
-    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_213}, r)
+function Base.getproperty(x::__JL_Ctag_237, f::Symbol)
+    r = Ref{__JL_Ctag_237}(x)
+    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_237}, r)
     fptr = getproperty(ptr, f)
     GC.@preserve r unsafe_load(fptr)
 end
 
-function Base.setproperty!(x::Ptr{__JL_Ctag_213}, f::Symbol, v)
+function Base.setproperty!(x::Ptr{__JL_Ctag_237}, f::Symbol, v)
     unsafe_store!(getproperty(x, f), v)
 end
 
@@ -5766,17 +5712,17 @@ end
 Documentation not found.
 """
 struct aws_async_input_stream_tester
-    data::NTuple{192, UInt8}
+    data::NTuple{248, UInt8}
 end
 
 function Base.getproperty(x::Ptr{aws_async_input_stream_tester}, f::Symbol)
     f === :base && return Ptr{aws_async_input_stream}(x + 0)
-    f === :alloc && return Ptr{Ptr{aws_allocator}}(x + 24)
-    f === :options && return Ptr{aws_async_input_stream_tester_options}(x + 28)
-    f === :source_stream && return Ptr{Ptr{aws_input_stream}}(x + 80)
-    f === :thread && return Ptr{aws_thread}(x + 84)
-    f === :synced_data && return Ptr{__JL_Ctag_213}(x + 96)
-    f === :num_outstanding_reads && return Ptr{aws_atomic_var}(x + 188)
+    f === :alloc && return Ptr{Ptr{aws_allocator}}(x + 48)
+    f === :options && return Ptr{aws_async_input_stream_tester_options}(x + 56)
+    f === :source_stream && return Ptr{Ptr{aws_input_stream}}(x + 152)
+    f === :thread && return Ptr{aws_thread}(x + 160)
+    f === :synced_data && return Ptr{__JL_Ctag_237}(x + 184)
+    f === :num_outstanding_reads && return Ptr{aws_atomic_var}(x + 240)
     return getfield(x, f)
 end
 

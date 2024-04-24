@@ -1,4 +1,4 @@
-using Test, Aqua, LibAwsIO
+using Test, Aqua, LibAwsIO, LibAwsCommon
 
 @testset "LibAwsIO" begin
     @testset "aqua" begin
@@ -6,15 +6,7 @@ using Test, Aqua, LibAwsIO
         Aqua.test_ambiguities(LibAwsIO)
     end
     @testset "basic usage to test the library loads" begin
-        # allocator = aws_default_allocator()
-        # logpath = joinpath(mktempdir(), "log.txt")
-        # GC.@preserve logpath begin
-        #     logger = Ref(aws_logger(C_NULL, C_NULL, C_NULL))
-        #     logger_options = Ref(aws_logger_standard_options(AWS_LL_TRACE, Base.unsafe_convert(Ptr{Cchar}, logpath), C_NULL))
-        #     aws_logger_init_standard(logger, allocator, logger_options)
-        #     aws_logger_set(logger)
-        #     aws_logger_clean_up(logger)
-        #     @test isfile(logpath) # might as well check this but we're mainly testing we don't crash
-        # end
+        alloc = aws_default_allocator() # important! this shouldn't need to be qualified! if we generate a definition for it in LibAwsIO that is a bug.
+        aws_future_void_new(alloc)
     end
 end

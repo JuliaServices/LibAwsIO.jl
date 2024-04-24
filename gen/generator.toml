@@ -1,6 +1,5 @@
 [general]
 library_name = "libaws_c_io"
-jll_pkg_extra = []
 smart_de_anonymize = true
 extract_c_comment_style = "doxygen"
 show_c_function_prototype = true
@@ -14,12 +13,11 @@ output_ignorelist = [
     "IGNORED",
     "STDCALL",
 ]
+generate_isystem_symbols = false
 
 auto_mutability = false
 auto_mutability_with_new = false
 auto_mutability_includelist = []
-
-export_symbol_prefixes = ["AWS_", "aws_"]
 
 # Julia's `@enum` do not allow duplicated values, so by default, C enums are translated to
 # CEnum.jl's `@cenum`.
