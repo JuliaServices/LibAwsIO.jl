@@ -2,6 +2,7 @@ module LibAwsIO
 
 using aws_c_io_jll
 using LibAwsCommon
+using LibAwsCal
 
 const IS_LIBC_MUSL = occursin("musl", Base.BUILD_TRIPLET)
 if Sys.isapple() && Sys.ARCH === :aarch64
