@@ -6718,37 +6718,6 @@ function aws_input_stream_new_tester(alloc, options)
 end
 
 """
-    __pthread_mutex_s
-
-Documentation not found.
-"""
-struct __pthread_mutex_s
-    data::NTuple{24, UInt8}
-end
-
-function Base.getproperty(x::Ptr{__pthread_mutex_s}, f::Symbol)
-    f === :__lock && return Ptr{Cint}(x + 0)
-    f === :__count && return Ptr{Cuint}(x + 4)
-    f === :__owner && return Ptr{Cint}(x + 8)
-    f === :__kind && return Ptr{Cint}(x + 12)
-    f === :__nusers && return Ptr{Cuint}(x + 16)
-    f === :__spins && return Ptr{Cint}(x + 20)
-    f === :__list && return Ptr{__pthread_slist_t}(x + 20)
-    return getfield(x, f)
-end
-
-function Base.getproperty(x::__pthread_mutex_s, f::Symbol)
-    r = Ref{__pthread_mutex_s}(x)
-    ptr = Base.unsafe_convert(Ptr{__pthread_mutex_s}, r)
-    fptr = getproperty(ptr, f)
-    GC.@preserve r unsafe_load(fptr)
-end
-
-function Base.setproperty!(x::Ptr{__pthread_mutex_s}, f::Symbol, v)
-    unsafe_store!(getproperty(x, f), v)
-end
-
-"""
     __JL_Ctag_709
 
 Documentation not found.
