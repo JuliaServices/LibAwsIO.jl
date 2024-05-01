@@ -6757,21 +6757,6 @@ end
 
 
 """
-    __pthread_mutex_s
-
-Documentation not found.
-"""
-struct __pthread_mutex_s
-    __lock::Cint
-    __count::Cuint
-    __owner::Cint
-    __nusers::Cuint
-    __kind::Cint
-    __spins::Cint
-    __list::__pthread_list_t
-end
-
-"""
 Documentation not found.
 """
 const AWS_C_IO_PACKAGE_ID = 1
