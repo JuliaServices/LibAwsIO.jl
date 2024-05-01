@@ -2,7 +2,7 @@
 
 julia_version = "1.10.2"
 manifest_format = "2.0"
-project_hash = "bd802c34455e572f67caa68a2beb6ffc7761162e"
+project_hash = "7321921d831b162315f413d8afdaf650cc7c796e"
 
 [[deps.ArgTools]]
 uuid = "0dad84c5-d112-42e6-8d28-ef12dabb789f"
@@ -84,7 +84,7 @@ version = "1.5.0"
 
 [[deps.LibAwsCal]]
 deps = ["CEnum", "LibAwsCommon", "aws_c_cal_jll"]
-git-tree-sha1 = "cb38f20d8e187a33770840e2a2eaef8c13ee425d"
+git-tree-sha1 = "739d946bdf7ebe3cc7b412a8dc8ae899f40621b9"
 uuid = "ef519ef6-af43-41a0-8ac4-eb81328190af"
 version = "1.0.0"
 
