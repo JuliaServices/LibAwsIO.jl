@@ -1,6 +1,8 @@
 [deps]
 Clang = "40e3b903-d033-50b4-a0cc-940c62c95e31"
 JLLPrefixes = "afc68a34-7891-4c5a-9da1-1c62935e7b0d"
+LibAwsCal = "ef519ef6-af43-41a0-8ac4-eb81328190af"
+LibAwsCommon = "c6e421ba-b5f8-4792-a1c4-42948de3ed9d"
 aws_c_cal_jll = "70f11efc-bab2-57f1-b0f3-22aad4e67c4b"
 aws_c_common_jll = "73048d1d-b8c4-5092-a58d-866c5e8d1e50"
 aws_c_io_jll = "13c41daa-f319-5298-b5eb-5754e0170d52"
