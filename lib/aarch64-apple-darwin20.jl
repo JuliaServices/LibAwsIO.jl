@@ -1207,7 +1207,7 @@ struct aws_client_bootstrap *aws_client_bootstrap_new( struct aws_allocator *all
 ```
 """
 function aws_client_bootstrap_new(allocator, options)
-    ccall((:aws_client_bootstrap_new, libaws_c_io), Ptr{aws_client_bootstrap}, (Ptr{aws_allocator}, Ptr{aws_client_bootstrap_options}), allocator, options)
+    ccall((:aws_client_bootstrap_new, libaws_c_io), Ptr{aws_client_bootstrap}, (Ptr{aws_allocator}, Ref{aws_client_bootstrap_options}), allocator, options)
 end
 
 """
@@ -2897,7 +2897,7 @@ struct aws_host_resolver *aws_host_resolver_new_default( struct aws_allocator *a
 ```
 """
 function aws_host_resolver_new_default(allocator, options)
-    ccall((:aws_host_resolver_new_default, libaws_c_io), Ptr{aws_host_resolver}, (Ptr{aws_allocator}, Ptr{aws_host_resolver_default_options}), allocator, options)
+    ccall((:aws_host_resolver_new_default, libaws_c_io), Ptr{aws_host_resolver}, (Ptr{aws_allocator}, Ref{aws_host_resolver_default_options}), allocator, options)
 end
 
 """
