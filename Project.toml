@@ -12,7 +12,7 @@ aws_c_io_jll = "13c41daa-f319-5298-b5eb-5754e0170d52"
 Aqua = "0.7"
 CEnum = "0.5"
 LibAwsCal = "=1.0.0"
-LibAwsCommon = "=1.0.0"
+LibAwsCommon = "=1.0.0, 1"
 aws_c_io_jll = "=0.14.7"
 julia = "1.6"
 
