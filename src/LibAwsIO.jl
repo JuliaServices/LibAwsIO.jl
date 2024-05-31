@@ -45,4 +45,55 @@ for name in names(@__MODULE__; all=true)
     @eval export $name
 end
 
+const DEFAULT_AWS_EVENT_LOOP_GROUP = Ref{Ptr{aws_event_loop_group}}(C_NULL)
+
+function default_aws_event_loop_group()
+    if DEFAULT_AWS_EVENT_LOOP_GROUP[] == C_NULL
+        init()
+        DEFAULT_AWS_EVENT_LOOP_GROUP[] = aws_event_loop_group_new_default(default_aws_allocator(), 0, C_NULL)
+    end
+    return DEFAULT_AWS_EVENT_LOOP_GROUP[]
+end
+
+function set_default_aws_event_loop_group!(group)
+    DEFAULT_AWS_EVENT_LOOP_GROUP[] = group
+end
+
+const DEFAULT_AWS_HOST_RESOLVER = Ref{Ptr{aws_host_resolver}}(C_NULL)
+
+function default_aws_host_resolver()
+    if DEFAULT_AWS_HOST_RESOLVER[] == C_NULL
+        init()
+        resolver_options = aws_host_resolver_default_options(8, default_aws_event_loop_group(), C_NULL, C_NULL)
+        DEFAULT_AWS_HOST_RESOLVER[] = aws_host_resolver_new_default(default_aws_allocator(), Ref(resolver_options))
+    end
+    return DEFAULT_AWS_HOST_RESOLVER[]
+end
+
+# aws_client_bootstrap
+const DEFAULT_AWS_CLIENT_BOOTSTRAP = Ref{Ptr{aws_client_bootstrap}}(C_NULL)
+
+function default_aws_client_bootstrap()
+    if DEFAULT_AWS_CLIENT_BOOTSTRAP[] == C_NULL
+        init()
+        el_group = default_aws_event_loop_group()
+        host_resolver = default_aws_host_resolver()
+        bootstrap_options = aws_client_bootstrap_options(el_group, host_resolver, C_NULL, C_NULL, C_NULL)
+        DEFAULT_AWS_CLIENT_BOOTSTRAP[] = aws_client_bootstrap_new(default_aws_allocator(), Ref(bootstrap_options))
+    end
+    return DEFAULT_AWS_CLIENT_BOOTSTRAP[]
+end
+
+function set_default_aws_client_bootstrap!(bootstrap)
+    DEFAULT_AWS_CLIENT_BOOTSTRAP[] = bootstrap
+end
+
+export default_aws_event_loop_group, set_default_aws_event_loop_group!, default_aws_host_resolver, default_aws_client_bootstrap, set_default_aws_client_bootstrap!
+
+function init(allocator=default_aws_allocator())
+    aws_common_library_init(allocator)
+    aws_io_library_init(allocator)
+    return
+end
+
 end
