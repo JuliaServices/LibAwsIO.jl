@@ -522,7 +522,7 @@ end
 """
     aws_channel_acquire_message_from_pool(channel, message_type, size_hint)
 
-Acquires a message from the event loop's message pool. size\\_hint is merely a hint, it may be smaller than you requested and you are responsible for checking the bounds of it. If the returned message is not large enough, you must send multiple messages.
+Acquires a message from the event loop's message pool. size\\_hint is merely a hint, it may be smaller than you requested and you are responsible for checking the bounds of it. If the returned message is not large enough, you must send multiple messages. This cannot fail, it never returns NULL.
 
 ### Prototype
 ```c
@@ -722,7 +722,7 @@ end
 """
     aws_channel_slot_acquire_max_message_for_write(slot)
 
-Convenience function that invokes [`aws_channel_acquire_message_from_pool`](@ref)(), asking for the largest reasonable DATA message that can be sent in the write direction, with upstream overhead accounted for.
+Convenience function that invokes [`aws_channel_acquire_message_from_pool`](@ref)(), asking for the largest reasonable DATA message that can be sent in the write direction, with upstream overhead accounted for. This cannot fail, it never returns NULL.
 
 ### Prototype
 ```c
@@ -1102,6 +1102,7 @@ struct aws_socket_options
     keep_alive_timeout_sec::UInt16
     keep_alive_max_failed_probes::UInt16
     keepalive::Bool
+    network_interface_name::NTuple{16, Cchar}
 end
 
 # typedef void ( aws_tls_on_negotiation_result_fn ) ( struct aws_channel_handler * handler , struct aws_channel_slot * slot , int error_code , void * user_data )
@@ -1422,7 +1423,7 @@ const aws_socket_on_accept_result_fn = Cvoid
 Documentation not found.
 """
 struct aws_socket
-    data::NTuple{292, UInt8}
+    data::NTuple{308, UInt8}
 end
 
 function Base.getproperty(x::Ptr{aws_socket}, f::Symbol)
@@ -1430,16 +1431,16 @@ function Base.getproperty(x::Ptr{aws_socket}, f::Symbol)
     f === :local_endpoint && return Ptr{aws_socket_endpoint}(x + 4)
     f === :remote_endpoint && return Ptr{aws_socket_endpoint}(x + 116)
     f === :options && return Ptr{aws_socket_options}(x + 228)
-    f === :io_handle && return Ptr{aws_io_handle}(x + 248)
-    f === :event_loop && return Ptr{Ptr{aws_event_loop}}(x + 256)
-    f === :handler && return Ptr{Ptr{aws_channel_handler}}(x + 260)
-    f === :state && return Ptr{Cint}(x + 264)
-    f === :readable_fn && return Ptr{Ptr{aws_socket_on_readable_fn}}(x + 268)
-    f === :readable_user_data && return Ptr{Ptr{Cvoid}}(x + 272)
-    f === :connection_result_fn && return Ptr{Ptr{aws_socket_on_connection_result_fn}}(x + 276)
-    f === :accept_result_fn && return Ptr{Ptr{aws_socket_on_accept_result_fn}}(x + 280)
-    f === :connect_accept_user_data && return Ptr{Ptr{Cvoid}}(x + 284)
-    f === :impl && return Ptr{Ptr{Cvoid}}(x + 288)
+    f === :io_handle && return Ptr{aws_io_handle}(x + 264)
+    f === :event_loop && return Ptr{Ptr{aws_event_loop}}(x + 272)
+    f === :handler && return Ptr{Ptr{aws_channel_handler}}(x + 276)
+    f === :state && return Ptr{Cint}(x + 280)
+    f === :readable_fn && return Ptr{Ptr{aws_socket_on_readable_fn}}(x + 284)
+    f === :readable_user_data && return Ptr{Ptr{Cvoid}}(x + 288)
+    f === :connection_result_fn && return Ptr{Ptr{aws_socket_on_connection_result_fn}}(x + 292)
+    f === :accept_result_fn && return Ptr{Ptr{aws_socket_on_accept_result_fn}}(x + 296)
+    f === :connect_accept_user_data && return Ptr{Ptr{Cvoid}}(x + 300)
+    f === :impl && return Ptr{Ptr{Cvoid}}(x + 304)
     return getfield(x, f)
 end
 
@@ -5254,7 +5255,7 @@ end
 """
     aws_tls_connection_options_copy(to, from)
 
-Copies 'from' to 'to'
+Cleans up 'to' and copies 'from' to 'to'. 'to' must be initialized.
 
 ### Prototype
 ```c
@@ -6718,6 +6719,37 @@ function aws_input_stream_new_tester(alloc, options)
 end
 
 """
+    __pthread_mutex_s
+
+Documentation not found.
+"""
+struct __pthread_mutex_s
+    data::NTuple{24, UInt8}
+end
+
+function Base.getproperty(x::Ptr{__pthread_mutex_s}, f::Symbol)
+    f === :__lock && return Ptr{Cint}(x + 0)
+    f === :__count && return Ptr{Cuint}(x + 4)
+    f === :__owner && return Ptr{Cint}(x + 8)
+    f === :__kind && return Ptr{Cint}(x + 12)
+    f === :__nusers && return Ptr{Cuint}(x + 16)
+    f === :__spins && return Ptr{Cint}(x + 20)
+    f === :__list && return Ptr{__pthread_slist_t}(x + 20)
+    return getfield(x, f)
+end
+
+function Base.getproperty(x::__pthread_mutex_s, f::Symbol)
+    r = Ref{__pthread_mutex_s}(x)
+    ptr = Base.unsafe_convert(Ptr{__pthread_mutex_s}, r)
+    fptr = getproperty(ptr, f)
+    GC.@preserve r unsafe_load(fptr)
+end
+
+function Base.setproperty!(x::Ptr{__pthread_mutex_s}, f::Symbol, v)
+    unsafe_store!(getproperty(x, f), v)
+end
+
+"""
     __JL_Ctag_709
 
 Documentation not found.
@@ -6765,6 +6797,11 @@ const AWS_C_IO_PACKAGE_ID = 1
 Documentation not found.
 """
 const aws_pcks11_lib_behavior = aws_pkcs11_lib_behavior
+
+"""
+Documentation not found.
+"""
+const AWS_NETWORK_INTERFACE_NAME_MAX = 16
 
 # Skipping MacroDefinition: AWS_ADDRESS_MAX_LEN sizeof ( ( ( struct sockaddr_un * ) 0 ) -> sun_path )
 

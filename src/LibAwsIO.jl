@@ -187,6 +187,7 @@ export default_aws_event_loop_group, set_default_aws_event_loop_group!, default_
 
 function init(allocator=default_aws_allocator())
     LibAwsCommon.init(allocator)
+    LibAwsCal.init(allocator)
     aws_io_library_init(allocator)
     return
 end
