@@ -54,33 +54,6 @@ function Base.setproperty!(x::Ptr{__JL_Ctag_210}, f::Symbol, v)
 end
 
 """
-    __JL_Ctag_206
-
-Documentation not found.
-"""
-struct __JL_Ctag_206
-    data::NTuple{48, UInt8}
-end
-
-function Base.getproperty(x::Ptr{__JL_Ctag_206}, f::Symbol)
-    f === :__i && return Ptr{NTuple{12, Cint}}(x + 0)
-    f === :__vi && return Ptr{NTuple{12, Cint}}(x + 0)
-    f === :__p && return Ptr{NTuple{6, Ptr{Cvoid}}}(x + 0)
-    return getfield(x, f)
-end
-
-function Base.getproperty(x::__JL_Ctag_206, f::Symbol)
-    r = Ref{__JL_Ctag_206}(x)
-    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_206}, r)
-    fptr = getproperty(ptr, f)
-    GC.@preserve r unsafe_load(fptr)
-end
-
-function Base.setproperty!(x::Ptr{__JL_Ctag_206}, f::Symbol, v)
-    unsafe_store!(getproperty(x, f), v)
-end
-
-"""
     aws_async_input_stream_vtable
 
 Documentation not found.
@@ -576,7 +549,7 @@ end
 """
     aws_channel_acquire_message_from_pool(channel, message_type, size_hint)
 
-Acquires a message from the event loop's message pool. size\\_hint is merely a hint, it may be smaller than you requested and you are responsible for checking the bounds of it. If the returned message is not large enough, you must send multiple messages.
+Acquires a message from the event loop's message pool. size\\_hint is merely a hint, it may be smaller than you requested and you are responsible for checking the bounds of it. If the returned message is not large enough, you must send multiple messages. This cannot fail, it never returns NULL.
 
 ### Prototype
 ```c
@@ -776,7 +749,7 @@ end
 """
     aws_channel_slot_acquire_max_message_for_write(slot)
 
-Convenience function that invokes [`aws_channel_acquire_message_from_pool`](@ref)(), asking for the largest reasonable DATA message that can be sent in the write direction, with upstream overhead accounted for.
+Convenience function that invokes [`aws_channel_acquire_message_from_pool`](@ref)(), asking for the largest reasonable DATA message that can be sent in the write direction, with upstream overhead accounted for. This cannot fail, it never returns NULL.
 
 ### Prototype
 ```c
@@ -1156,6 +1129,7 @@ struct aws_socket_options
     keep_alive_timeout_sec::UInt16
     keep_alive_max_failed_probes::UInt16
     keepalive::Bool
+    network_interface_name::NTuple{16, Cchar}
 end
 
 # typedef void ( aws_tls_on_negotiation_result_fn ) ( struct aws_channel_handler * handler , struct aws_channel_slot * slot , int error_code , void * user_data )
@@ -1476,7 +1450,7 @@ const aws_socket_on_accept_result_fn = Cvoid
 Documentation not found.
 """
 struct aws_socket
-    data::NTuple{344, UInt8}
+    data::NTuple{360, UInt8}
 end
 
 function Base.getproperty(x::Ptr{aws_socket}, f::Symbol)
@@ -1484,16 +1458,16 @@ function Base.getproperty(x::Ptr{aws_socket}, f::Symbol)
     f === :local_endpoint && return Ptr{aws_socket_endpoint}(x + 8)
     f === :remote_endpoint && return Ptr{aws_socket_endpoint}(x + 120)
     f === :options && return Ptr{aws_socket_options}(x + 232)
-    f === :io_handle && return Ptr{aws_io_handle}(x + 256)
-    f === :event_loop && return Ptr{Ptr{aws_event_loop}}(x + 272)
-    f === :handler && return Ptr{Ptr{aws_channel_handler}}(x + 280)
-    f === :state && return Ptr{Cint}(x + 288)
-    f === :readable_fn && return Ptr{Ptr{aws_socket_on_readable_fn}}(x + 296)
-    f === :readable_user_data && return Ptr{Ptr{Cvoid}}(x + 304)
-    f === :connection_result_fn && return Ptr{Ptr{aws_socket_on_connection_result_fn}}(x + 312)
-    f === :accept_result_fn && return Ptr{Ptr{aws_socket_on_accept_result_fn}}(x + 320)
-    f === :connect_accept_user_data && return Ptr{Ptr{Cvoid}}(x + 328)
-    f === :impl && return Ptr{Ptr{Cvoid}}(x + 336)
+    f === :io_handle && return Ptr{aws_io_handle}(x + 272)
+    f === :event_loop && return Ptr{Ptr{aws_event_loop}}(x + 288)
+    f === :handler && return Ptr{Ptr{aws_channel_handler}}(x + 296)
+    f === :state && return Ptr{Cint}(x + 304)
+    f === :readable_fn && return Ptr{Ptr{aws_socket_on_readable_fn}}(x + 312)
+    f === :readable_user_data && return Ptr{Ptr{Cvoid}}(x + 320)
+    f === :connection_result_fn && return Ptr{Ptr{aws_socket_on_connection_result_fn}}(x + 328)
+    f === :accept_result_fn && return Ptr{Ptr{aws_socket_on_accept_result_fn}}(x + 336)
+    f === :connect_accept_user_data && return Ptr{Ptr{Cvoid}}(x + 344)
+    f === :impl && return Ptr{Ptr{Cvoid}}(x + 352)
     return getfield(x, f)
 end
 
@@ -5308,7 +5282,7 @@ end
 """
     aws_tls_connection_options_copy(to, from)
 
-Copies 'from' to 'to'
+Cleans up 'to' and copies 'from' to 'to'. 'to' must be initialized.
 
 ### Prototype
 ```c
@@ -5726,39 +5700,6 @@ struct aws_async_input_stream_tester_options
     completion_strategy::aws_async_read_completion_strategy
     read_duration_ns::UInt64
 end
-
-"""
-    __JL_Ctag_213
-
-Documentation not found.
-"""
-struct __JL_Ctag_213
-    lock::aws_mutex
-    cvar::aws_condition_variable
-    read_dest::Ptr{aws_byte_buf}
-    read_future::Ptr{aws_future_bool}
-    do_shutdown::Bool
-end
-function Base.getproperty(x::Ptr{__JL_Ctag_213}, f::Symbol)
-    f === :lock && return Ptr{aws_mutex}(x + 0)
-    f === :cvar && return Ptr{aws_condition_variable}(x + 48)
-    f === :read_dest && return Ptr{Ptr{aws_byte_buf}}(x + 104)
-    f === :read_future && return Ptr{Ptr{aws_future_bool}}(x + 112)
-    f === :do_shutdown && return Ptr{Bool}(x + 120)
-    return getfield(x, f)
-end
-
-function Base.getproperty(x::__JL_Ctag_213, f::Symbol)
-    r = Ref{__JL_Ctag_213}(x)
-    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_213}, r)
-    fptr = getproperty(ptr, f)
-    GC.@preserve r unsafe_load(fptr)
-end
-
-function Base.setproperty!(x::Ptr{__JL_Ctag_213}, f::Symbol, v)
-    unsafe_store!(getproperty(x, f), v)
-end
-
 
 """
     aws_async_input_stream_tester
@@ -6780,6 +6721,11 @@ const AWS_C_IO_PACKAGE_ID = 1
 Documentation not found.
 """
 const aws_pcks11_lib_behavior = aws_pkcs11_lib_behavior
+
+"""
+Documentation not found.
+"""
+const AWS_NETWORK_INTERFACE_NAME_MAX = 16
 
 # Skipping MacroDefinition: AWS_ADDRESS_MAX_LEN sizeof ( ( ( struct sockaddr_un * ) 0 ) -> sun_path )
 
