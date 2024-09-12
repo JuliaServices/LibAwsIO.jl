@@ -59,8 +59,9 @@ function default_aws_event_loop_group()
     @lock DEFAULT_AWS_EVENT_LOOP_GROUP_LOCK begin
         if DEFAULT_AWS_EVENT_LOOP_GROUP[] == C_NULL
             init()
+            max_threads = haskey(ENV, "LIB_AWS_IO_MAX_THREADS") ? parse(Int, ENV["LIB_AWS_IO_MAX_THREADS"]) : 0
             # populate default event loop group; 0 means one event loop per non-hyperthread core
-            set_default_aws_event_loop_group!(aws_event_loop_group_new_default(default_aws_allocator(), 0, C_NULL))
+            set_default_aws_event_loop_group!(aws_event_loop_group_new_default(default_aws_allocator(), max_threads, C_NULL))
         end
         return DEFAULT_AWS_EVENT_LOOP_GROUP[]
     end
