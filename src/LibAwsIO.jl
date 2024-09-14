@@ -61,7 +61,7 @@ function default_aws_event_loop_group()
             init()
             maxthreads = LIB_AWS_IO_MAX_THREADS[]
             # populate default event loop group; 0 means one event loop per non-hyperthread core
-            set_default_aws_event_loop_group!(aws_event_loop_group_new_default(default_aws_allocator(), max_threads, C_NULL))
+            set_default_aws_event_loop_group!(aws_event_loop_group_new_default(default_aws_allocator(), maxthreads, C_NULL))
         end
         return DEFAULT_AWS_EVENT_LOOP_GROUP[]
     end
