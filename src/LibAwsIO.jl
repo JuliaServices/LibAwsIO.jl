@@ -59,7 +59,7 @@ function default_aws_event_loop_group()
     @lock DEFAULT_AWS_EVENT_LOOP_GROUP_LOCK begin
         if DEFAULT_AWS_EVENT_LOOP_GROUP[] == C_NULL
             init()
-            max_threads = haskey(ENV, "LIB_AWS_IO_MAX_THREADS") ? parse(Int, ENV["LIB_AWS_IO_MAX_THREADS"]) : 0
+            maxthreads = LIB_AWS_IO_MAX_THREADS[]
             # populate default event loop group; 0 means one event loop per non-hyperthread core
             set_default_aws_event_loop_group!(aws_event_loop_group_new_default(default_aws_allocator(), max_threads, C_NULL))
         end
@@ -186,10 +186,13 @@ end
 
 export default_aws_event_loop_group, set_default_aws_event_loop_group!, default_aws_host_resolver, default_aws_client_bootstrap, set_default_aws_client_bootstrap!, default_aws_server_bootstrap, set_default_aws_server_bootstrap!, tlsoptions
 
+const LIB_AWS_IO_MAX_THREADS = Ref{Int}(0)
+
 function init(allocator=default_aws_allocator())
     LibAwsCommon.init(allocator)
     LibAwsCal.init(allocator)
     aws_io_library_init(allocator)
+    LIB_AWS_IO_MAX_THREADS[] = haskey(ENV, "LIB_AWS_IO_MAX_THREADS") ? parse(Int, ENV["LIB_AWS_IO_MAX_THREADS"]) : 0
     return
 end
 
