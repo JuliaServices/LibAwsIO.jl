@@ -1,6 +1,7 @@
 module LibAwsIO
 
-using aws_c_io_jll
+# using aws_c_io_jll
+const libaws_c_io = "/Users/jacob.quinn/aws-crt/lib/libaws-c-io.so"
 using LibAwsCommon
 using LibAwsCal
 
