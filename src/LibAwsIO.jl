@@ -45,92 +45,166 @@ for name in names(@__MODULE__; all=true)
     @eval export $name
 end
 
-const DEFAULT_AWS_EVENT_LOOP_GROUP = Ref{Ptr{aws_event_loop_group}}(C_NULL)
+mutable struct EventLoopGroup
+    ptr::Ptr{aws_event_loop_group}
+    EventLoopGroup(ptr::Ptr) =
+        finalizer(new(Ptr{aws_event_loop_group}(ptr))) do x
+            if ptr != C_NULL
+                aws_event_loop_group_release(ptr)
+                # for i = 1:aws_event_loop_group_get_loop_count(ptr)
+                #     Core.println("stopping event loop $i")
+                #     el = aws_event_loop_group_get_loop_at(ptr, i - 1)
+                #     aws_event_loop_stop(el)
+                #     aws_event_loop_destroy(el)
+                # end
+            end
+        end
+end
+
+const DEFAULT_AWS_EVENT_LOOP_GROUP = Ref{EventLoopGroup}(EventLoopGroup(C_NULL))
 const DEFAULT_AWS_EVENT_LOOP_GROUP_LOCK = ReentrantLock()
 
-function set_default_aws_event_loop_group!(group)
+function set_default_aws_event_loop_group!(group::Ptr{aws_event_loop_group})
     @lock DEFAULT_AWS_EVENT_LOOP_GROUP_LOCK begin
-        DEFAULT_AWS_EVENT_LOOP_GROUP[] = group
+        DEFAULT_AWS_EVENT_LOOP_GROUP[] = EventLoopGroup(group)
         return
     end
 end
 
 function default_aws_event_loop_group()
     @lock DEFAULT_AWS_EVENT_LOOP_GROUP_LOCK begin
-        if DEFAULT_AWS_EVENT_LOOP_GROUP[] == C_NULL
+        if DEFAULT_AWS_EVENT_LOOP_GROUP[].ptr == C_NULL
             init()
             maxthreads = LIB_AWS_IO_MAX_THREADS[]
             # populate default event loop group; 0 means one event loop per non-hyperthread core
             set_default_aws_event_loop_group!(aws_event_loop_group_new_default(default_aws_allocator(), maxthreads, C_NULL))
         end
-        return DEFAULT_AWS_EVENT_LOOP_GROUP[]
+        return DEFAULT_AWS_EVENT_LOOP_GROUP[].ptr
     end
 end
 
-const DEFAULT_AWS_HOST_RESOLVER = Ref{Ptr{aws_host_resolver}}(C_NULL)
+function close_default_aws_event_loop_group!()
+    @lock DEFAULT_AWS_EVENT_LOOP_GROUP_LOCK begin
+        if DEFAULT_AWS_EVENT_LOOP_GROUP[].ptr != C_NULL
+            finalize(DEFAULT_AWS_EVENT_LOOP_GROUP[])
+            set_default_aws_event_loop_group!(Ptr{aws_event_loop_group}(C_NULL))
+        end
+        return
+    end
+end
+
+mutable struct HostResolver
+    ptr::Ptr{aws_host_resolver}
+    HostResolver(ptr::Ptr) =
+        finalizer(_ -> aws_host_resolver_release(ptr), new(Ptr{aws_host_resolver}(ptr)))
+end
+
+const DEFAULT_AWS_HOST_RESOLVER = Ref{HostResolver}(HostResolver(C_NULL))
 const DEFAULT_AWS_HOST_RESOLVER_LOCK = ReentrantLock()
 
-function set_default_aws_host_resolver!(resolver)
+function set_default_aws_host_resolver!(resolver::Ptr{aws_host_resolver})
     @lock DEFAULT_AWS_HOST_RESOLVER_LOCK begin
-        DEFAULT_AWS_HOST_RESOLVER[] = resolver
+        DEFAULT_AWS_HOST_RESOLVER[] = HostResolver(resolver)
         return
     end
 end
 
 function default_aws_host_resolver()
     @lock DEFAULT_AWS_HOST_RESOLVER_LOCK begin
-        if DEFAULT_AWS_HOST_RESOLVER[] == C_NULL
+        if DEFAULT_AWS_HOST_RESOLVER[].ptr == C_NULL
             init()
             resolver_options = aws_host_resolver_default_options(8, default_aws_event_loop_group(), C_NULL, C_NULL)
             set_default_aws_host_resolver!(aws_host_resolver_new_default(default_aws_allocator(), Ref(resolver_options)))
         end
-        return DEFAULT_AWS_HOST_RESOLVER[]
+        return DEFAULT_AWS_HOST_RESOLVER[].ptr
+    end
+end
+
+function close_default_aws_host_resolver!()
+    @lock DEFAULT_AWS_HOST_RESOLVER_LOCK begin
+        if DEFAULT_AWS_HOST_RESOLVER[].ptr != C_NULL
+            finalize(DEFAULT_AWS_HOST_RESOLVER[])
+            set_default_aws_host_resolver!(Ptr{aws_host_resolver}(C_NULL))
+        end
+        return
     end
 end
 
 # aws_client_bootstrap
-const DEFAULT_AWS_CLIENT_BOOTSTRAP = Ref{Ptr{aws_client_bootstrap}}(C_NULL)
+mutable struct ClientBootstrap
+    ptr::Ptr{aws_client_bootstrap}
+    ClientBootstrap(ptr::Ptr) =
+        finalizer(_ -> aws_client_bootstrap_release(ptr), new(Ptr{aws_client_bootstrap}(ptr)))
+end
+
+const DEFAULT_AWS_CLIENT_BOOTSTRAP = Ref{ClientBootstrap}(ClientBootstrap(C_NULL))
 const DEFAULT_AWS_CLIENT_BOOTSTRAP_LOCK = ReentrantLock()
 
-function set_default_aws_client_bootstrap!(bootstrap)
+function set_default_aws_client_bootstrap!(bootstrap::Ptr{aws_client_bootstrap})
     @lock DEFAULT_AWS_CLIENT_BOOTSTRAP_LOCK begin
-        DEFAULT_AWS_CLIENT_BOOTSTRAP[] = bootstrap
+        DEFAULT_AWS_CLIENT_BOOTSTRAP[] = ClientBootstrap(bootstrap)
         return
     end
 end
 
 function default_aws_client_bootstrap()
     @lock DEFAULT_AWS_CLIENT_BOOTSTRAP_LOCK begin
-        if DEFAULT_AWS_CLIENT_BOOTSTRAP[] == C_NULL
+        if DEFAULT_AWS_CLIENT_BOOTSTRAP[].ptr == C_NULL
             init()
             el_group = default_aws_event_loop_group()
             host_resolver = default_aws_host_resolver()
             bootstrap_options = aws_client_bootstrap_options(el_group, host_resolver, C_NULL, C_NULL, C_NULL)
             set_default_aws_client_bootstrap!(aws_client_bootstrap_new(default_aws_allocator(), Ref(bootstrap_options)))
         end
-        return DEFAULT_AWS_CLIENT_BOOTSTRAP[]
+        return DEFAULT_AWS_CLIENT_BOOTSTRAP[].ptr
+    end
+end
+
+function close_default_aws_client_bootstrap!()
+    @lock DEFAULT_AWS_CLIENT_BOOTSTRAP_LOCK begin
+        if DEFAULT_AWS_CLIENT_BOOTSTRAP[].ptr != C_NULL
+            finalize(DEFAULT_AWS_CLIENT_BOOTSTRAP[])
+            set_default_aws_client_bootstrap!(Ptr{aws_client_bootstrap}(C_NULL))
+        end
+        return
     end
 end
 
 # aws_server_bootstrap
-const DEFAULT_AWS_SERVER_BOOTSTRAP = Ref{Ptr{aws_server_bootstrap}}(C_NULL)
+mutable struct ServerBootstrap
+    ptr::Ptr{aws_server_bootstrap}
+    ServerBootstrap(ptr::Ptr) =
+        finalizer(_ -> aws_server_bootstrap_release(ptr), new(Ptr{aws_server_bootstrap}(ptr)))
+end
+
+const DEFAULT_AWS_SERVER_BOOTSTRAP = Ref{ServerBootstrap}(ServerBootstrap(C_NULL))
 const DEFAULT_AWS_SERVER_BOOTSTRAP_LOCK = ReentrantLock()
 
-function set_default_aws_server_bootstrap!(bootstrap)
+function set_default_aws_server_bootstrap!(bootstrap::Ptr{aws_server_bootstrap})
     @lock DEFAULT_AWS_SERVER_BOOTSTRAP_LOCK begin
-        DEFAULT_AWS_SERVER_BOOTSTRAP[] = bootstrap
+        DEFAULT_AWS_SERVER_BOOTSTRAP[] = ServerBootstrap(bootstrap)
         return
     end
 end
 
 function default_aws_server_bootstrap()
     @lock DEFAULT_AWS_SERVER_BOOTSTRAP_LOCK begin
-        if DEFAULT_AWS_SERVER_BOOTSTRAP[] == C_NULL
+        if DEFAULT_AWS_SERVER_BOOTSTRAP[].ptr == C_NULL
             init()
             el_group = default_aws_event_loop_group()
             set_default_aws_server_bootstrap!(aws_server_bootstrap_new(default_aws_allocator(), el_group))
         end
-        return DEFAULT_AWS_SERVER_BOOTSTRAP[]
+        return DEFAULT_AWS_SERVER_BOOTSTRAP[].ptr
+    end
+end
+
+function close_default_aws_server_bootstrap!()
+    @lock DEFAULT_AWS_SERVER_BOOTSTRAP_LOCK begin
+        if DEFAULT_AWS_SERVER_BOOTSTRAP[].ptr != C_NULL
+            finalize(DEFAULT_AWS_SERVER_BOOTSTRAP[])
+            set_default_aws_server_bootstrap!(Ptr{aws_server_bootstrap}(C_NULL))
+        end
+        return
     end
 end
 
@@ -184,7 +258,10 @@ function tlsoptions(host::String;
     return tls_options
 end
 
-export default_aws_event_loop_group, set_default_aws_event_loop_group!, default_aws_host_resolver, default_aws_client_bootstrap, set_default_aws_client_bootstrap!, default_aws_server_bootstrap, set_default_aws_server_bootstrap!, tlsoptions
+export default_aws_event_loop_group, set_default_aws_event_loop_group!, default_aws_host_resolver,
+    default_aws_client_bootstrap, set_default_aws_client_bootstrap!, default_aws_server_bootstrap,
+    set_default_aws_server_bootstrap!, tlsoptions, close_default_aws_event_loop_group!,
+    close_default_aws_host_resolver!, close_default_aws_client_bootstrap!, close_default_aws_server_bootstrap!
 
 const LIB_AWS_IO_MAX_THREADS = Ref{Int}(0)
 
