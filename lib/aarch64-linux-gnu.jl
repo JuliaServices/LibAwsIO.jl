@@ -6719,21 +6719,6 @@ function aws_input_stream_new_tester(alloc, options)
 end
 
 """
-    __pthread_mutex_s
-
-Documentation not found.
-"""
-struct __pthread_mutex_s
-    __lock::Cint
-    __count::Cuint
-    __owner::Cint
-    __nusers::Cuint
-    __kind::Cint
-    __spins::Cint
-    __list::__pthread_list_t
-end
-
-"""
     __JL_Ctag_710
 
 Documentation not found.

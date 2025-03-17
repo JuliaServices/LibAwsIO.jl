@@ -6719,60 +6719,6 @@ function aws_input_stream_new_tester(alloc, options)
 end
 
 """
-    __JL_Ctag_705
-
-Documentation not found.
-"""
-struct __JL_Ctag_705
-    __lock::Cint
-    __futex::Cuint
-    __total_seq::Culonglong
-    __wakeup_seq::Culonglong
-    __woken_seq::Culonglong
-    __mutex::Ptr{Cvoid}
-    __nwaiters::Cuint
-    __broadcast_seq::Cuint
-end
-function Base.getproperty(x::Ptr{__JL_Ctag_705}, f::Symbol)
-    f === :__lock && return Ptr{Cint}(x + 0)
-    f === :__futex && return Ptr{Cuint}(x + 4)
-    f === :__total_seq && return Ptr{Culonglong}(x + 8)
-    f === :__wakeup_seq && return Ptr{Culonglong}(x + 16)
-    f === :__woken_seq && return Ptr{Culonglong}(x + 24)
-    f === :__mutex && return Ptr{Ptr{Cvoid}}(x + 32)
-    f === :__nwaiters && return Ptr{Cuint}(x + 40)
-    f === :__broadcast_seq && return Ptr{Cuint}(x + 44)
-    return getfield(x, f)
-end
-
-function Base.getproperty(x::__JL_Ctag_705, f::Symbol)
-    r = Ref{__JL_Ctag_705}(x)
-    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_705}, r)
-    fptr = getproperty(ptr, f)
-    GC.@preserve r unsafe_load(fptr)
-end
-
-function Base.setproperty!(x::Ptr{__JL_Ctag_705}, f::Symbol, v)
-    unsafe_store!(getproperty(x, f), v)
-end
-
-
-"""
-    __pthread_mutex_s
-
-Documentation not found.
-"""
-struct __pthread_mutex_s
-    __lock::Cint
-    __count::Cuint
-    __owner::Cint
-    __nusers::Cuint
-    __kind::Cint
-    __spins::Cint
-    __list::__pthread_list_t
-end
-
-"""
 Documentation not found.
 """
 const AWS_C_IO_PACKAGE_ID = 1

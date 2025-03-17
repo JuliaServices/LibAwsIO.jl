@@ -54,6 +54,33 @@ function Base.setproperty!(x::Ptr{__JL_Ctag_210}, f::Symbol, v)
 end
 
 """
+    __JL_Ctag_206
+
+Documentation not found.
+"""
+struct __JL_Ctag_206
+    data::NTuple{48, UInt8}
+end
+
+function Base.getproperty(x::Ptr{__JL_Ctag_206}, f::Symbol)
+    f === :__i && return Ptr{NTuple{12, Cint}}(x + 0)
+    f === :__vi && return Ptr{NTuple{12, Cint}}(x + 0)
+    f === :__p && return Ptr{NTuple{6, Ptr{Cvoid}}}(x + 0)
+    return getfield(x, f)
+end
+
+function Base.getproperty(x::__JL_Ctag_206, f::Symbol)
+    r = Ref{__JL_Ctag_206}(x)
+    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_206}, r)
+    fptr = getproperty(ptr, f)
+    GC.@preserve r unsafe_load(fptr)
+end
+
+function Base.setproperty!(x::Ptr{__JL_Ctag_206}, f::Symbol, v)
+    unsafe_store!(getproperty(x, f), v)
+end
+
+"""
     aws_async_input_stream_vtable
 
 Documentation not found.
@@ -5700,6 +5727,39 @@ struct aws_async_input_stream_tester_options
     completion_strategy::aws_async_read_completion_strategy
     read_duration_ns::UInt64
 end
+
+"""
+    __JL_Ctag_213
+
+Documentation not found.
+"""
+struct __JL_Ctag_213
+    lock::aws_mutex
+    cvar::aws_condition_variable
+    read_dest::Ptr{aws_byte_buf}
+    read_future::Ptr{aws_future_bool}
+    do_shutdown::Bool
+end
+function Base.getproperty(x::Ptr{__JL_Ctag_213}, f::Symbol)
+    f === :lock && return Ptr{aws_mutex}(x + 0)
+    f === :cvar && return Ptr{aws_condition_variable}(x + 48)
+    f === :read_dest && return Ptr{Ptr{aws_byte_buf}}(x + 104)
+    f === :read_future && return Ptr{Ptr{aws_future_bool}}(x + 112)
+    f === :do_shutdown && return Ptr{Bool}(x + 120)
+    return getfield(x, f)
+end
+
+function Base.getproperty(x::__JL_Ctag_213, f::Symbol)
+    r = Ref{__JL_Ctag_213}(x)
+    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_213}, r)
+    fptr = getproperty(ptr, f)
+    GC.@preserve r unsafe_load(fptr)
+end
+
+function Base.setproperty!(x::Ptr{__JL_Ctag_213}, f::Symbol, v)
+    unsafe_store!(getproperty(x, f), v)
+end
+
 
 """
     aws_async_input_stream_tester
