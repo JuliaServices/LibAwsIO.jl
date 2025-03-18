@@ -12,6 +12,8 @@ permissions:
 env:
   LIBAWS_REPO: "JuliaServices/LibAwsIO.jl"
   JLL_REPO: "JuliaBinaryWrappers/aws_c_io_jll.jl"
+  LIBAWS_PATH: "libaws"  # Path for LibAwsX.jl repo
+  JLL_PATH: "jll"        # Path for aws_c_X_jll.jl repo
   LIBRARY_NAME: "aws_c_io"
   JLL_NAME: "aws_c_io_jll"
 
@@ -20,30 +22,31 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout repository
+      - name: Checkout LibAwsIO repository
         uses: actions/checkout@v4
         with:
           repository: ${{ env.LIBAWS_REPO }}
           ref: main
+          path: ${{ env.LIBAWS_PATH }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Checkout BinaryWrapper repository
         uses: actions/checkout@v4
         with:
           repository: ${{ env.JLL_REPO }}
-          path: jll
           ref: main
+          path: ${{ env.JLL_PATH }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Parse current JLL version
         run: |
-          RAW_JLL_VERSION=$(grep -oP -m 1 '(?<=version = ")[^"]+' jll/Project.toml)
+          RAW_JLL_VERSION=$(grep -oP -m 1 '(?<=version = ")[^"]+' ${{ env.JLL_PATH }}/Project.toml)
           JLL_VERSION=$(echo "$RAW_JLL_VERSION" | sed 's/+[0-9]*//')
           echo "JLL_VERSION=${JLL_VERSION}" >> $GITHUB_ENV
 
       - name: Parse Project.toml compat version
         run: |
-          COMPAT_SECTION=$(awk '/^\[compat\]/ {flag=1; next} /^\[/{flag=0} flag' Project.toml)
+          COMPAT_SECTION=$(awk '/^\[compat\]/ {flag=1; next} /^\[/{flag=0} flag' ${{ env.LIBAWS_PATH }}/Project.toml)
           PROJECT_VERSION=$(echo "$COMPAT_SECTION" | grep -oP "(?<=${{ env.JLL_NAME }} = \")[^\"]+" | sed 's/^=//')
           echo "PROJECT_VERSION=${PROJECT_VERSION}" >> $GITHUB_ENV
 
@@ -61,24 +64,27 @@ jobs:
       - name: Update Project.toml Versions
         if: env.update_needed == 'true'
         run: |
-          sed -i "s/${{ env.JLL_NAME }} = \"=$PROJECT_VERSION\"/${{ env.JLL_NAME }} = \"=$JLL_VERSION\"/" Project.toml
-          sed -i "s/${{ env.JLL_NAME }} = \"=$PROJECT_VERSION\"/${{ env.JLL_NAME }} = \"=$JLL_VERSION\"/" gen/Project.toml
+          sed -i "s/${{ env.JLL_NAME }} = \"=$PROJECT_VERSION\"/${{ env.JLL_NAME }} = \"=$JLL_VERSION\"/" ${{ env.LIBAWS_PATH }}/Project.toml
+          sed -i "s/${{ env.JLL_NAME }} = \"=$PROJECT_VERSION\"/${{ env.JLL_NAME }} = \"=$JLL_VERSION\"/" ${{ env.LIBAWS_PATH }}/gen/Project.toml
 
-          CURRENT_LIBAWS_VERSION=$(grep -oP -m 1 '(?<=version = ")[^"]+' Project.toml)
+          CURRENT_LIBAWS_VERSION=$(grep -oP -m 1 '(?<=version = ")[^"]+' ${{ env.LIBAWS_PATH }}/Project.toml)
           PATCH=$(echo $CURRENT_LIBAWS_VERSION | awk -F. '{print $3+1}')
           NEW_LIBAWS_VERSION=$(echo $CURRENT_LIBAWS_VERSION | awk -F. '{print $1"."$2"."'"$PATCH"'}')
-          sed -i "s/version = \"$CURRENT_LIBAWS_VERSION\"/version = \"$NEW_LIBAWS_VERSION\"/" Project.toml
+          sed -i "s/version = \"$CURRENT_LIBAWS_VERSION\"/version = \"$NEW_LIBAWS_VERSION\"/" ${{ env.LIBAWS_PATH }}/Project.toml
 
       - uses: julia-actions/cache@v2
 
       - name: Run the generator
         if: env.update_needed == 'true'
-        run: ./gen/generate.sh
+        run: |
+          cd ${{ env.LIBAWS_PATH }}
+          ./gen/generate.sh
 
       - name: Check for Changes in Bindings
         if: env.update_needed == 'true'
         id: check_bindings
         run: |
+          cd ${{ env.LIBAWS_PATH }}
           if git diff --quiet; then
             echo "No bindings changes detected."
             echo "bindings_changed=false" >> $GITHUB_ENV
@@ -91,6 +97,7 @@ jobs:
         if: env.bindings_changed == 'true'
         uses: peter-evans/create-pull-request@v6
         with:
+          path: ${{ env.LIBAWS_PATH }}
           branch: update-${{ env.JLL_NAME }}-${{ env.JLL_VERSION }}
           commit-message: "Update ${{ env.JLL_NAME }} to version ${{ env.JLL_VERSION }}"
           title: "Update ${{ env.JLL_NAME }} to version ${{ env.JLL_VERSION }}"
