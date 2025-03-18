@@ -1,28 +1,28 @@
 using CEnum
 
 """
-    __JL_Ctag_220
+    union (unnamed at /home/runner/.julia/artifacts/f0ceef6c683b6b7af5fd02481accb32f8bac0486/include/aws/common/task_scheduler.h:40:5)
 
 Documentation not found.
 """
-struct __JL_Ctag_220
+struct var"union (unnamed at /home/runner/.julia/artifacts/f0ceef6c683b6b7af5fd02481accb32f8bac0486/include/aws/common/task_scheduler.h:40:5)"
     data::NTuple{8, UInt8}
 end
 
-function Base.getproperty(x::Ptr{__JL_Ctag_220}, f::Symbol)
+function Base.getproperty(x::Ptr{var"union (unnamed at /home/runner/.julia/artifacts/f0ceef6c683b6b7af5fd02481accb32f8bac0486/include/aws/common/task_scheduler.h:40:5)"}, f::Symbol)
     f === :scheduled && return Ptr{Bool}(x + 0)
     f === :reserved && return Ptr{Csize_t}(x + 0)
     return getfield(x, f)
 end
 
-function Base.getproperty(x::__JL_Ctag_220, f::Symbol)
-    r = Ref{__JL_Ctag_220}(x)
-    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_220}, r)
+function Base.getproperty(x::var"union (unnamed at /home/runner/.julia/artifacts/f0ceef6c683b6b7af5fd02481accb32f8bac0486/include/aws/common/task_scheduler.h:40:5)", f::Symbol)
+    r = Ref{var"union (unnamed at /home/runner/.julia/artifacts/f0ceef6c683b6b7af5fd02481accb32f8bac0486/include/aws/common/task_scheduler.h:40:5)"}(x)
+    ptr = Base.unsafe_convert(Ptr{var"union (unnamed at /home/runner/.julia/artifacts/f0ceef6c683b6b7af5fd02481accb32f8bac0486/include/aws/common/task_scheduler.h:40:5)"}, r)
     fptr = getproperty(ptr, f)
     GC.@preserve r unsafe_load(fptr)
 end
 
-function Base.setproperty!(x::Ptr{__JL_Ctag_220}, f::Symbol, v)
+function Base.setproperty!(x::Ptr{var"union (unnamed at /home/runner/.julia/artifacts/f0ceef6c683b6b7af5fd02481accb32f8bac0486/include/aws/common/task_scheduler.h:40:5)"}, f::Symbol, v)
     unsafe_store!(getproperty(x, f), v)
 end
 
@@ -137,6 +137,11 @@ Documentation not found.
     AWS_CHANNEL_DIR_WRITE = 1
 end
 
+"""
+Documentation not found.
+"""
+mutable struct aws_event_loop_local_object end
+
 # typedef void ( aws_channel_on_setup_completed_fn ) ( struct aws_channel * channel , int error_code , void * user_data )
 """
 Documentation not found.
@@ -241,46 +246,9 @@ function Base.setproperty!(x::Ptr{aws_channel_task}, f::Symbol, v)
 end
 
 """
-    aws_event_loop_vtable
-
 Documentation not found.
 """
-struct aws_event_loop_vtable
-    destroy::Ptr{Cvoid}
-    run::Ptr{Cvoid}
-    stop::Ptr{Cvoid}
-    wait_for_stop_completion::Ptr{Cvoid}
-    schedule_task_now::Ptr{Cvoid}
-    schedule_task_future::Ptr{Cvoid}
-    cancel_task::Ptr{Cvoid}
-    subscribe_to_io_events::Ptr{Cvoid}
-    unsubscribe_from_io_events::Ptr{Cvoid}
-    free_io_event_resources::Ptr{Cvoid}
-    is_on_callers_thread::Ptr{Cvoid}
-end
-
-# typedef int ( aws_io_clock_fn ) ( uint64_t * timestamp )
-"""
-Documentation not found.
-"""
-const aws_io_clock_fn = Cvoid
-
-"""
-    aws_event_loop
-
-Documentation not found.
-"""
-struct aws_event_loop
-    vtable::Ptr{aws_event_loop_vtable}
-    alloc::Ptr{aws_allocator}
-    clock::Ptr{aws_io_clock_fn}
-    local_data::aws_hash_table
-    current_load_factor::aws_atomic_var
-    latest_tick_start::UInt64
-    current_tick_latency_sum::Csize_t
-    next_flush_time::aws_atomic_var
-    impl_data::Ptr{Cvoid}
-end
+mutable struct aws_event_loop end
 
 """
     aws_channel_options
@@ -426,23 +394,6 @@ int aws_channel_current_clock_time(struct aws_channel *channel, uint64_t *time_n
 """
 function aws_channel_current_clock_time(channel, time_nanos)
     ccall((:aws_channel_current_clock_time, libaws_c_io), Cint, (Ptr{aws_channel}, Ptr{UInt64}), channel, time_nanos)
-end
-
-# typedef void ( aws_event_loop_on_local_object_removed_fn ) ( struct aws_event_loop_local_object * )
-"""
-Documentation not found.
-"""
-const aws_event_loop_on_local_object_removed_fn = Cvoid
-
-"""
-    aws_event_loop_local_object
-
-Documentation not found.
-"""
-struct aws_event_loop_local_object
-    key::Ptr{Cvoid}
-    object::Ptr{Cvoid}
-    on_object_removed::Ptr{aws_event_loop_on_local_object_removed_fn}
 end
 
 """
@@ -939,16 +890,9 @@ Called after client bootstrap has been completely cleaned up, after its last ref
 const aws_client_bootstrap_shutdown_complete_fn = Cvoid
 
 """
-    aws_event_loop_group
-
 Documentation not found.
 """
-struct aws_event_loop_group
-    allocator::Ptr{aws_allocator}
-    event_loops::aws_array_list
-    ref_count::aws_ref_count
-    shutdown_options::aws_shutdown_callback_options
-end
+mutable struct aws_event_loop_group end
 
 """
     aws_host_resolver_vtable
@@ -1090,6 +1034,20 @@ Documentation not found.
 end
 
 """
+    aws_socket_impl_type
+
+Socket Implementation type. Decides which socket implementation is used. If set to `AWS_SOCKET_IMPL_PLATFORM_DEFAULT`, it will automatically use the platform’s default.
+
+PLATFORM DEFAULT SOCKET IMPLEMENTATION TYPE Linux | AWS\\_SOCKET\\_IMPL\\_POSIX Windows | AWS\\_SOCKET\\_IMPL\\_WINSOCK BSD Variants| AWS\\_SOCKET\\_IMPL\\_POSIX MacOS | AWS\\_SOCKET\\_IMPL\\_POSIX iOS | AWS\\_SOCKET\\_IMPL\\_APPLE\\_NETWORK\\_FRAMEWORK
+"""
+@cenum aws_socket_impl_type::UInt32 begin
+    AWS_SOCKET_IMPL_PLATFORM_DEFAULT = 0
+    AWS_SOCKET_IMPL_POSIX = 1
+    AWS_SOCKET_IMPL_WINSOCK = 2
+    AWS_SOCKET_IMPL_APPLE_NETWORK_FRAMEWORK = 3
+end
+
+"""
     aws_socket_options
 
 Documentation not found.
@@ -1097,6 +1055,7 @@ Documentation not found.
 struct aws_socket_options
     type::aws_socket_type
     domain::aws_socket_domain
+    impl_type::aws_socket_impl_type
     connect_timeout_ms::UInt32
     keep_alive_interval_sec::UInt16
     keep_alive_timeout_sec::UInt16
@@ -1328,6 +1287,11 @@ function aws_server_bootstrap_set_alpn_callback(bootstrap, on_protocol_negotiate
 end
 
 """
+Documentation not found.
+"""
+mutable struct aws_socket_vtable end
+
+"""
     aws_socket_endpoint
 
 Documentation not found.
@@ -1338,28 +1302,28 @@ struct aws_socket_endpoint
 end
 
 """
-    __JL_Ctag_221
+    union (unnamed at /home/runner/.julia/artifacts/3be393b1691380a19a4cc5a0e2812e63157856bb/include/aws/io/io.h:18:5)
 
 Documentation not found.
 """
-struct __JL_Ctag_221
+struct var"union (unnamed at /home/runner/.julia/artifacts/3be393b1691380a19a4cc5a0e2812e63157856bb/include/aws/io/io.h:18:5)"
     data::NTuple{8, UInt8}
 end
 
-function Base.getproperty(x::Ptr{__JL_Ctag_221}, f::Symbol)
+function Base.getproperty(x::Ptr{var"union (unnamed at /home/runner/.julia/artifacts/3be393b1691380a19a4cc5a0e2812e63157856bb/include/aws/io/io.h:18:5)"}, f::Symbol)
     f === :fd && return Ptr{Cint}(x + 0)
     f === :handle && return Ptr{Ptr{Cvoid}}(x + 0)
     return getfield(x, f)
 end
 
-function Base.getproperty(x::__JL_Ctag_221, f::Symbol)
-    r = Ref{__JL_Ctag_221}(x)
-    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_221}, r)
+function Base.getproperty(x::var"union (unnamed at /home/runner/.julia/artifacts/3be393b1691380a19a4cc5a0e2812e63157856bb/include/aws/io/io.h:18:5)", f::Symbol)
+    r = Ref{var"union (unnamed at /home/runner/.julia/artifacts/3be393b1691380a19a4cc5a0e2812e63157856bb/include/aws/io/io.h:18:5)"}(x)
+    ptr = Base.unsafe_convert(Ptr{var"union (unnamed at /home/runner/.julia/artifacts/3be393b1691380a19a4cc5a0e2812e63157856bb/include/aws/io/io.h:18:5)"}, r)
     fptr = getproperty(ptr, f)
     GC.@preserve r unsafe_load(fptr)
 end
 
-function Base.setproperty!(x::Ptr{__JL_Ctag_221}, f::Symbol, v)
+function Base.setproperty!(x::Ptr{var"union (unnamed at /home/runner/.julia/artifacts/3be393b1691380a19a4cc5a0e2812e63157856bb/include/aws/io/io.h:18:5)"}, f::Symbol, v)
     unsafe_store!(getproperty(x, f), v)
 end
 
@@ -1373,7 +1337,7 @@ struct aws_io_handle
 end
 
 function Base.getproperty(x::Ptr{aws_io_handle}, f::Symbol)
-    f === :data && return Ptr{__JL_Ctag_221}(x + 0)
+    f === :data && return Ptr{var"union (unnamed at /home/runner/.julia/artifacts/3be393b1691380a19a4cc5a0e2812e63157856bb/include/aws/io/io.h:18:5)"}(x + 0)
     f === :additional_data && return Ptr{Ptr{Cvoid}}(x + 8)
     return getfield(x, f)
 end
@@ -1409,7 +1373,7 @@ Called by a listening socket when either an incoming connection has been receive
 
 In the normal use-case, this function will be called multiple times over the lifetime of a single listening socket. new\\_socket is already connected and initialized, and is using the same options and allocator as the listening socket. A user may want to call [`aws_socket_set_options`](@ref)() on the new socket if different options are desired.
 
-new\\_socket is not yet assigned to an event-loop. The user should call [`aws_socket_assign_to_event_loop`](@ref)() before performing IO operations.
+new\\_socket is not yet assigned to an event-loop. The user should call [`aws_socket_assign_to_event_loop`](@ref)() before performing IO operations. The user must call `[`aws_socket_clean_up`](@ref)()` and "aws\\_mem\\_release()" when they're done with the new\\_socket, to free it.
 
 When error\\_code is AWS\\_ERROR\\_SUCCESS, new\\_socket is the recently accepted connection. If error\\_code is non-zero, an error occurred and you should [`aws_socket_close`](@ref)() the socket.
 
@@ -1423,24 +1387,25 @@ const aws_socket_on_accept_result_fn = Cvoid
 Documentation not found.
 """
 struct aws_socket
-    data::NTuple{352, UInt8}
+    data::NTuple{360, UInt8}
 end
 
 function Base.getproperty(x::Ptr{aws_socket}, f::Symbol)
-    f === :allocator && return Ptr{Ptr{aws_allocator}}(x + 0)
-    f === :local_endpoint && return Ptr{aws_socket_endpoint}(x + 8)
-    f === :remote_endpoint && return Ptr{aws_socket_endpoint}(x + 116)
-    f === :options && return Ptr{aws_socket_options}(x + 224)
-    f === :io_handle && return Ptr{aws_io_handle}(x + 264)
-    f === :event_loop && return Ptr{Ptr{aws_event_loop}}(x + 280)
-    f === :handler && return Ptr{Ptr{aws_channel_handler}}(x + 288)
-    f === :state && return Ptr{Cint}(x + 296)
-    f === :readable_fn && return Ptr{Ptr{aws_socket_on_readable_fn}}(x + 304)
-    f === :readable_user_data && return Ptr{Ptr{Cvoid}}(x + 312)
-    f === :connection_result_fn && return Ptr{Ptr{aws_socket_on_connection_result_fn}}(x + 320)
-    f === :accept_result_fn && return Ptr{Ptr{aws_socket_on_accept_result_fn}}(x + 328)
-    f === :connect_accept_user_data && return Ptr{Ptr{Cvoid}}(x + 336)
-    f === :impl && return Ptr{Ptr{Cvoid}}(x + 344)
+    f === :vtable && return Ptr{Ptr{aws_socket_vtable}}(x + 0)
+    f === :allocator && return Ptr{Ptr{aws_allocator}}(x + 8)
+    f === :local_endpoint && return Ptr{aws_socket_endpoint}(x + 16)
+    f === :remote_endpoint && return Ptr{aws_socket_endpoint}(x + 124)
+    f === :options && return Ptr{aws_socket_options}(x + 232)
+    f === :io_handle && return Ptr{aws_io_handle}(x + 272)
+    f === :event_loop && return Ptr{Ptr{aws_event_loop}}(x + 288)
+    f === :handler && return Ptr{Ptr{aws_channel_handler}}(x + 296)
+    f === :state && return Ptr{Cint}(x + 304)
+    f === :readable_fn && return Ptr{Ptr{aws_socket_on_readable_fn}}(x + 312)
+    f === :readable_user_data && return Ptr{Ptr{Cvoid}}(x + 320)
+    f === :connection_result_fn && return Ptr{Ptr{aws_socket_on_connection_result_fn}}(x + 328)
+    f === :accept_result_fn && return Ptr{Ptr{aws_socket_on_accept_result_fn}}(x + 336)
+    f === :connect_accept_user_data && return Ptr{Ptr{Cvoid}}(x + 344)
+    f === :impl && return Ptr{Ptr{Cvoid}}(x + 352)
     return getfield(x, f)
 end
 
@@ -1488,240 +1453,74 @@ function aws_server_bootstrap_destroy_socket_listener(bootstrap, listener)
 end
 
 """
-    aws_io_event_type
-
 Documentation not found.
 """
-@cenum aws_io_event_type::UInt32 begin
-    AWS_IO_EVENT_TYPE_READABLE = 1
-    AWS_IO_EVENT_TYPE_WRITABLE = 2
-    AWS_IO_EVENT_TYPE_REMOTE_HANG_UP = 4
-    AWS_IO_EVENT_TYPE_CLOSED = 8
-    AWS_IO_EVENT_TYPE_ERROR = 16
-end
+mutable struct aws_event_loop_options end
 
 # typedef void ( aws_event_loop_on_event_fn ) ( struct aws_event_loop * event_loop , struct aws_io_handle * handle , int events , void * user_data )
 """
-Documentation not found.
+```c++
+ 
+
+```
 """
 const aws_event_loop_on_event_fn = Cvoid
 
 """
-    aws_event_loop_options
+    aws_event_loop_vtable
 
+```c++
+ 
+
+```
+"""
+struct aws_event_loop_vtable
+    destroy::Ptr{Cvoid}
+    run::Ptr{Cvoid}
+    stop::Ptr{Cvoid}
+    wait_for_stop_completion::Ptr{Cvoid}
+    schedule_task_now::Ptr{Cvoid}
+    schedule_task_future::Ptr{Cvoid}
+    cancel_task::Ptr{Cvoid}
+    connect_to_io_completion_port::Ptr{Cvoid}
+    subscribe_to_io_events::Ptr{Cvoid}
+    unsubscribe_from_io_events::Ptr{Cvoid}
+    free_io_event_resources::Ptr{Cvoid}
+    is_on_callers_thread::Ptr{Cvoid}
+end
+
+"""
+    aws_event_loop_type
+
+Event Loop Type. If set to `AWS_EVENT_LOOP_PLATFORM_DEFAULT`, the event loop will automatically use the platform’s default.
+
+Default Event Loop Type Linux | AWS\\_EVENT\\_LOOP\\_EPOLL Windows | AWS\\_EVENT\\_LOOP\\_IOCP BSD Variants| AWS\\_EVENT\\_LOOP\\_KQUEUE macOS | AWS\\_EVENT\\_LOOP\\_KQUEUE iOS | AWS\\_EVENT\\_LOOP\\_DISPATCH\\_QUEUE
+"""
+@cenum aws_event_loop_type::UInt32 begin
+    AWS_EVENT_LOOP_PLATFORM_DEFAULT = 0
+    AWS_EVENT_LOOP_EPOLL = 1
+    AWS_EVENT_LOOP_IOCP = 2
+    AWS_EVENT_LOOP_KQUEUE = 3
+    AWS_EVENT_LOOP_DISPATCH_QUEUE = 4
+end
+
+# typedef int ( aws_io_clock_fn ) ( uint64_t * timestamp )
+"""
 Documentation not found.
 """
-struct aws_event_loop_options
-    clock::Ptr{aws_io_clock_fn}
-    thread_options::Ptr{aws_thread_options}
-end
-
-# typedef struct aws_event_loop * ( aws_new_event_loop_fn ) ( struct aws_allocator * alloc , const struct aws_event_loop_options * options , void * new_loop_user_data )
-"""
-Documentation not found.
-"""
-const aws_new_event_loop_fn = Cvoid
+const aws_io_clock_fn = Cvoid
 
 """
-    aws_event_loop_new_default(alloc, clock)
+    aws_event_loop_group_options
 
-Creates an instance of the default event loop implementation for the current architecture and operating system.
-
-### Prototype
-```c
-struct aws_event_loop *aws_event_loop_new_default(struct aws_allocator *alloc, aws_io_clock_fn *clock);
-```
+Event loop group configuration options
 """
-function aws_event_loop_new_default(alloc, clock)
-    ccall((:aws_event_loop_new_default, libaws_c_io), Ptr{aws_event_loop}, (Ptr{aws_allocator}, Ptr{aws_io_clock_fn}), alloc, clock)
-end
-
-"""
-    aws_event_loop_new_default_with_options(alloc, options)
-
-Creates an instance of the default event loop implementation for the current architecture and operating system using extendable options.
-
-### Prototype
-```c
-struct aws_event_loop *aws_event_loop_new_default_with_options( struct aws_allocator *alloc, const struct aws_event_loop_options *options);
-```
-"""
-function aws_event_loop_new_default_with_options(alloc, options)
-    ccall((:aws_event_loop_new_default_with_options, libaws_c_io), Ptr{aws_event_loop}, (Ptr{aws_allocator}, Ptr{aws_event_loop_options}), alloc, options)
-end
-
-"""
-    aws_event_loop_destroy(event_loop)
-
-Invokes the destroy() fn for the event loop implementation. If the event loop is still in a running state, this function will block waiting on the event loop to shutdown. If you do not want this function to block, call [`aws_event_loop_stop`](@ref)() manually first. If the event loop is shared by multiple threads then destroy must be called by exactly one thread. All other threads must ensure their API calls to the event loop happen-before the call to destroy.
-
-### Prototype
-```c
-void aws_event_loop_destroy(struct aws_event_loop *event_loop);
-```
-"""
-function aws_event_loop_destroy(event_loop)
-    ccall((:aws_event_loop_destroy, libaws_c_io), Cvoid, (Ptr{aws_event_loop},), event_loop)
-end
-
-"""
-    aws_event_loop_init_base(event_loop, alloc, clock)
-
-Initializes common event-loop data structures. This is only called from the *new() function of event loop implementations.
-
-### Prototype
-```c
-int aws_event_loop_init_base(struct aws_event_loop *event_loop, struct aws_allocator *alloc, aws_io_clock_fn *clock);
-```
-"""
-function aws_event_loop_init_base(event_loop, alloc, clock)
-    ccall((:aws_event_loop_init_base, libaws_c_io), Cint, (Ptr{aws_event_loop}, Ptr{aws_allocator}, Ptr{aws_io_clock_fn}), event_loop, alloc, clock)
-end
-
-"""
-    aws_event_loop_clean_up_base(event_loop)
-
-Common cleanup code for all implementations. This is only called from the *destroy() function of event loop implementations.
-
-### Prototype
-```c
-void aws_event_loop_clean_up_base(struct aws_event_loop *event_loop);
-```
-"""
-function aws_event_loop_clean_up_base(event_loop)
-    ccall((:aws_event_loop_clean_up_base, libaws_c_io), Cvoid, (Ptr{aws_event_loop},), event_loop)
-end
-
-"""
-    aws_event_loop_fetch_local_object(event_loop, key, obj)
-
-Fetches an object from the event-loop's data store. Key will be taken as the memory address of the memory pointed to by key. This function is not thread safe and should be called inside the event-loop's thread.
-
-### Prototype
-```c
-int aws_event_loop_fetch_local_object( struct aws_event_loop *event_loop, void *key, struct aws_event_loop_local_object *obj);
-```
-"""
-function aws_event_loop_fetch_local_object(event_loop, key, obj)
-    ccall((:aws_event_loop_fetch_local_object, libaws_c_io), Cint, (Ptr{aws_event_loop}, Ptr{Cvoid}, Ptr{aws_event_loop_local_object}), event_loop, key, obj)
-end
-
-"""
-    aws_event_loop_put_local_object(event_loop, obj)
-
-Puts an item object the event-loop's data store. Key will be taken as the memory address of the memory pointed to by key. The lifetime of item must live until remove or a put item overrides it. This function is not thread safe and should be called inside the event-loop's thread.
-
-### Prototype
-```c
-int aws_event_loop_put_local_object(struct aws_event_loop *event_loop, struct aws_event_loop_local_object *obj);
-```
-"""
-function aws_event_loop_put_local_object(event_loop, obj)
-    ccall((:aws_event_loop_put_local_object, libaws_c_io), Cint, (Ptr{aws_event_loop}, Ptr{aws_event_loop_local_object}), event_loop, obj)
-end
-
-"""
-    aws_event_loop_remove_local_object(event_loop, key, removed_obj)
-
-Removes an object from the event-loop's data store. Key will be taken as the memory address of the memory pointed to by key. If removed\\_item is not null, the removed item will be moved to it if it exists. Otherwise, the default deallocation strategy will be used. This function is not thread safe and should be called inside the event-loop's thread.
-
-### Prototype
-```c
-int aws_event_loop_remove_local_object( struct aws_event_loop *event_loop, void *key, struct aws_event_loop_local_object *removed_obj);
-```
-"""
-function aws_event_loop_remove_local_object(event_loop, key, removed_obj)
-    ccall((:aws_event_loop_remove_local_object, libaws_c_io), Cint, (Ptr{aws_event_loop}, Ptr{Cvoid}, Ptr{aws_event_loop_local_object}), event_loop, key, removed_obj)
-end
-
-"""
-    aws_event_loop_run(event_loop)
-
-Triggers the running of the event loop. This function must not block. The event loop is not active until this function is invoked. This function can be called again on an event loop after calling [`aws_event_loop_stop`](@ref)() and [`aws_event_loop_wait_for_stop_completion`](@ref)().
-
-### Prototype
-```c
-int aws_event_loop_run(struct aws_event_loop *event_loop);
-```
-"""
-function aws_event_loop_run(event_loop)
-    ccall((:aws_event_loop_run, libaws_c_io), Cint, (Ptr{aws_event_loop},), event_loop)
-end
-
-"""
-    aws_event_loop_stop(event_loop)
-
-Triggers the event loop to stop, but does not wait for the loop to stop completely. This function may be called from outside or inside the event loop thread. It is safe to call multiple times. This function is called from destroy().
-
-If you do not call destroy(), an event loop can be run again by calling stop(), wait\\_for\\_stop\\_completion(), run().
-
-### Prototype
-```c
-int aws_event_loop_stop(struct aws_event_loop *event_loop);
-```
-"""
-function aws_event_loop_stop(event_loop)
-    ccall((:aws_event_loop_stop, libaws_c_io), Cint, (Ptr{aws_event_loop},), event_loop)
-end
-
-"""
-    aws_event_loop_register_tick_start(event_loop)
-
-For event-loop implementations to use for providing metrics info to the base event-loop. This enables the event-loop load balancer to take into account load when vending another event-loop to a caller.
-
-Call this function at the beginning of your event-loop tick: after wake-up, but before processing any IO or tasks.
-
-### Prototype
-```c
-void aws_event_loop_register_tick_start(struct aws_event_loop *event_loop);
-```
-"""
-function aws_event_loop_register_tick_start(event_loop)
-    ccall((:aws_event_loop_register_tick_start, libaws_c_io), Cvoid, (Ptr{aws_event_loop},), event_loop)
-end
-
-"""
-    aws_event_loop_register_tick_end(event_loop)
-
-For event-loop implementations to use for providing metrics info to the base event-loop. This enables the event-loop load balancer to take into account load when vending another event-loop to a caller.
-
-Call this function at the end of your event-loop tick: after processing IO and tasks.
-
-### Prototype
-```c
-void aws_event_loop_register_tick_end(struct aws_event_loop *event_loop);
-```
-"""
-function aws_event_loop_register_tick_end(event_loop)
-    ccall((:aws_event_loop_register_tick_end, libaws_c_io), Cvoid, (Ptr{aws_event_loop},), event_loop)
-end
-
-"""
-    aws_event_loop_get_load_factor(event_loop)
-
-Returns the current load factor (however that may be calculated). If the event-loop is not invoking [`aws_event_loop_register_tick_start`](@ref)() and [`aws_event_loop_register_tick_end`](@ref)(), this value will always be 0.
-
-### Prototype
-```c
-size_t aws_event_loop_get_load_factor(struct aws_event_loop *event_loop);
-```
-"""
-function aws_event_loop_get_load_factor(event_loop)
-    ccall((:aws_event_loop_get_load_factor, libaws_c_io), Csize_t, (Ptr{aws_event_loop},), event_loop)
-end
-
-"""
-    aws_event_loop_wait_for_stop_completion(event_loop)
-
-Blocks until the event loop stops completely. If you want to call [`aws_event_loop_run`](@ref)() again, you must call this after [`aws_event_loop_stop`](@ref)(). It is not safe to call this function from inside the event loop thread.
-
-### Prototype
-```c
-int aws_event_loop_wait_for_stop_completion(struct aws_event_loop *event_loop);
-```
-"""
-function aws_event_loop_wait_for_stop_completion(event_loop)
-    ccall((:aws_event_loop_wait_for_stop_completion, libaws_c_io), Cint, (Ptr{aws_event_loop},), event_loop)
+struct aws_event_loop_group_options
+    loop_count::UInt16
+    type::aws_event_loop_type
+    shutdown_options::Ptr{aws_shutdown_callback_options}
+    cpu_group::Ptr{UInt16}
+    clock_override::Ptr{aws_io_clock_fn}
 end
 
 """
@@ -1771,50 +1570,6 @@ function aws_event_loop_cancel_task(event_loop, task)
 end
 
 """
-    aws_event_loop_subscribe_to_io_events(event_loop, handle, events, on_event, user_data)
-
-Subscribes on\\_event to events on the event-loop for handle. events is a bitwise concatenation of the events that were received. The definition for these values can be found in [`aws_io_event_type`](@ref). Currently, only AWS\\_IO\\_EVENT\\_TYPE\\_READABLE and AWS\\_IO\\_EVENT\\_TYPE\\_WRITABLE are honored. You always are registered for error conditions and closure. This function may be called from outside or inside the event loop thread. However, the unsubscribe function must be called inside the event-loop's thread.
-
-### Prototype
-```c
-int aws_event_loop_subscribe_to_io_events( struct aws_event_loop *event_loop, struct aws_io_handle *handle, int events, aws_event_loop_on_event_fn *on_event, void *user_data);
-```
-"""
-function aws_event_loop_subscribe_to_io_events(event_loop, handle, events, on_event, user_data)
-    ccall((:aws_event_loop_subscribe_to_io_events, libaws_c_io), Cint, (Ptr{aws_event_loop}, Ptr{aws_io_handle}, Cint, Ptr{aws_event_loop_on_event_fn}, Ptr{Cvoid}), event_loop, handle, events, on_event, user_data)
-end
-
-"""
-    aws_event_loop_unsubscribe_from_io_events(event_loop, handle)
-
-Unsubscribes handle from event-loop notifications. This function is not thread safe and should be called inside the event-loop's thread.
-
-NOTE: if you are using io completion ports, this is a risky call. We use it in places, but only when we're certain there's no pending events. If you want to use it, it's your job to make sure you don't have pending events before calling it.
-
-### Prototype
-```c
-int aws_event_loop_unsubscribe_from_io_events(struct aws_event_loop *event_loop, struct aws_io_handle *handle);
-```
-"""
-function aws_event_loop_unsubscribe_from_io_events(event_loop, handle)
-    ccall((:aws_event_loop_unsubscribe_from_io_events, libaws_c_io), Cint, (Ptr{aws_event_loop}, Ptr{aws_io_handle}), event_loop, handle)
-end
-
-"""
-    aws_event_loop_free_io_event_resources(event_loop, handle)
-
-Cleans up resources (user\\_data) associated with the I/O eventing subsystem for a given handle. This should only ever be necessary in the case where you are cleaning up an event loop during shutdown and its thread has already been joined.
-
-### Prototype
-```c
-void aws_event_loop_free_io_event_resources(struct aws_event_loop *event_loop, struct aws_io_handle *handle);
-```
-"""
-function aws_event_loop_free_io_event_resources(event_loop, handle)
-    ccall((:aws_event_loop_free_io_event_resources, libaws_c_io), Cvoid, (Ptr{aws_event_loop}, Ptr{aws_io_handle}), event_loop, handle)
-end
-
-"""
     aws_event_loop_thread_is_callers_thread(event_loop)
 
 Returns true if the event loop's thread is the same thread that called this function, otherwise false.
@@ -1835,7 +1590,7 @@ Gets the current timestamp for the event loop's clock, in nanoseconds. This func
 
 ### Prototype
 ```c
-int aws_event_loop_current_clock_time(struct aws_event_loop *event_loop, uint64_t *time_nanos);
+int aws_event_loop_current_clock_time(const struct aws_event_loop *event_loop, uint64_t *time_nanos);
 ```
 """
 function aws_event_loop_current_clock_time(event_loop, time_nanos)
@@ -1843,61 +1598,17 @@ function aws_event_loop_current_clock_time(event_loop, time_nanos)
 end
 
 """
-    aws_event_loop_group_new(alloc, clock, el_count, new_loop_fn, new_loop_user_data, shutdown_options)
+    aws_event_loop_group_new(allocator, options)
 
-Creates an event loop group, with clock, number of loops to manage, and the function to call for creating a new event loop.
-
-### Prototype
-```c
-struct aws_event_loop_group *aws_event_loop_group_new( struct aws_allocator *alloc, aws_io_clock_fn *clock, uint16_t el_count, aws_new_event_loop_fn *new_loop_fn, void *new_loop_user_data, const struct aws_shutdown_callback_options *shutdown_options);
-```
-"""
-function aws_event_loop_group_new(alloc, clock, el_count, new_loop_fn, new_loop_user_data, shutdown_options)
-    ccall((:aws_event_loop_group_new, libaws_c_io), Ptr{aws_event_loop_group}, (Ptr{aws_allocator}, Ptr{aws_io_clock_fn}, UInt16, Ptr{aws_new_event_loop_fn}, Ptr{Cvoid}, Ptr{aws_shutdown_callback_options}), alloc, clock, el_count, new_loop_fn, new_loop_user_data, shutdown_options)
-end
-
-"""
-    aws_event_loop_group_new_pinned_to_cpu_group(alloc, clock, el_count, cpu_group, new_loop_fn, new_loop_user_data, shutdown_options)
-
-Creates an event loop group, with clock, number of loops to manage, the function to call for creating a new event loop, and also pins all loops to hw threads on the same cpu\\_group (e.g. NUMA nodes). Note: If el\\_count exceeds the number of hw threads in the cpu\\_group it will be ignored on the assumption that if you care about NUMA, you don't want hyper-threads doing your IO and you especially don't want IO on a different node.
+Creation function for event loop groups.
 
 ### Prototype
 ```c
-struct aws_event_loop_group *aws_event_loop_group_new_pinned_to_cpu_group( struct aws_allocator *alloc, aws_io_clock_fn *clock, uint16_t el_count, uint16_t cpu_group, aws_new_event_loop_fn *new_loop_fn, void *new_loop_user_data, const struct aws_shutdown_callback_options *shutdown_options);
+struct aws_event_loop_group *aws_event_loop_group_new( struct aws_allocator *allocator, const struct aws_event_loop_group_options *options);
 ```
 """
-function aws_event_loop_group_new_pinned_to_cpu_group(alloc, clock, el_count, cpu_group, new_loop_fn, new_loop_user_data, shutdown_options)
-    ccall((:aws_event_loop_group_new_pinned_to_cpu_group, libaws_c_io), Ptr{aws_event_loop_group}, (Ptr{aws_allocator}, Ptr{aws_io_clock_fn}, UInt16, UInt16, Ptr{aws_new_event_loop_fn}, Ptr{Cvoid}, Ptr{aws_shutdown_callback_options}), alloc, clock, el_count, cpu_group, new_loop_fn, new_loop_user_data, shutdown_options)
-end
-
-"""
-    aws_event_loop_group_new_default(alloc, max_threads, shutdown_options)
-
-Initializes an event loop group with platform defaults. If max\\_threads == 0, then the loop count will be the number of available processors on the machine / 2 (to exclude hyper-threads). Otherwise, max\\_threads will be the number of event loops in the group.
-
-### Prototype
-```c
-struct aws_event_loop_group *aws_event_loop_group_new_default( struct aws_allocator *alloc, uint16_t max_threads, const struct aws_shutdown_callback_options *shutdown_options);
-```
-"""
-function aws_event_loop_group_new_default(alloc, max_threads, shutdown_options)
-    ccall((:aws_event_loop_group_new_default, libaws_c_io), Ptr{aws_event_loop_group}, (Ptr{aws_allocator}, UInt16, Ptr{aws_shutdown_callback_options}), alloc, max_threads, shutdown_options)
-end
-
-"""
-    aws_event_loop_group_new_default_pinned_to_cpu_group(alloc, max_threads, cpu_group, shutdown_options)
-
-Creates an event loop group, with clock, number of loops to manage, the function to call for creating a new event loop, and also pins all loops to hw threads on the same cpu\\_group (e.g. NUMA nodes). Note: If el\\_count exceeds the number of hw threads in the cpu\\_group it will be clamped to the number of hw threads on the assumption that if you care about NUMA, you don't want hyper-threads doing your IO and you especially don't want IO on a different node.
-
-If max\\_threads == 0, then the loop count will be the number of available processors in the cpu\\_group / 2 (to exclude hyper-threads)
-
-### Prototype
-```c
-struct aws_event_loop_group *aws_event_loop_group_new_default_pinned_to_cpu_group( struct aws_allocator *alloc, uint16_t max_threads, uint16_t cpu_group, const struct aws_shutdown_callback_options *shutdown_options);
-```
-"""
-function aws_event_loop_group_new_default_pinned_to_cpu_group(alloc, max_threads, cpu_group, shutdown_options)
-    ccall((:aws_event_loop_group_new_default_pinned_to_cpu_group, libaws_c_io), Ptr{aws_event_loop_group}, (Ptr{aws_allocator}, UInt16, UInt16, Ptr{aws_shutdown_callback_options}), alloc, max_threads, cpu_group, shutdown_options)
+function aws_event_loop_group_new(allocator, options)
+    ccall((:aws_event_loop_group_new, libaws_c_io), Ptr{aws_event_loop_group}, (Ptr{aws_allocator}, Ptr{aws_event_loop_group_options}), allocator, options)
 end
 
 """
@@ -1933,7 +1644,8 @@ end
 """
     aws_event_loop_group_get_loop_at(el_group, index)
 
-Documentation not found.
+Returns the event loop at a particular index. If the index is out of bounds, null is returned.
+
 ### Prototype
 ```c
 struct aws_event_loop *aws_event_loop_group_get_loop_at(struct aws_event_loop_group *el_group, size_t index);
@@ -1946,10 +1658,11 @@ end
 """
     aws_event_loop_group_get_loop_count(el_group)
 
-Documentation not found.
+Gets the number of event loops managed by an event loop group.
+
 ### Prototype
 ```c
-size_t aws_event_loop_group_get_loop_count(struct aws_event_loop_group *el_group);
+size_t aws_event_loop_group_get_loop_count(const struct aws_event_loop_group *el_group);
 ```
 """
 function aws_event_loop_group_get_loop_count(el_group)
@@ -1968,6 +1681,124 @@ struct aws_event_loop *aws_event_loop_group_get_next_loop(struct aws_event_loop_
 """
 function aws_event_loop_group_get_next_loop(el_group)
     ccall((:aws_event_loop_group_get_next_loop, libaws_c_io), Ptr{aws_event_loop}, (Ptr{aws_event_loop_group},), el_group)
+end
+
+"""
+    aws_event_loop_group_new_default(alloc, max_threads, shutdown_options)
+
+!!! compat "Deprecated"
+
+    - use [`aws_event_loop_group_new`](@ref)() instead
+
+### Prototype
+```c
+struct aws_event_loop_group *aws_event_loop_group_new_default( struct aws_allocator *alloc, uint16_t max_threads, const struct aws_shutdown_callback_options *shutdown_options);
+```
+"""
+function aws_event_loop_group_new_default(alloc, max_threads, shutdown_options)
+    ccall((:aws_event_loop_group_new_default, libaws_c_io), Ptr{aws_event_loop_group}, (Ptr{aws_allocator}, UInt16, Ptr{aws_shutdown_callback_options}), alloc, max_threads, shutdown_options)
+end
+
+"""
+    aws_event_loop_group_new_default_pinned_to_cpu_group(alloc, max_threads, cpu_group, shutdown_options)
+
+!!! compat "Deprecated"
+
+    - use [`aws_event_loop_group_new`](@ref)() instead
+
+### Prototype
+```c
+struct aws_event_loop_group *aws_event_loop_group_new_default_pinned_to_cpu_group( struct aws_allocator *alloc, uint16_t max_threads, uint16_t cpu_group, const struct aws_shutdown_callback_options *shutdown_options);
+```
+"""
+function aws_event_loop_group_new_default_pinned_to_cpu_group(alloc, max_threads, cpu_group, shutdown_options)
+    ccall((:aws_event_loop_group_new_default_pinned_to_cpu_group, libaws_c_io), Ptr{aws_event_loop_group}, (Ptr{aws_allocator}, UInt16, UInt16, Ptr{aws_shutdown_callback_options}), alloc, max_threads, cpu_group, shutdown_options)
+end
+
+"""
+    aws_event_loop_get_impl(event_loop)
+
+```c++
+ - Don't use outside of testing.
+
+ Returns the opaque internal user data of an event loop.  Can be cast into a specific implementation by
+ privileged consumers.
+ 
+
+```
+
+### Prototype
+```c
+void *aws_event_loop_get_impl(struct aws_event_loop *event_loop);
+```
+"""
+function aws_event_loop_get_impl(event_loop)
+    ccall((:aws_event_loop_get_impl, libaws_c_io), Ptr{Cvoid}, (Ptr{aws_event_loop},), event_loop)
+end
+
+"""
+    aws_event_loop_new_base(allocator, clock, vtable, impl)
+
+```c++
+ - Don't use outside of testing.
+
+ Initializes the base structure used by all event loop implementations with test-oriented overrides.
+ 
+
+```
+
+### Prototype
+```c
+struct aws_event_loop *aws_event_loop_new_base( struct aws_allocator *allocator, aws_io_clock_fn *clock, struct aws_event_loop_vtable *vtable, void *impl);
+```
+"""
+function aws_event_loop_new_base(allocator, clock, vtable, impl)
+    ccall((:aws_event_loop_new_base, libaws_c_io), Ptr{aws_event_loop}, (Ptr{aws_allocator}, Ptr{aws_io_clock_fn}, Ptr{aws_event_loop_vtable}, Ptr{Cvoid}), allocator, clock, vtable, impl)
+end
+
+"""
+    aws_event_loop_clean_up_base(event_loop)
+
+```c++
+ - Don't use outside of testing.
+
+ Common cleanup code for all implementations.
+ This is only called from the *destroy() function of event loop implementations.
+ 
+
+```
+
+### Prototype
+```c
+void aws_event_loop_clean_up_base(struct aws_event_loop *event_loop);
+```
+"""
+function aws_event_loop_clean_up_base(event_loop)
+    ccall((:aws_event_loop_clean_up_base, libaws_c_io), Cvoid, (Ptr{aws_event_loop},), event_loop)
+end
+
+"""
+    aws_event_loop_destroy(event_loop)
+
+```c++
+ - Don't use outside of testing.
+
+ Invokes the destroy() fn for the event loop implementation.
+ If the event loop is still in a running state, this function will block waiting on the event loop to shutdown.
+ If you do not want this function to block, call aws_event_loop_stop() manually first.
+ If the event loop is shared by multiple threads then destroy must be called by exactly one thread. All other threads
+ must ensure their API calls to the event loop happen-before the call to destroy.
+ 
+
+```
+
+### Prototype
+```c
+void aws_event_loop_destroy(struct aws_event_loop *event_loop);
+```
+"""
+function aws_event_loop_destroy(event_loop)
+    ccall((:aws_event_loop_destroy, libaws_c_io), Cvoid, (Ptr{aws_event_loop},), event_loop)
 end
 
 # typedef void ( aws_future_callback_fn ) ( void * user_data )
@@ -3825,6 +3656,15 @@ struct aws_exponential_backoff_retry_options
 end
 
 """
+    aws_no_retry_options
+
+Documentation not found.
+"""
+struct aws_no_retry_options
+    shutdown_options::Ptr{aws_shutdown_callback_options}
+end
+
+"""
     aws_standard_retry_options
 
 Documentation not found.
@@ -3971,6 +3811,20 @@ function aws_retry_strategy_new_standard(allocator, config)
 end
 
 """
+    aws_retry_strategy_new_no_retry(allocator, config)
+
+This retry strategy is used to disable retries. Passed config can be null. Calling [`aws_retry_strategy_acquire_retry_token`](@ref) will raise error `AWS_IO_RETRY_PERMISSION_DENIED`. Calling any function apart from the [`aws_retry_strategy_acquire_retry_token`](@ref) and [`aws_retry_strategy_release`](@ref) will result in a fatal error.
+
+### Prototype
+```c
+struct aws_retry_strategy *aws_retry_strategy_new_no_retry( struct aws_allocator *allocator, const struct aws_no_retry_options *config);
+```
+"""
+function aws_retry_strategy_new_no_retry(allocator, config)
+    ccall((:aws_retry_strategy_new_no_retry, libaws_c_io), Ptr{aws_retry_strategy}, (Ptr{aws_allocator}, Ptr{aws_no_retry_options}), allocator, config)
+end
+
+"""
     aws_shared_library
 
 Documentation not found.
@@ -4027,6 +3881,8 @@ end
 # typedef void ( aws_socket_on_write_completed_fn ) ( struct aws_socket * socket , int error_code , size_t bytes_written , void * user_data )
 """
 Callback for when the data passed to a call to [`aws_socket_write`](@ref)() has either completed or failed. On success, error\\_code will be AWS\\_ERROR\\_SUCCESS.
+
+`socket` may be NULL in the callback if the socket is released and cleaned up before a callback is triggered. by the system I/O handler,
 """
 const aws_socket_on_write_completed_fn = Cvoid
 
@@ -4227,7 +4083,7 @@ end
 """
     aws_socket_subscribe_to_readable_events(socket, on_readable, user_data)
 
-Subscribes on\\_readable to notifications when the socket goes readable (edge-triggered). Errors will also be recieved in the callback.
+Subscribes on\\_readable to notifications when the socket goes readable (edge-triggered). Errors will also be received in the callback.
 
 Note! This function is technically not thread safe, but we do not enforce which thread you call from. It's your responsibility to either call this in safely (e.g. just don't call it in parallel from multiple threads) or schedule a task to call it. If you call it before your first call to read, it will be fine.
 
@@ -4348,6 +4204,20 @@ void aws_socket_endpoint_init_local_address_for_test(struct aws_socket_endpoint 
 """
 function aws_socket_endpoint_init_local_address_for_test(endpoint)
     ccall((:aws_socket_endpoint_init_local_address_for_test, libaws_c_io), Cvoid, (Ptr{aws_socket_endpoint},), endpoint)
+end
+
+"""
+    aws_is_network_interface_name_valid(interface_name)
+
+Validates whether the network interface name is valid. On Windows, it will always return false since we don't support network\\_interface\\_name on Windows
+
+### Prototype
+```c
+bool aws_is_network_interface_name_valid(const char *interface_name);
+```
+"""
+function aws_is_network_interface_name_valid(interface_name)
+    ccall((:aws_is_network_interface_name_valid, libaws_c_io), Bool, (Ptr{Cchar},), interface_name)
 end
 
 """
@@ -4719,6 +4589,8 @@ Documentation not found.
     AWS_IO_TLS_CIPHER_PREF_KMS_PQ_SIKE_TLSv1_0_2020_02 = 4
     AWS_IO_TLS_CIPHER_PREF_KMS_PQ_TLSv1_0_2020_07 = 5
     AWS_IO_TLS_CIPHER_PREF_PQ_TLSv1_0_2021_05 = 6
+    AWS_IO_TLS_CIPHER_PREF_PQ_TLSV1_2_2024_10 = 7
+    AWS_IO_TLS_CIPHER_PREF_PQ_DEFAULT = 8
     AWS_IO_TLS_CIPHER_PREF_END_RANGE = 65535
 end
 
@@ -5678,37 +5550,17 @@ struct aws_async_input_stream_tester_options
 end
 
 """
-    __JL_Ctag_222
+    var"struct (unnamed at /home/runner/.julia/artifacts/3be393b1691380a19a4cc5a0e2812e63157856bb/include/aws/testing/async_stream_tester.h:55:5)"
 
 Documentation not found.
 """
-struct __JL_Ctag_222
+struct var"struct (unnamed at /home/runner/.julia/artifacts/3be393b1691380a19a4cc5a0e2812e63157856bb/include/aws/testing/async_stream_tester.h:55:5)"
     lock::aws_mutex
     cvar::aws_condition_variable
     read_dest::Ptr{aws_byte_buf}
     read_future::Ptr{aws_future_bool}
     do_shutdown::Bool
 end
-function Base.getproperty(x::Ptr{__JL_Ctag_222}, f::Symbol)
-    f === :lock && return Ptr{aws_mutex}(x + 0)
-    f === :cvar && return Ptr{aws_condition_variable}(x + 72)
-    f === :read_dest && return Ptr{Ptr{aws_byte_buf}}(x + 128)
-    f === :read_future && return Ptr{Ptr{aws_future_bool}}(x + 136)
-    f === :do_shutdown && return Ptr{Bool}(x + 144)
-    return getfield(x, f)
-end
-
-function Base.getproperty(x::__JL_Ctag_222, f::Symbol)
-    r = Ref{__JL_Ctag_222}(x)
-    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_222}, r)
-    fptr = getproperty(ptr, f)
-    GC.@preserve r unsafe_load(fptr)
-end
-
-function Base.setproperty!(x::Ptr{__JL_Ctag_222}, f::Symbol, v)
-    unsafe_store!(getproperty(x, f), v)
-end
-
 
 """
     aws_async_input_stream_tester
@@ -5725,7 +5577,7 @@ function Base.getproperty(x::Ptr{aws_async_input_stream_tester}, f::Symbol)
     f === :options && return Ptr{aws_async_input_stream_tester_options}(x + 56)
     f === :source_stream && return Ptr{Ptr{aws_input_stream}}(x + 152)
     f === :thread && return Ptr{aws_thread}(x + 160)
-    f === :synced_data && return Ptr{__JL_Ctag_222}(x + 184)
+    f === :synced_data && return Ptr{var"struct (unnamed at /home/runner/.julia/artifacts/3be393b1691380a19a4cc5a0e2812e63157856bb/include/aws/testing/async_stream_tester.h:55:5)"}(x + 184)
     f === :num_outstanding_reads && return Ptr{aws_atomic_var}(x + 336)
     return getfield(x, f)
 end
@@ -5851,6 +5703,7 @@ end
 Documentation not found.
 """
 struct testing_loop
+    allocator::Ptr{aws_allocator}
     scheduler::aws_task_scheduler
     mock_on_callers_thread::Bool
 end
