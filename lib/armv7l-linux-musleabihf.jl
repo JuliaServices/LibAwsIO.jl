@@ -1047,6 +1047,12 @@ Note: this function is only invoked if the channel was successfully setup, e.g. 
 """
 const aws_server_bootstrap_on_accept_channel_shutdown_fn = Cvoid
 
+# typedef void ( aws_server_bootstrap_on_listener_setup_fn ) ( struct aws_server_bootstrap * bootstrap , int error_code , void * user_data )
+"""
+This function is only used for async listener (Apple Network Framework in this case). Once the server listener socket is finished setup and starting listening, this fuction will be invoked.
+"""
+const aws_server_bootstrap_on_listener_setup_fn = Cvoid
+
 # typedef void ( aws_server_bootstrap_on_server_listener_destroy_fn ) ( struct aws_server_bootstrap * bootstrap , void * user_data )
 """
 Once the server listener socket is finished destroying, and all the existing connections are closed, this fuction will be invoked.
@@ -1121,6 +1127,8 @@ end
 # typedef void ( aws_tls_on_negotiation_result_fn ) ( struct aws_channel_handler * handler , struct aws_channel_slot * slot , int error_code , void * user_data )
 """
 Invoked upon completion of the TLS handshake. If successful error\\_code will be AWS\\_OP\\_SUCCESS, otherwise the negotiation failed and immediately after this function is invoked, the channel will be shutting down.
+
+NOTE: When using SecItem the handler and slot arguments will be pointers to the socket slot and socket handler. This is due to TLS negotiaion being handled by the Apple Network Framework connection in the socket slot/handler.
 """
 const aws_tls_on_negotiation_result_fn = Cvoid
 
@@ -1203,6 +1211,7 @@ struct aws_server_socket_channel_bootstrap_options
     port::UInt32
     socket_options::Ptr{aws_socket_options}
     tls_options::Ptr{aws_tls_connection_options}
+    setup_callback::Ptr{aws_server_bootstrap_on_listener_setup_fn}
     incoming_callback::Ptr{aws_server_bootstrap_on_accept_channel_setup_fn}
     shutdown_callback::Ptr{aws_server_bootstrap_on_accept_channel_shutdown_fn}
     destroy_callback::Ptr{aws_server_bootstrap_on_server_listener_destroy_fn}
@@ -1356,30 +1365,36 @@ struct aws_socket_endpoint
 end
 
 """
-    union (unnamed at /home/runner/.julia/artifacts/a2393fcbe337e75bfd16e28b26662c8e93e4e9d3/include/aws/io/io.h:18:5)
+    union (unnamed at /home/runner/.julia/artifacts/f0407e363c4dab97fe6fb91c39c8af0b735bdeca/include/aws/io/io.h:21:5)
 
 Documentation not found.
 """
-struct var"union (unnamed at /home/runner/.julia/artifacts/a2393fcbe337e75bfd16e28b26662c8e93e4e9d3/include/aws/io/io.h:18:5)"
+struct var"union (unnamed at /home/runner/.julia/artifacts/f0407e363c4dab97fe6fb91c39c8af0b735bdeca/include/aws/io/io.h:21:5)"
     data::NTuple{4, UInt8}
 end
 
-function Base.getproperty(x::Ptr{var"union (unnamed at /home/runner/.julia/artifacts/a2393fcbe337e75bfd16e28b26662c8e93e4e9d3/include/aws/io/io.h:18:5)"}, f::Symbol)
+function Base.getproperty(x::Ptr{var"union (unnamed at /home/runner/.julia/artifacts/f0407e363c4dab97fe6fb91c39c8af0b735bdeca/include/aws/io/io.h:21:5)"}, f::Symbol)
     f === :fd && return Ptr{Cint}(x + 0)
     f === :handle && return Ptr{Ptr{Cvoid}}(x + 0)
     return getfield(x, f)
 end
 
-function Base.getproperty(x::var"union (unnamed at /home/runner/.julia/artifacts/a2393fcbe337e75bfd16e28b26662c8e93e4e9d3/include/aws/io/io.h:18:5)", f::Symbol)
-    r = Ref{var"union (unnamed at /home/runner/.julia/artifacts/a2393fcbe337e75bfd16e28b26662c8e93e4e9d3/include/aws/io/io.h:18:5)"}(x)
-    ptr = Base.unsafe_convert(Ptr{var"union (unnamed at /home/runner/.julia/artifacts/a2393fcbe337e75bfd16e28b26662c8e93e4e9d3/include/aws/io/io.h:18:5)"}, r)
+function Base.getproperty(x::var"union (unnamed at /home/runner/.julia/artifacts/f0407e363c4dab97fe6fb91c39c8af0b735bdeca/include/aws/io/io.h:21:5)", f::Symbol)
+    r = Ref{var"union (unnamed at /home/runner/.julia/artifacts/f0407e363c4dab97fe6fb91c39c8af0b735bdeca/include/aws/io/io.h:21:5)"}(x)
+    ptr = Base.unsafe_convert(Ptr{var"union (unnamed at /home/runner/.julia/artifacts/f0407e363c4dab97fe6fb91c39c8af0b735bdeca/include/aws/io/io.h:21:5)"}, r)
     fptr = getproperty(ptr, f)
     GC.@preserve r unsafe_load(fptr)
 end
 
-function Base.setproperty!(x::Ptr{var"union (unnamed at /home/runner/.julia/artifacts/a2393fcbe337e75bfd16e28b26662c8e93e4e9d3/include/aws/io/io.h:18:5)"}, f::Symbol, v)
+function Base.setproperty!(x::Ptr{var"union (unnamed at /home/runner/.julia/artifacts/f0407e363c4dab97fe6fb91c39c8af0b735bdeca/include/aws/io/io.h:21:5)"}, f::Symbol, v)
     unsafe_store!(getproperty(x, f), v)
 end
+
+# typedef void aws_io_set_queue_on_handle_fn ( struct aws_io_handle * handle , void * queue )
+"""
+Documentation not found.
+"""
+const aws_io_set_queue_on_handle_fn = Cvoid
 
 """
     aws_io_handle
@@ -1387,12 +1402,13 @@ end
 Documentation not found.
 """
 struct aws_io_handle
-    data::NTuple{8, UInt8}
+    data::NTuple{12, UInt8}
 end
 
 function Base.getproperty(x::Ptr{aws_io_handle}, f::Symbol)
-    f === :data && return Ptr{var"union (unnamed at /home/runner/.julia/artifacts/a2393fcbe337e75bfd16e28b26662c8e93e4e9d3/include/aws/io/io.h:18:5)"}(x + 0)
+    f === :data && return Ptr{var"union (unnamed at /home/runner/.julia/artifacts/f0407e363c4dab97fe6fb91c39c8af0b735bdeca/include/aws/io/io.h:21:5)"}(x + 0)
     f === :additional_data && return Ptr{Ptr{Cvoid}}(x + 4)
+    f === :set_queue && return Ptr{Ptr{aws_io_set_queue_on_handle_fn}}(x + 8)
     return getfield(x, f)
 end
 
@@ -1410,6 +1426,8 @@ end
 # typedef void ( aws_socket_on_readable_fn ) ( struct aws_socket * socket , int error_code , void * user_data )
 """
 Callback for when socket is either readable (edge-triggered) or when an error has occurred. If the socket is readable, error\\_code will be AWS\\_ERROR\\_SUCCESS.
+
+`socket` may be NULL in the callback if the socket is released and cleaned up before the callback is triggered.
 """
 const aws_socket_on_readable_fn = Cvoid
 
@@ -1441,7 +1459,7 @@ const aws_socket_on_accept_result_fn = Cvoid
 Documentation not found.
 """
 struct aws_socket
-    data::NTuple{316, UInt8}
+    data::NTuple{320, UInt8}
 end
 
 function Base.getproperty(x::Ptr{aws_socket}, f::Symbol)
@@ -1451,15 +1469,15 @@ function Base.getproperty(x::Ptr{aws_socket}, f::Symbol)
     f === :remote_endpoint && return Ptr{aws_socket_endpoint}(x + 120)
     f === :options && return Ptr{aws_socket_options}(x + 232)
     f === :io_handle && return Ptr{aws_io_handle}(x + 272)
-    f === :event_loop && return Ptr{Ptr{aws_event_loop}}(x + 280)
-    f === :handler && return Ptr{Ptr{aws_channel_handler}}(x + 284)
-    f === :state && return Ptr{Cint}(x + 288)
-    f === :readable_fn && return Ptr{Ptr{aws_socket_on_readable_fn}}(x + 292)
-    f === :readable_user_data && return Ptr{Ptr{Cvoid}}(x + 296)
-    f === :connection_result_fn && return Ptr{Ptr{aws_socket_on_connection_result_fn}}(x + 300)
-    f === :accept_result_fn && return Ptr{Ptr{aws_socket_on_accept_result_fn}}(x + 304)
-    f === :connect_accept_user_data && return Ptr{Ptr{Cvoid}}(x + 308)
-    f === :impl && return Ptr{Ptr{Cvoid}}(x + 312)
+    f === :event_loop && return Ptr{Ptr{aws_event_loop}}(x + 284)
+    f === :handler && return Ptr{Ptr{aws_channel_handler}}(x + 288)
+    f === :state && return Ptr{Cint}(x + 292)
+    f === :readable_fn && return Ptr{Ptr{aws_socket_on_readable_fn}}(x + 296)
+    f === :readable_user_data && return Ptr{Ptr{Cvoid}}(x + 300)
+    f === :connection_result_fn && return Ptr{Ptr{aws_socket_on_connection_result_fn}}(x + 304)
+    f === :accept_result_fn && return Ptr{Ptr{aws_socket_on_accept_result_fn}}(x + 308)
+    f === :connect_accept_user_data && return Ptr{Ptr{Cvoid}}(x + 312)
+    f === :impl && return Ptr{Ptr{Cvoid}}(x + 316)
     return getfield(x, f)
 end
 
@@ -1478,6 +1496,8 @@ end
     aws_server_bootstrap_new_socket_listener(bootstrap_options)
 
 Sets up a server socket listener. If you are planning on using TLS, use `aws_server_bootstrap_new_tls_socket_listener` instead. This creates a socket listener bound to `local_endpoint` using socket options `options`. `incoming_callback` will be invoked once an incoming channel is ready for use or if an error is encountered. `shutdown_callback` will be invoked once the channel has shutdown. `destroy_callback` will be invoked after the server socket listener is destroyed, and all associated connections and channels have finished shutting down. Immediately after the `shutdown_callback` returns, the channel is cleaned up automatically. All callbacks are invoked the thread of the event-loop that the listening socket is assigned to
+
+`setup_callback`. If set, the callback will be asynchronously invoked when the listener is ready for use. For Apple Network Framework, the listener is not usable until the callback is invoked. If the listener creation failed (return NULL), the `setup_callback` will not be invoked.
 
 Upon shutdown of your application, you'll want to call [`aws_server_bootstrap_destroy_socket_listener`](@ref) with the return value from this function.
 
@@ -1529,7 +1549,8 @@ const aws_event_loop_on_event_fn = Cvoid
 ```
 """
 struct aws_event_loop_vtable
-    destroy::Ptr{Cvoid}
+    start_destroy::Ptr{Cvoid}
+    complete_destroy::Ptr{Cvoid}
     run::Ptr{Cvoid}
     stop::Ptr{Cvoid}
     wait_for_stop_completion::Ptr{Cvoid}
@@ -1540,6 +1561,7 @@ struct aws_event_loop_vtable
     subscribe_to_io_events::Ptr{Cvoid}
     unsubscribe_from_io_events::Ptr{Cvoid}
     free_io_event_resources::Ptr{Cvoid}
+    get_base_event_loop_group::Ptr{Cvoid}
     is_on_callers_thread::Ptr{Cvoid}
 end
 
@@ -1837,11 +1859,12 @@ end
 ```c++
  - Don't use outside of testing.
 
- Invokes the destroy() fn for the event loop implementation.
+ Destroys an event loop implementation.
  If the event loop is still in a running state, this function will block waiting on the event loop to shutdown.
- If you do not want this function to block, call aws_event_loop_stop() manually first.
  If the event loop is shared by multiple threads then destroy must be called by exactly one thread. All other threads
  must ensure their API calls to the event loop happen-before the call to destroy.
+
+ Internally, this calls aws_event_loop_start_destroy() followed by aws_event_loop_complete_destroy()
  
 
 ```
@@ -1853,6 +1876,46 @@ void aws_event_loop_destroy(struct aws_event_loop *event_loop);
 """
 function aws_event_loop_destroy(event_loop)
     ccall((:aws_event_loop_destroy, libaws_c_io), Cvoid, (Ptr{aws_event_loop},), event_loop)
+end
+
+"""
+    aws_event_loop_start_destroy(event_loop)
+
+```c++
+
+ Signals an event loop to begin its destruction process.  If an event loop's implementation of this API does anything,
+ it must be quick and non-blocking.  Most event loop implementations have an empty implementation for this function.
+ 
+
+```
+
+### Prototype
+```c
+void aws_event_loop_start_destroy(struct aws_event_loop *event_loop);
+```
+"""
+function aws_event_loop_start_destroy(event_loop)
+    ccall((:aws_event_loop_start_destroy, libaws_c_io), Cvoid, (Ptr{aws_event_loop},), event_loop)
+end
+
+"""
+    aws_event_loop_complete_destroy(event_loop)
+
+```c++
+
+ Waits for an event loop to complete its destruction process.  aws_event_loop_start_destroy() must have been called
+ previously for this function to not deadlock.
+ 
+
+```
+
+### Prototype
+```c
+void aws_event_loop_complete_destroy(struct aws_event_loop *event_loop);
+```
+"""
+function aws_event_loop_complete_destroy(event_loop)
+    ccall((:aws_event_loop_complete_destroy, libaws_c_io), Cvoid, (Ptr{aws_event_loop},), event_loop)
 end
 
 # typedef void ( aws_future_callback_fn ) ( void * user_data )
@@ -2666,16 +2729,6 @@ Invoked once an address has been resolved for host. The type in host\\_addresses
 const aws_on_host_resolved_result_fn = Cvoid
 
 """
-Documentation not found.
-"""
-mutable struct aws_host_listener end
-
-"""
-Documentation not found.
-"""
-mutable struct aws_host_listener_options end
-
-"""
     aws_host_resolver_purge_host_options
 
 Documentation not found.
@@ -2929,157 +2982,172 @@ Documentation not found.
     AWS_IO_CHANNEL_READ_WOULD_EXCEED_WINDOW = 1026
     AWS_IO_EVENT_LOOP_ALREADY_ASSIGNED = 1027
     AWS_IO_EVENT_LOOP_SHUTDOWN = 1028
-    AWS_IO_TLS_ERROR_NEGOTIATION_FAILURE = 1029
-    AWS_IO_TLS_ERROR_NOT_NEGOTIATED = 1030
-    AWS_IO_TLS_ERROR_WRITE_FAILURE = 1031
-    AWS_IO_TLS_ERROR_ALERT_RECEIVED = 1032
-    AWS_IO_TLS_CTX_ERROR = 1033
-    AWS_IO_TLS_VERSION_UNSUPPORTED = 1034
-    AWS_IO_TLS_CIPHER_PREF_UNSUPPORTED = 1035
-    AWS_IO_MISSING_ALPN_MESSAGE = 1036
-    AWS_IO_UNHANDLED_ALPN_PROTOCOL_MESSAGE = 1037
-    AWS_IO_FILE_VALIDATION_FAILURE = 1038
-    AWS_ERROR_IO_EVENT_LOOP_THREAD_ONLY = 1039
-    AWS_ERROR_IO_ALREADY_SUBSCRIBED = 1040
-    AWS_ERROR_IO_NOT_SUBSCRIBED = 1041
-    AWS_ERROR_IO_OPERATION_CANCELLED = 1042
-    AWS_IO_READ_WOULD_BLOCK = 1043
-    AWS_IO_BROKEN_PIPE = 1044
-    AWS_IO_SOCKET_UNSUPPORTED_ADDRESS_FAMILY = 1045
-    AWS_IO_SOCKET_INVALID_OPERATION_FOR_TYPE = 1046
-    AWS_IO_SOCKET_CONNECTION_REFUSED = 1047
-    AWS_IO_SOCKET_TIMEOUT = 1048
-    AWS_IO_SOCKET_NO_ROUTE_TO_HOST = 1049
-    AWS_IO_SOCKET_NETWORK_DOWN = 1050
-    AWS_IO_SOCKET_CLOSED = 1051
-    AWS_IO_SOCKET_NOT_CONNECTED = 1052
-    AWS_IO_SOCKET_INVALID_OPTIONS = 1053
-    AWS_IO_SOCKET_ADDRESS_IN_USE = 1054
-    AWS_IO_SOCKET_INVALID_ADDRESS = 1055
-    AWS_IO_SOCKET_ILLEGAL_OPERATION_FOR_STATE = 1056
-    AWS_IO_SOCKET_CONNECT_ABORTED = 1057
-    AWS_IO_DNS_QUERY_FAILED = 1058
-    AWS_IO_DNS_INVALID_NAME = 1059
-    AWS_IO_DNS_NO_ADDRESS_FOR_HOST = 1060
-    AWS_IO_DNS_HOST_REMOVED_FROM_CACHE = 1061
-    AWS_IO_STREAM_INVALID_SEEK_POSITION = 1062
-    AWS_IO_STREAM_READ_FAILED = 1063
-    DEPRECATED_AWS_IO_INVALID_FILE_HANDLE = 1064
-    AWS_IO_SHARED_LIBRARY_LOAD_FAILURE = 1065
-    AWS_IO_SHARED_LIBRARY_FIND_SYMBOL_FAILURE = 1066
-    AWS_IO_TLS_NEGOTIATION_TIMEOUT = 1067
-    AWS_IO_TLS_ALERT_NOT_GRACEFUL = 1068
-    AWS_IO_MAX_RETRIES_EXCEEDED = 1069
-    AWS_IO_RETRY_PERMISSION_DENIED = 1070
-    AWS_IO_TLS_DIGEST_ALGORITHM_UNSUPPORTED = 1071
-    AWS_IO_TLS_SIGNATURE_ALGORITHM_UNSUPPORTED = 1072
-    AWS_ERROR_PKCS11_VERSION_UNSUPPORTED = 1073
-    AWS_ERROR_PKCS11_TOKEN_NOT_FOUND = 1074
-    AWS_ERROR_PKCS11_KEY_NOT_FOUND = 1075
-    AWS_ERROR_PKCS11_KEY_TYPE_UNSUPPORTED = 1076
-    AWS_ERROR_PKCS11_UNKNOWN_CRYPTOKI_RETURN_VALUE = 1077
-    AWS_ERROR_PKCS11_CKR_CANCEL = 1078
-    AWS_ERROR_PKCS11_CKR_HOST_MEMORY = 1079
-    AWS_ERROR_PKCS11_CKR_SLOT_ID_INVALID = 1080
-    AWS_ERROR_PKCS11_CKR_GENERAL_ERROR = 1081
-    AWS_ERROR_PKCS11_CKR_FUNCTION_FAILED = 1082
-    AWS_ERROR_PKCS11_CKR_ARGUMENTS_BAD = 1083
-    AWS_ERROR_PKCS11_CKR_NO_EVENT = 1084
-    AWS_ERROR_PKCS11_CKR_NEED_TO_CREATE_THREADS = 1085
-    AWS_ERROR_PKCS11_CKR_CANT_LOCK = 1086
-    AWS_ERROR_PKCS11_CKR_ATTRIBUTE_READ_ONLY = 1087
-    AWS_ERROR_PKCS11_CKR_ATTRIBUTE_SENSITIVE = 1088
-    AWS_ERROR_PKCS11_CKR_ATTRIBUTE_TYPE_INVALID = 1089
-    AWS_ERROR_PKCS11_CKR_ATTRIBUTE_VALUE_INVALID = 1090
-    AWS_ERROR_PKCS11_CKR_ACTION_PROHIBITED = 1091
-    AWS_ERROR_PKCS11_CKR_DATA_INVALID = 1092
-    AWS_ERROR_PKCS11_CKR_DATA_LEN_RANGE = 1093
-    AWS_ERROR_PKCS11_CKR_DEVICE_ERROR = 1094
-    AWS_ERROR_PKCS11_CKR_DEVICE_MEMORY = 1095
-    AWS_ERROR_PKCS11_CKR_DEVICE_REMOVED = 1096
-    AWS_ERROR_PKCS11_CKR_ENCRYPTED_DATA_INVALID = 1097
-    AWS_ERROR_PKCS11_CKR_ENCRYPTED_DATA_LEN_RANGE = 1098
-    AWS_ERROR_PKCS11_CKR_FUNCTION_CANCELED = 1099
-    AWS_ERROR_PKCS11_CKR_FUNCTION_NOT_PARALLEL = 1100
-    AWS_ERROR_PKCS11_CKR_FUNCTION_NOT_SUPPORTED = 1101
-    AWS_ERROR_PKCS11_CKR_KEY_HANDLE_INVALID = 1102
-    AWS_ERROR_PKCS11_CKR_KEY_SIZE_RANGE = 1103
-    AWS_ERROR_PKCS11_CKR_KEY_TYPE_INCONSISTENT = 1104
-    AWS_ERROR_PKCS11_CKR_KEY_NOT_NEEDED = 1105
-    AWS_ERROR_PKCS11_CKR_KEY_CHANGED = 1106
-    AWS_ERROR_PKCS11_CKR_KEY_NEEDED = 1107
-    AWS_ERROR_PKCS11_CKR_KEY_INDIGESTIBLE = 1108
-    AWS_ERROR_PKCS11_CKR_KEY_FUNCTION_NOT_PERMITTED = 1109
-    AWS_ERROR_PKCS11_CKR_KEY_NOT_WRAPPABLE = 1110
-    AWS_ERROR_PKCS11_CKR_KEY_UNEXTRACTABLE = 1111
-    AWS_ERROR_PKCS11_CKR_MECHANISM_INVALID = 1112
-    AWS_ERROR_PKCS11_CKR_MECHANISM_PARAM_INVALID = 1113
-    AWS_ERROR_PKCS11_CKR_OBJECT_HANDLE_INVALID = 1114
-    AWS_ERROR_PKCS11_CKR_OPERATION_ACTIVE = 1115
-    AWS_ERROR_PKCS11_CKR_OPERATION_NOT_INITIALIZED = 1116
-    AWS_ERROR_PKCS11_CKR_PIN_INCORRECT = 1117
-    AWS_ERROR_PKCS11_CKR_PIN_INVALID = 1118
-    AWS_ERROR_PKCS11_CKR_PIN_LEN_RANGE = 1119
-    AWS_ERROR_PKCS11_CKR_PIN_EXPIRED = 1120
-    AWS_ERROR_PKCS11_CKR_PIN_LOCKED = 1121
-    AWS_ERROR_PKCS11_CKR_SESSION_CLOSED = 1122
-    AWS_ERROR_PKCS11_CKR_SESSION_COUNT = 1123
-    AWS_ERROR_PKCS11_CKR_SESSION_HANDLE_INVALID = 1124
-    AWS_ERROR_PKCS11_CKR_SESSION_PARALLEL_NOT_SUPPORTED = 1125
-    AWS_ERROR_PKCS11_CKR_SESSION_READ_ONLY = 1126
-    AWS_ERROR_PKCS11_CKR_SESSION_EXISTS = 1127
-    AWS_ERROR_PKCS11_CKR_SESSION_READ_ONLY_EXISTS = 1128
-    AWS_ERROR_PKCS11_CKR_SESSION_READ_WRITE_SO_EXISTS = 1129
-    AWS_ERROR_PKCS11_CKR_SIGNATURE_INVALID = 1130
-    AWS_ERROR_PKCS11_CKR_SIGNATURE_LEN_RANGE = 1131
-    AWS_ERROR_PKCS11_CKR_TEMPLATE_INCOMPLETE = 1132
-    AWS_ERROR_PKCS11_CKR_TEMPLATE_INCONSISTENT = 1133
-    AWS_ERROR_PKCS11_CKR_TOKEN_NOT_PRESENT = 1134
-    AWS_ERROR_PKCS11_CKR_TOKEN_NOT_RECOGNIZED = 1135
-    AWS_ERROR_PKCS11_CKR_TOKEN_WRITE_PROTECTED = 1136
-    AWS_ERROR_PKCS11_CKR_UNWRAPPING_KEY_HANDLE_INVALID = 1137
-    AWS_ERROR_PKCS11_CKR_UNWRAPPING_KEY_SIZE_RANGE = 1138
-    AWS_ERROR_PKCS11_CKR_UNWRAPPING_KEY_TYPE_INCONSISTENT = 1139
-    AWS_ERROR_PKCS11_CKR_USER_ALREADY_LOGGED_IN = 1140
-    AWS_ERROR_PKCS11_CKR_USER_NOT_LOGGED_IN = 1141
-    AWS_ERROR_PKCS11_CKR_USER_PIN_NOT_INITIALIZED = 1142
-    AWS_ERROR_PKCS11_CKR_USER_TYPE_INVALID = 1143
-    AWS_ERROR_PKCS11_CKR_USER_ANOTHER_ALREADY_LOGGED_IN = 1144
-    AWS_ERROR_PKCS11_CKR_USER_TOO_MANY_TYPES = 1145
-    AWS_ERROR_PKCS11_CKR_WRAPPED_KEY_INVALID = 1146
-    AWS_ERROR_PKCS11_CKR_WRAPPED_KEY_LEN_RANGE = 1147
-    AWS_ERROR_PKCS11_CKR_WRAPPING_KEY_HANDLE_INVALID = 1148
-    AWS_ERROR_PKCS11_CKR_WRAPPING_KEY_SIZE_RANGE = 1149
-    AWS_ERROR_PKCS11_CKR_WRAPPING_KEY_TYPE_INCONSISTENT = 1150
-    AWS_ERROR_PKCS11_CKR_RANDOM_SEED_NOT_SUPPORTED = 1151
-    AWS_ERROR_PKCS11_CKR_RANDOM_NO_RNG = 1152
-    AWS_ERROR_PKCS11_CKR_DOMAIN_PARAMS_INVALID = 1153
-    AWS_ERROR_PKCS11_CKR_CURVE_NOT_SUPPORTED = 1154
-    AWS_ERROR_PKCS11_CKR_BUFFER_TOO_SMALL = 1155
-    AWS_ERROR_PKCS11_CKR_SAVED_STATE_INVALID = 1156
-    AWS_ERROR_PKCS11_CKR_INFORMATION_SENSITIVE = 1157
-    AWS_ERROR_PKCS11_CKR_STATE_UNSAVEABLE = 1158
-    AWS_ERROR_PKCS11_CKR_CRYPTOKI_NOT_INITIALIZED = 1159
-    AWS_ERROR_PKCS11_CKR_CRYPTOKI_ALREADY_INITIALIZED = 1160
-    AWS_ERROR_PKCS11_CKR_MUTEX_BAD = 1161
-    AWS_ERROR_PKCS11_CKR_MUTEX_NOT_LOCKED = 1162
-    AWS_ERROR_PKCS11_CKR_NEW_PIN_MODE = 1163
-    AWS_ERROR_PKCS11_CKR_NEXT_OTP = 1164
-    AWS_ERROR_PKCS11_CKR_EXCEEDED_MAX_ITERATIONS = 1165
-    AWS_ERROR_PKCS11_CKR_FIPS_SELF_TEST_FAILED = 1166
-    AWS_ERROR_PKCS11_CKR_LIBRARY_LOAD_FAILED = 1167
-    AWS_ERROR_PKCS11_CKR_PIN_TOO_WEAK = 1168
-    AWS_ERROR_PKCS11_CKR_PUBLIC_KEY_INVALID = 1169
-    AWS_ERROR_PKCS11_CKR_FUNCTION_REJECTED = 1170
-    AWS_ERROR_IO_PINNED_EVENT_LOOP_MISMATCH = 1171
-    AWS_ERROR_PKCS11_ENCODING_ERROR = 1172
-    AWS_IO_TLS_ERROR_DEFAULT_TRUST_STORE_NOT_FOUND = 1173
-    AWS_IO_STREAM_SEEK_FAILED = 1174
-    AWS_IO_STREAM_GET_LENGTH_FAILED = 1175
-    AWS_IO_STREAM_SEEK_UNSUPPORTED = 1176
-    AWS_IO_STREAM_GET_LENGTH_UNSUPPORTED = 1177
-    AWS_IO_TLS_ERROR_READ_FAILURE = 1178
-    AWS_ERROR_PEM_MALFORMED = 1179
+    AWS_IO_MISSING_ALPN_MESSAGE = 1029
+    AWS_IO_UNHANDLED_ALPN_PROTOCOL_MESSAGE = 1030
+    AWS_IO_FILE_VALIDATION_FAILURE = 1031
+    AWS_ERROR_IO_EVENT_LOOP_THREAD_ONLY = 1032
+    AWS_ERROR_IO_ALREADY_SUBSCRIBED = 1033
+    AWS_ERROR_IO_NOT_SUBSCRIBED = 1034
+    AWS_ERROR_IO_OPERATION_CANCELLED = 1035
+    AWS_IO_READ_WOULD_BLOCK = 1036
+    AWS_IO_BROKEN_PIPE = 1037
+    AWS_IO_SOCKET_UNSUPPORTED_ADDRESS_FAMILY = 1038
+    AWS_IO_SOCKET_INVALID_OPERATION_FOR_TYPE = 1039
+    AWS_IO_SOCKET_CONNECTION_REFUSED = 1040
+    AWS_IO_SOCKET_TIMEOUT = 1041
+    AWS_IO_SOCKET_NO_ROUTE_TO_HOST = 1042
+    AWS_IO_SOCKET_NETWORK_DOWN = 1043
+    AWS_IO_SOCKET_CLOSED = 1044
+    AWS_IO_SOCKET_NOT_CONNECTED = 1045
+    AWS_IO_SOCKET_INVALID_OPTIONS = 1046
+    AWS_IO_SOCKET_ADDRESS_IN_USE = 1047
+    AWS_IO_SOCKET_INVALID_ADDRESS = 1048
+    AWS_IO_SOCKET_ILLEGAL_OPERATION_FOR_STATE = 1049
+    AWS_IO_SOCKET_CONNECT_ABORTED = 1050
+    AWS_IO_SOCKET_MISSING_EVENT_LOOP = 1051
+    AWS_IO_DNS_QUERY_FAILED = 1052
+    AWS_IO_DNS_INVALID_NAME = 1053
+    AWS_IO_DNS_NO_ADDRESS_FOR_HOST = 1054
+    AWS_IO_DNS_HOST_REMOVED_FROM_CACHE = 1055
+    AWS_IO_STREAM_INVALID_SEEK_POSITION = 1056
+    AWS_IO_STREAM_READ_FAILED = 1057
+    DEPRECATED_AWS_IO_INVALID_FILE_HANDLE = 1058
+    AWS_IO_SHARED_LIBRARY_LOAD_FAILURE = 1059
+    AWS_IO_SHARED_LIBRARY_FIND_SYMBOL_FAILURE = 1060
+    AWS_IO_MAX_RETRIES_EXCEEDED = 1061
+    AWS_IO_RETRY_PERMISSION_DENIED = 1062
+    AWS_IO_TLS_ERROR_NEGOTIATION_FAILURE = 1063
+    AWS_IO_TLS_ERROR_NOT_NEGOTIATED = 1064
+    AWS_IO_TLS_ERROR_WRITE_FAILURE = 1065
+    AWS_IO_TLS_ERROR_ALERT_RECEIVED = 1066
+    AWS_IO_TLS_CTX_ERROR = 1067
+    AWS_IO_TLS_VERSION_UNSUPPORTED = 1068
+    AWS_IO_TLS_CIPHER_PREF_UNSUPPORTED = 1069
+    AWS_IO_TLS_NEGOTIATION_TIMEOUT = 1070
+    AWS_IO_TLS_ALERT_NOT_GRACEFUL = 1071
+    AWS_IO_TLS_DIGEST_ALGORITHM_UNSUPPORTED = 1072
+    AWS_IO_TLS_SIGNATURE_ALGORITHM_UNSUPPORTED = 1073
+    AWS_IO_TLS_ERROR_READ_FAILURE = 1074
+    AWS_IO_TLS_UNKNOWN_ROOT_CERTIFICATE = 1075
+    AWS_IO_TLS_NO_ROOT_CERTIFICATE_FOUND = 1076
+    AWS_IO_TLS_CERTIFICATE_EXPIRED = 1077
+    AWS_IO_TLS_CERTIFICATE_NOT_YET_VALID = 1078
+    AWS_IO_TLS_BAD_CERTIFICATE = 1079
+    AWS_IO_TLS_PEER_CERTIFICATE_EXPIRED = 1080
+    AWS_IO_TLS_BAD_PEER_CERTIFICATE = 1081
+    AWS_IO_TLS_PEER_CERTIFICATE_REVOKED = 1082
+    AWS_IO_TLS_PEER_CERTIFICATE_UNKNOWN = 1083
+    AWS_IO_TLS_INTERNAL_ERROR = 1084
+    AWS_IO_TLS_CLOSED_GRACEFUL = 1085
+    AWS_IO_TLS_CLOSED_ABORT = 1086
+    AWS_IO_TLS_INVALID_CERTIFICATE_CHAIN = 1087
+    AWS_IO_TLS_HOST_NAME_MISSMATCH = 1088
+    AWS_ERROR_PKCS11_VERSION_UNSUPPORTED = 1089
+    AWS_ERROR_PKCS11_TOKEN_NOT_FOUND = 1090
+    AWS_ERROR_PKCS11_KEY_NOT_FOUND = 1091
+    AWS_ERROR_PKCS11_KEY_TYPE_UNSUPPORTED = 1092
+    AWS_ERROR_PKCS11_UNKNOWN_CRYPTOKI_RETURN_VALUE = 1093
+    AWS_ERROR_PKCS11_CKR_CANCEL = 1094
+    AWS_ERROR_PKCS11_CKR_HOST_MEMORY = 1095
+    AWS_ERROR_PKCS11_CKR_SLOT_ID_INVALID = 1096
+    AWS_ERROR_PKCS11_CKR_GENERAL_ERROR = 1097
+    AWS_ERROR_PKCS11_CKR_FUNCTION_FAILED = 1098
+    AWS_ERROR_PKCS11_CKR_ARGUMENTS_BAD = 1099
+    AWS_ERROR_PKCS11_CKR_NO_EVENT = 1100
+    AWS_ERROR_PKCS11_CKR_NEED_TO_CREATE_THREADS = 1101
+    AWS_ERROR_PKCS11_CKR_CANT_LOCK = 1102
+    AWS_ERROR_PKCS11_CKR_ATTRIBUTE_READ_ONLY = 1103
+    AWS_ERROR_PKCS11_CKR_ATTRIBUTE_SENSITIVE = 1104
+    AWS_ERROR_PKCS11_CKR_ATTRIBUTE_TYPE_INVALID = 1105
+    AWS_ERROR_PKCS11_CKR_ATTRIBUTE_VALUE_INVALID = 1106
+    AWS_ERROR_PKCS11_CKR_ACTION_PROHIBITED = 1107
+    AWS_ERROR_PKCS11_CKR_DATA_INVALID = 1108
+    AWS_ERROR_PKCS11_CKR_DATA_LEN_RANGE = 1109
+    AWS_ERROR_PKCS11_CKR_DEVICE_ERROR = 1110
+    AWS_ERROR_PKCS11_CKR_DEVICE_MEMORY = 1111
+    AWS_ERROR_PKCS11_CKR_DEVICE_REMOVED = 1112
+    AWS_ERROR_PKCS11_CKR_ENCRYPTED_DATA_INVALID = 1113
+    AWS_ERROR_PKCS11_CKR_ENCRYPTED_DATA_LEN_RANGE = 1114
+    AWS_ERROR_PKCS11_CKR_FUNCTION_CANCELED = 1115
+    AWS_ERROR_PKCS11_CKR_FUNCTION_NOT_PARALLEL = 1116
+    AWS_ERROR_PKCS11_CKR_FUNCTION_NOT_SUPPORTED = 1117
+    AWS_ERROR_PKCS11_CKR_KEY_HANDLE_INVALID = 1118
+    AWS_ERROR_PKCS11_CKR_KEY_SIZE_RANGE = 1119
+    AWS_ERROR_PKCS11_CKR_KEY_TYPE_INCONSISTENT = 1120
+    AWS_ERROR_PKCS11_CKR_KEY_NOT_NEEDED = 1121
+    AWS_ERROR_PKCS11_CKR_KEY_CHANGED = 1122
+    AWS_ERROR_PKCS11_CKR_KEY_NEEDED = 1123
+    AWS_ERROR_PKCS11_CKR_KEY_INDIGESTIBLE = 1124
+    AWS_ERROR_PKCS11_CKR_KEY_FUNCTION_NOT_PERMITTED = 1125
+    AWS_ERROR_PKCS11_CKR_KEY_NOT_WRAPPABLE = 1126
+    AWS_ERROR_PKCS11_CKR_KEY_UNEXTRACTABLE = 1127
+    AWS_ERROR_PKCS11_CKR_MECHANISM_INVALID = 1128
+    AWS_ERROR_PKCS11_CKR_MECHANISM_PARAM_INVALID = 1129
+    AWS_ERROR_PKCS11_CKR_OBJECT_HANDLE_INVALID = 1130
+    AWS_ERROR_PKCS11_CKR_OPERATION_ACTIVE = 1131
+    AWS_ERROR_PKCS11_CKR_OPERATION_NOT_INITIALIZED = 1132
+    AWS_ERROR_PKCS11_CKR_PIN_INCORRECT = 1133
+    AWS_ERROR_PKCS11_CKR_PIN_INVALID = 1134
+    AWS_ERROR_PKCS11_CKR_PIN_LEN_RANGE = 1135
+    AWS_ERROR_PKCS11_CKR_PIN_EXPIRED = 1136
+    AWS_ERROR_PKCS11_CKR_PIN_LOCKED = 1137
+    AWS_ERROR_PKCS11_CKR_SESSION_CLOSED = 1138
+    AWS_ERROR_PKCS11_CKR_SESSION_COUNT = 1139
+    AWS_ERROR_PKCS11_CKR_SESSION_HANDLE_INVALID = 1140
+    AWS_ERROR_PKCS11_CKR_SESSION_PARALLEL_NOT_SUPPORTED = 1141
+    AWS_ERROR_PKCS11_CKR_SESSION_READ_ONLY = 1142
+    AWS_ERROR_PKCS11_CKR_SESSION_EXISTS = 1143
+    AWS_ERROR_PKCS11_CKR_SESSION_READ_ONLY_EXISTS = 1144
+    AWS_ERROR_PKCS11_CKR_SESSION_READ_WRITE_SO_EXISTS = 1145
+    AWS_ERROR_PKCS11_CKR_SIGNATURE_INVALID = 1146
+    AWS_ERROR_PKCS11_CKR_SIGNATURE_LEN_RANGE = 1147
+    AWS_ERROR_PKCS11_CKR_TEMPLATE_INCOMPLETE = 1148
+    AWS_ERROR_PKCS11_CKR_TEMPLATE_INCONSISTENT = 1149
+    AWS_ERROR_PKCS11_CKR_TOKEN_NOT_PRESENT = 1150
+    AWS_ERROR_PKCS11_CKR_TOKEN_NOT_RECOGNIZED = 1151
+    AWS_ERROR_PKCS11_CKR_TOKEN_WRITE_PROTECTED = 1152
+    AWS_ERROR_PKCS11_CKR_UNWRAPPING_KEY_HANDLE_INVALID = 1153
+    AWS_ERROR_PKCS11_CKR_UNWRAPPING_KEY_SIZE_RANGE = 1154
+    AWS_ERROR_PKCS11_CKR_UNWRAPPING_KEY_TYPE_INCONSISTENT = 1155
+    AWS_ERROR_PKCS11_CKR_USER_ALREADY_LOGGED_IN = 1156
+    AWS_ERROR_PKCS11_CKR_USER_NOT_LOGGED_IN = 1157
+    AWS_ERROR_PKCS11_CKR_USER_PIN_NOT_INITIALIZED = 1158
+    AWS_ERROR_PKCS11_CKR_USER_TYPE_INVALID = 1159
+    AWS_ERROR_PKCS11_CKR_USER_ANOTHER_ALREADY_LOGGED_IN = 1160
+    AWS_ERROR_PKCS11_CKR_USER_TOO_MANY_TYPES = 1161
+    AWS_ERROR_PKCS11_CKR_WRAPPED_KEY_INVALID = 1162
+    AWS_ERROR_PKCS11_CKR_WRAPPED_KEY_LEN_RANGE = 1163
+    AWS_ERROR_PKCS11_CKR_WRAPPING_KEY_HANDLE_INVALID = 1164
+    AWS_ERROR_PKCS11_CKR_WRAPPING_KEY_SIZE_RANGE = 1165
+    AWS_ERROR_PKCS11_CKR_WRAPPING_KEY_TYPE_INCONSISTENT = 1166
+    AWS_ERROR_PKCS11_CKR_RANDOM_SEED_NOT_SUPPORTED = 1167
+    AWS_ERROR_PKCS11_CKR_RANDOM_NO_RNG = 1168
+    AWS_ERROR_PKCS11_CKR_DOMAIN_PARAMS_INVALID = 1169
+    AWS_ERROR_PKCS11_CKR_CURVE_NOT_SUPPORTED = 1170
+    AWS_ERROR_PKCS11_CKR_BUFFER_TOO_SMALL = 1171
+    AWS_ERROR_PKCS11_CKR_SAVED_STATE_INVALID = 1172
+    AWS_ERROR_PKCS11_CKR_INFORMATION_SENSITIVE = 1173
+    AWS_ERROR_PKCS11_CKR_STATE_UNSAVEABLE = 1174
+    AWS_ERROR_PKCS11_CKR_CRYPTOKI_NOT_INITIALIZED = 1175
+    AWS_ERROR_PKCS11_CKR_CRYPTOKI_ALREADY_INITIALIZED = 1176
+    AWS_ERROR_PKCS11_CKR_MUTEX_BAD = 1177
+    AWS_ERROR_PKCS11_CKR_MUTEX_NOT_LOCKED = 1178
+    AWS_ERROR_PKCS11_CKR_NEW_PIN_MODE = 1179
+    AWS_ERROR_PKCS11_CKR_NEXT_OTP = 1180
+    AWS_ERROR_PKCS11_CKR_EXCEEDED_MAX_ITERATIONS = 1181
+    AWS_ERROR_PKCS11_CKR_FIPS_SELF_TEST_FAILED = 1182
+    AWS_ERROR_PKCS11_CKR_LIBRARY_LOAD_FAILED = 1183
+    AWS_ERROR_PKCS11_CKR_PIN_TOO_WEAK = 1184
+    AWS_ERROR_PKCS11_CKR_PUBLIC_KEY_INVALID = 1185
+    AWS_ERROR_PKCS11_CKR_FUNCTION_REJECTED = 1186
+    AWS_ERROR_IO_PINNED_EVENT_LOOP_MISMATCH = 1187
+    AWS_ERROR_PKCS11_ENCODING_ERROR = 1188
+    AWS_IO_TLS_ERROR_DEFAULT_TRUST_STORE_NOT_FOUND = 1189
+    AWS_IO_STREAM_SEEK_FAILED = 1190
+    AWS_IO_STREAM_GET_LENGTH_FAILED = 1191
+    AWS_IO_STREAM_SEEK_UNSUPPORTED = 1192
+    AWS_IO_STREAM_GET_LENGTH_UNSUPPORTED = 1193
+    AWS_ERROR_PEM_MALFORMED = 1194
     AWS_IO_ERROR_END_RANGE = 2047
     AWS_IO_INVALID_FILE_HANDLE = 50
 end
@@ -3932,13 +4000,64 @@ function aws_shared_library_find_function(library, symbol_name, function_address
     ccall((:aws_shared_library_find_function, libaws_c_io), Cint, (Ptr{aws_shared_library}, Ptr{Cchar}, Ptr{aws_generic_function}), library, symbol_name, function_address)
 end
 
+# typedef void ( aws_socket_on_shutdown_complete_fn ) ( void * user_data )
+"""
+Documentation not found.
+"""
+const aws_socket_on_shutdown_complete_fn = Cvoid
+
+# typedef void ( aws_socket_on_accept_started_fn ) ( struct aws_socket * socket , int error_code , void * user_data )
+"""
+Called by a listening socket when a listener accept has successfully initialized or an error has occurred. If the listener was successful error\\_code will be AWS\\_ERROR\\_SUCCESS and the socket has already been assigned to the event loop specified in [`aws_socket_start_accept`](@ref)().
+
+If an error occurred error\\_code will be non-zero.
+"""
+const aws_socket_on_accept_started_fn = Cvoid
+
 # typedef void ( aws_socket_on_write_completed_fn ) ( struct aws_socket * socket , int error_code , size_t bytes_written , void * user_data )
 """
 Callback for when the data passed to a call to [`aws_socket_write`](@ref)() has either completed or failed. On success, error\\_code will be AWS\\_ERROR\\_SUCCESS.
 
-`socket` may be NULL in the callback if the socket is released and cleaned up before a callback is triggered. by the system I/O handler,
+`socket` may be NULL in the callback if the socket is released and cleaned up before the callback is triggered.
 """
 const aws_socket_on_write_completed_fn = Cvoid
+
+"""
+    aws_socket_connect_options
+
+Documentation not found.
+"""
+struct aws_socket_connect_options
+    remote_endpoint::Ptr{aws_socket_endpoint}
+    event_loop::Ptr{aws_event_loop}
+    on_connection_result::Ptr{aws_socket_on_connection_result_fn}
+    user_data::Ptr{Cvoid}
+    tls_connection_options::Ptr{aws_tls_connection_options}
+end
+
+"""
+    aws_socket_listener_options
+
+Documentation not found.
+"""
+struct aws_socket_listener_options
+    on_accept_result::Ptr{aws_socket_on_accept_result_fn}
+    on_accept_result_user_data::Ptr{Cvoid}
+    on_accept_start::Ptr{aws_socket_on_accept_started_fn}
+    on_accept_start_user_data::Ptr{Cvoid}
+end
+
+"""
+    aws_socket_bind_options
+
+Documentation not found.
+"""
+struct aws_socket_bind_options
+    local_endpoint::Ptr{aws_socket_endpoint}
+    user_data::Ptr{Cvoid}
+    event_loop::Ptr{aws_event_loop}
+    tls_connection_options::Ptr{aws_tls_connection_options}
+end
 
 """
     aws_socket_init(socket, alloc, options)
@@ -3971,7 +4090,7 @@ function aws_socket_clean_up(socket)
 end
 
 """
-    aws_socket_connect(socket, remote_endpoint, event_loop, on_connection_result, user_data)
+    aws_socket_connect(socket, socket_connect_options)
 
 Connects to a remote endpoint. In UDP, this simply binds the socket to a remote address for use with `[`aws_socket_write`](@ref)()`, and if the operation is successful, the socket can immediately be used for write operations.
 
@@ -3981,25 +4100,25 @@ If an event\\_loop is provided for UDP sockets, a notification will be sent on o
 
 ### Prototype
 ```c
-int aws_socket_connect( struct aws_socket *socket, const struct aws_socket_endpoint *remote_endpoint, struct aws_event_loop *event_loop, aws_socket_on_connection_result_fn *on_connection_result, void *user_data);
+int aws_socket_connect(struct aws_socket *socket, struct aws_socket_connect_options *socket_connect_options);
 ```
 """
-function aws_socket_connect(socket, remote_endpoint, event_loop, on_connection_result, user_data)
-    ccall((:aws_socket_connect, libaws_c_io), Cint, (Ptr{aws_socket}, Ptr{aws_socket_endpoint}, Ptr{aws_event_loop}, Ptr{aws_socket_on_connection_result_fn}, Ptr{Cvoid}), socket, remote_endpoint, event_loop, on_connection_result, user_data)
+function aws_socket_connect(socket, socket_connect_options)
+    ccall((:aws_socket_connect, libaws_c_io), Cint, (Ptr{aws_socket}, Ptr{aws_socket_connect_options}), socket, socket_connect_options)
 end
 
 """
-    aws_socket_bind(socket, local_endpoint)
+    aws_socket_bind(socket, socket_bind_options)
 
 Binds the socket to a local address. In UDP mode, the socket is ready for `[`aws_socket_read`](@ref)()` operations. In connection oriented modes, you still must call `[`aws_socket_listen`](@ref)()` and `[`aws_socket_start_accept`](@ref)()` before using the socket. local\\_endpoint is copied.
 
 ### Prototype
 ```c
-int aws_socket_bind(struct aws_socket *socket, const struct aws_socket_endpoint *local_endpoint);
+int aws_socket_bind(struct aws_socket *socket, struct aws_socket_bind_options *socket_bind_options);
 ```
 """
-function aws_socket_bind(socket, local_endpoint)
-    ccall((:aws_socket_bind, libaws_c_io), Cint, (Ptr{aws_socket}, Ptr{aws_socket_endpoint}), socket, local_endpoint)
+function aws_socket_bind(socket, socket_bind_options)
+    ccall((:aws_socket_bind, libaws_c_io), Cint, (Ptr{aws_socket}, Ptr{aws_socket_bind_options}), socket, socket_bind_options)
 end
 
 """
@@ -4031,7 +4150,7 @@ function aws_socket_listen(socket, backlog_size)
 end
 
 """
-    aws_socket_start_accept(socket, accept_loop, on_accept_result, user_data)
+    aws_socket_start_accept(socket, accept_loop, options)
 
 TCP, LOCAL and VSOCK only. The socket will begin accepting new connections. This is an asynchronous operation. New connections or errors will arrive via the `on_accept_result` callback.
 
@@ -4039,11 +4158,11 @@ TCP, LOCAL and VSOCK only. The socket will begin accepting new connections. This
 
 ### Prototype
 ```c
-int aws_socket_start_accept( struct aws_socket *socket, struct aws_event_loop *accept_loop, aws_socket_on_accept_result_fn *on_accept_result, void *user_data);
+int aws_socket_start_accept( struct aws_socket *socket, struct aws_event_loop *accept_loop, struct aws_socket_listener_options options);
 ```
 """
-function aws_socket_start_accept(socket, accept_loop, on_accept_result, user_data)
-    ccall((:aws_socket_start_accept, libaws_c_io), Cint, (Ptr{aws_socket}, Ptr{aws_event_loop}, Ptr{aws_socket_on_accept_result_fn}, Ptr{Cvoid}), socket, accept_loop, on_accept_result, user_data)
+function aws_socket_start_accept(socket, accept_loop, options)
+    ccall((:aws_socket_start_accept, libaws_c_io), Cint, (Ptr{aws_socket}, Ptr{aws_event_loop}, aws_socket_listener_options), socket, accept_loop, options)
 end
 
 """
@@ -4064,6 +4183,8 @@ end
     aws_socket_close(socket)
 
 Calls `close()` on the socket and unregisters all io operations from the event loop. This function must be called from the event-loop's thread unless this is a listening socket. If it's a listening socket it can be called from any non-event-loop thread or the event-loop the socket is currently assigned to. If called from outside the event-loop, this function will block waiting on the socket to close. If this is called from an event-loop thread other than the one it's assigned to, it presents the possibility of a deadlock, so don't do it.
+
+If you are using Apple Network Framework, you should always call this function from an event-loop thread regardless it is a server or client socket.
 
 ### Prototype
 ```c
@@ -4091,7 +4212,7 @@ end
 """
     aws_socket_set_options(socket, options)
 
-Sets new socket options on the underlying socket. This is mainly useful in context of accepting a new connection via: `on\\_incoming\\_connection()`. options is copied.
+Sets new socket options on the underlying socket.
 
 ### Prototype
 ```c
@@ -4191,6 +4312,34 @@ function aws_socket_write(socket, cursor, written_fn, user_data)
 end
 
 """
+    aws_socket_set_close_complete_callback(socket, fn, user_data)
+
+Apple Network Framework only. The callback that will triggered when [`aws_socket_close`](@ref)() finished. The callback will be called from the socket event loop.
+
+### Prototype
+```c
+int aws_socket_set_close_complete_callback( struct aws_socket *socket, aws_socket_on_shutdown_complete_fn fn, void *user_data);
+```
+"""
+function aws_socket_set_close_complete_callback(socket, fn, user_data)
+    ccall((:aws_socket_set_close_complete_callback, libaws_c_io), Cint, (Ptr{aws_socket}, aws_socket_on_shutdown_complete_fn, Ptr{Cvoid}), socket, fn, user_data)
+end
+
+"""
+    aws_socket_set_cleanup_complete_callback(socket, fn, user_data)
+
+Apple Network Framework only. The callback that will triggered when aws\\_socket\\_cleanup() finished. And it is only safe to release the socket afterwards. The callback will be called from the socket event loop.
+
+### Prototype
+```c
+int aws_socket_set_cleanup_complete_callback( struct aws_socket *socket, aws_socket_on_shutdown_complete_fn fn, void *user_data);
+```
+"""
+function aws_socket_set_cleanup_complete_callback(socket, fn, user_data)
+    ccall((:aws_socket_set_cleanup_complete_callback, libaws_c_io), Cint, (Ptr{aws_socket}, aws_socket_on_shutdown_complete_fn, Ptr{Cvoid}), socket, fn, user_data)
+end
+
+"""
     aws_socket_get_error(socket)
 
 Gets the latest error from the socket. If no error has occurred AWS\\_OP\\_SUCCESS will be returned. This function does not raise any errors to the installed error handlers.
@@ -4272,6 +4421,20 @@ bool aws_is_network_interface_name_valid(const char *interface_name);
 """
 function aws_is_network_interface_name_valid(interface_name)
     ccall((:aws_is_network_interface_name_valid, libaws_c_io), Bool, (Ptr{Cchar},), interface_name)
+end
+
+"""
+    aws_socket_get_default_impl_type()
+
+Get default impl type based on the platform. For user in internal tests only.
+
+### Prototype
+```c
+enum aws_socket_impl_type aws_socket_get_default_impl_type(void);
+```
+"""
+function aws_socket_get_default_impl_type()
+    ccall((:aws_socket_get_default_impl_type, libaws_c_io), aws_socket_impl_type, ())
 end
 
 """
@@ -4690,6 +4853,16 @@ A struct containing all of the data needed for a private key operation when maki
 mutable struct aws_tls_key_operation end
 
 """
+    aws_secitem_options
+
+A struct containing parameters used during import of Certificate and Private Key into a data protection keychain using Apple's SecItem API.
+"""
+struct aws_secitem_options
+    cert_label::Ptr{aws_string}
+    key_label::Ptr{aws_string}
+end
+
+"""
     aws_custom_key_op_handler_vtable
 
 vtable for [`aws_custom_key_op_handler`](@ref).
@@ -4779,8 +4952,6 @@ end
 
 Initializes options for use with mutual tls in client mode. cert\\_path and pkey\\_path are paths to files on disk. cert\\_path and pkey\\_path are treated as PKCS#7 PEM armored. They are loaded from disk and stored in buffers internally.
 
-NOTE: This is unsupported on iOS.
-
 ### Prototype
 ```c
 int aws_tls_ctx_options_init_client_mtls_from_path( struct aws_tls_ctx_options *options, struct aws_allocator *allocator, const char *cert_path, const char *pkey_path);
@@ -4794,8 +4965,6 @@ end
     aws_tls_ctx_options_init_client_mtls(options, allocator, cert, pkey)
 
 Initializes options for use with mutual tls in client mode. cert and pkey are copied. cert and pkey are treated as PKCS#7 PEM armored.
-
-NOTE: This is unsupported on iOS.
 
 ### Prototype
 ```c
@@ -4926,6 +5095,39 @@ int aws_tls_ctx_options_set_keychain_path( struct aws_tls_ctx_options *options, 
 """
 function aws_tls_ctx_options_set_keychain_path(options, keychain_path_cursor)
     ccall((:aws_tls_ctx_options_set_keychain_path, libaws_c_io), Cint, (Ptr{aws_tls_ctx_options}, Ptr{aws_byte_cursor}), options, keychain_path_cursor)
+end
+
+"""
+    aws_tls_ctx_options_set_secitem_options(tls_ctx_options, secitem_options)
+
+Applies provided SecItem options to certificate and private key being added to the iOS/tvOS KeyChain.
+
+NOTE: Currently only supported on iOS and tvOS using SecItem.
+
+# Arguments
+* `options`: [`aws_tls_ctx_options`](@ref) to be modified.
+* `secitem_options`: Options for SecItems
+### Prototype
+```c
+int aws_tls_ctx_options_set_secitem_options( struct aws_tls_ctx_options *tls_ctx_options, const struct aws_secitem_options *secitem_options);
+```
+"""
+function aws_tls_ctx_options_set_secitem_options(tls_ctx_options, secitem_options)
+    ccall((:aws_tls_ctx_options_set_secitem_options, libaws_c_io), Cint, (Ptr{aws_tls_ctx_options}, Ptr{aws_secitem_options}), tls_ctx_options, secitem_options)
+end
+
+"""
+    aws_tls_secitem_options_clean_up(secitem_options)
+
+Cleans up resources in secitem\\_options.
+
+### Prototype
+```c
+void aws_tls_secitem_options_clean_up(struct aws_secitem_options *secitem_options);
+```
+"""
+function aws_tls_secitem_options_clean_up(secitem_options)
+    ccall((:aws_tls_secitem_options_clean_up, libaws_c_io), Cvoid, (Ptr{aws_secitem_options},), secitem_options)
 end
 
 """
@@ -5549,6 +5751,20 @@ function aws_tls_key_operation_type_str(operation_type)
 end
 
 """
+    aws_error_code_is_tls(error_code)
+
+Returns true if error\\_code is a TLS Negotiation related error.
+
+### Prototype
+```c
+bool aws_error_code_is_tls(int error_code);
+```
+"""
+function aws_error_code_is_tls(error_code)
+    ccall((:aws_error_code_is_tls, libaws_c_io), Bool, (Cint,), error_code)
+end
+
+"""
     aws_async_read_completion_strategy
 
 Use [`aws_async_input_stream_tester`](@ref) to test edge cases in systems that take async streams. You can customize its behavior (e.g. fail on 3rd read, always complete async, always complete synchronously, etc)
@@ -5601,11 +5817,11 @@ struct aws_async_input_stream_tester_options
 end
 
 """
-    var"struct (unnamed at /home/runner/.julia/artifacts/a2393fcbe337e75bfd16e28b26662c8e93e4e9d3/include/aws/testing/async_stream_tester.h:55:5)"
+    var"struct (unnamed at /home/runner/.julia/artifacts/f0407e363c4dab97fe6fb91c39c8af0b735bdeca/include/aws/testing/async_stream_tester.h:55:5)"
 
 Documentation not found.
 """
-struct var"struct (unnamed at /home/runner/.julia/artifacts/a2393fcbe337e75bfd16e28b26662c8e93e4e9d3/include/aws/testing/async_stream_tester.h:55:5)"
+struct var"struct (unnamed at /home/runner/.julia/artifacts/f0407e363c4dab97fe6fb91c39c8af0b735bdeca/include/aws/testing/async_stream_tester.h:55:5)"
     lock::aws_mutex
     cvar::aws_condition_variable
     read_dest::Ptr{aws_byte_buf}
@@ -5628,7 +5844,7 @@ function Base.getproperty(x::Ptr{aws_async_input_stream_tester}, f::Symbol)
     f === :options && return Ptr{aws_async_input_stream_tester_options}(x + 32)
     f === :source_stream && return Ptr{Ptr{aws_input_stream}}(x + 88)
     f === :thread && return Ptr{aws_thread}(x + 92)
-    f === :synced_data && return Ptr{var"struct (unnamed at /home/runner/.julia/artifacts/a2393fcbe337e75bfd16e28b26662c8e93e4e9d3/include/aws/testing/async_stream_tester.h:55:5)"}(x + 104)
+    f === :synced_data && return Ptr{var"struct (unnamed at /home/runner/.julia/artifacts/f0407e363c4dab97fe6fb91c39c8af0b735bdeca/include/aws/testing/async_stream_tester.h:55:5)"}(x + 104)
     f === :num_outstanding_reads && return Ptr{aws_atomic_var}(x + 196)
     return getfield(x, f)
 end
@@ -5851,16 +6067,29 @@ function s_testing_loop_is_on_callers_thread(event_loop)
 end
 
 """
-    s_testing_loop_destroy(event_loop)
+    s_testing_loop_start_destroy(event_loop)
 
 Documentation not found.
 ### Prototype
 ```c
-static void s_testing_loop_destroy(struct aws_event_loop *event_loop);
+static void s_testing_loop_start_destroy(struct aws_event_loop *event_loop);
 ```
 """
-function s_testing_loop_destroy(event_loop)
-    ccall((:s_testing_loop_destroy, libaws_c_io), Cvoid, (Ptr{aws_event_loop},), event_loop)
+function s_testing_loop_start_destroy(event_loop)
+    ccall((:s_testing_loop_start_destroy, libaws_c_io), Cvoid, (Ptr{aws_event_loop},), event_loop)
+end
+
+"""
+    s_testing_loop_complete_destroy(event_loop)
+
+Documentation not found.
+### Prototype
+```c
+static void s_testing_loop_complete_destroy(struct aws_event_loop *event_loop);
+```
+"""
+function s_testing_loop_complete_destroy(event_loop)
+    ccall((:s_testing_loop_complete_destroy, libaws_c_io), Cvoid, (Ptr{aws_event_loop},), event_loop)
 end
 
 """
