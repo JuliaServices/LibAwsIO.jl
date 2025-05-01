@@ -1,6 +1,6 @@
 name = "LibAwsIO"
 uuid = "a5388770-19df-4151-b103-3d71de896ddf"
-version = "1.2.4"
+version = "1.2.5"
 
 [deps]
 CEnum = "fa961155-64e5-5f13-b03f-caf6b980ea82"
@@ -13,7 +13,7 @@ Aqua = "0.7"
 CEnum = "0.5"
 LibAwsCal = "1.1"
 LibAwsCommon = "1.2"
-aws_c_io_jll = "=0.18.1"
+aws_c_io_jll = "=0.19.0"
 julia = "1.6"
 
 [extras]
