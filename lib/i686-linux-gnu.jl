@@ -1,28 +1,28 @@
 using CEnum
 
 """
-    union (unnamed at /home/runner/.julia/artifacts/13eaa38fad83e0d114b6a75626ddcf60825c9a35/include/aws/common/task_scheduler.h:40:5)
+    union (unnamed at /home/runner/.julia/artifacts/418bca0a928226ba18856b04a407cb9f14d926a1/include/aws/common/task_scheduler.h:40:5)
 
 Documentation not found.
 """
-struct var"union (unnamed at /home/runner/.julia/artifacts/13eaa38fad83e0d114b6a75626ddcf60825c9a35/include/aws/common/task_scheduler.h:40:5)"
+struct var"union (unnamed at /home/runner/.julia/artifacts/418bca0a928226ba18856b04a407cb9f14d926a1/include/aws/common/task_scheduler.h:40:5)"
     data::NTuple{4, UInt8}
 end
 
-function Base.getproperty(x::Ptr{var"union (unnamed at /home/runner/.julia/artifacts/13eaa38fad83e0d114b6a75626ddcf60825c9a35/include/aws/common/task_scheduler.h:40:5)"}, f::Symbol)
+function Base.getproperty(x::Ptr{var"union (unnamed at /home/runner/.julia/artifacts/418bca0a928226ba18856b04a407cb9f14d926a1/include/aws/common/task_scheduler.h:40:5)"}, f::Symbol)
     f === :scheduled && return Ptr{Bool}(x + 0)
     f === :reserved && return Ptr{Csize_t}(x + 0)
     return getfield(x, f)
 end
 
-function Base.getproperty(x::var"union (unnamed at /home/runner/.julia/artifacts/13eaa38fad83e0d114b6a75626ddcf60825c9a35/include/aws/common/task_scheduler.h:40:5)", f::Symbol)
-    r = Ref{var"union (unnamed at /home/runner/.julia/artifacts/13eaa38fad83e0d114b6a75626ddcf60825c9a35/include/aws/common/task_scheduler.h:40:5)"}(x)
-    ptr = Base.unsafe_convert(Ptr{var"union (unnamed at /home/runner/.julia/artifacts/13eaa38fad83e0d114b6a75626ddcf60825c9a35/include/aws/common/task_scheduler.h:40:5)"}, r)
+function Base.getproperty(x::var"union (unnamed at /home/runner/.julia/artifacts/418bca0a928226ba18856b04a407cb9f14d926a1/include/aws/common/task_scheduler.h:40:5)", f::Symbol)
+    r = Ref{var"union (unnamed at /home/runner/.julia/artifacts/418bca0a928226ba18856b04a407cb9f14d926a1/include/aws/common/task_scheduler.h:40:5)"}(x)
+    ptr = Base.unsafe_convert(Ptr{var"union (unnamed at /home/runner/.julia/artifacts/418bca0a928226ba18856b04a407cb9f14d926a1/include/aws/common/task_scheduler.h:40:5)"}, r)
     fptr = getproperty(ptr, f)
     GC.@preserve r unsafe_load(fptr)
 end
 
-function Base.setproperty!(x::Ptr{var"union (unnamed at /home/runner/.julia/artifacts/13eaa38fad83e0d114b6a75626ddcf60825c9a35/include/aws/common/task_scheduler.h:40:5)"}, f::Symbol, v)
+function Base.setproperty!(x::Ptr{var"union (unnamed at /home/runner/.julia/artifacts/418bca0a928226ba18856b04a407cb9f14d926a1/include/aws/common/task_scheduler.h:40:5)"}, f::Symbol, v)
     unsafe_store!(getproperty(x, f), v)
 end
 
