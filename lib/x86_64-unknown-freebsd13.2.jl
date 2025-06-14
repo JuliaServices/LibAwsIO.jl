@@ -1311,28 +1311,28 @@ struct aws_socket_endpoint
 end
 
 """
-    union (unnamed at /home/runner/.julia/artifacts/9a3d642422541e213b1ff6d9134ddbeaf66b8e1b/include/aws/io/io.h:21:5)
+    union (unnamed at /home/runner/.julia/artifacts/93526ace4f05c0cd8cd2568e3df5d32e02109f5b/include/aws/io/io.h:21:5)
 
 Documentation not found.
 """
-struct var"union (unnamed at /home/runner/.julia/artifacts/9a3d642422541e213b1ff6d9134ddbeaf66b8e1b/include/aws/io/io.h:21:5)"
+struct var"union (unnamed at /home/runner/.julia/artifacts/93526ace4f05c0cd8cd2568e3df5d32e02109f5b/include/aws/io/io.h:21:5)"
     data::NTuple{8, UInt8}
 end
 
-function Base.getproperty(x::Ptr{var"union (unnamed at /home/runner/.julia/artifacts/9a3d642422541e213b1ff6d9134ddbeaf66b8e1b/include/aws/io/io.h:21:5)"}, f::Symbol)
+function Base.getproperty(x::Ptr{var"union (unnamed at /home/runner/.julia/artifacts/93526ace4f05c0cd8cd2568e3df5d32e02109f5b/include/aws/io/io.h:21:5)"}, f::Symbol)
     f === :fd && return Ptr{Cint}(x + 0)
     f === :handle && return Ptr{Ptr{Cvoid}}(x + 0)
     return getfield(x, f)
 end
 
-function Base.getproperty(x::var"union (unnamed at /home/runner/.julia/artifacts/9a3d642422541e213b1ff6d9134ddbeaf66b8e1b/include/aws/io/io.h:21:5)", f::Symbol)
-    r = Ref{var"union (unnamed at /home/runner/.julia/artifacts/9a3d642422541e213b1ff6d9134ddbeaf66b8e1b/include/aws/io/io.h:21:5)"}(x)
-    ptr = Base.unsafe_convert(Ptr{var"union (unnamed at /home/runner/.julia/artifacts/9a3d642422541e213b1ff6d9134ddbeaf66b8e1b/include/aws/io/io.h:21:5)"}, r)
+function Base.getproperty(x::var"union (unnamed at /home/runner/.julia/artifacts/93526ace4f05c0cd8cd2568e3df5d32e02109f5b/include/aws/io/io.h:21:5)", f::Symbol)
+    r = Ref{var"union (unnamed at /home/runner/.julia/artifacts/93526ace4f05c0cd8cd2568e3df5d32e02109f5b/include/aws/io/io.h:21:5)"}(x)
+    ptr = Base.unsafe_convert(Ptr{var"union (unnamed at /home/runner/.julia/artifacts/93526ace4f05c0cd8cd2568e3df5d32e02109f5b/include/aws/io/io.h:21:5)"}, r)
     fptr = getproperty(ptr, f)
     GC.@preserve r unsafe_load(fptr)
 end
 
-function Base.setproperty!(x::Ptr{var"union (unnamed at /home/runner/.julia/artifacts/9a3d642422541e213b1ff6d9134ddbeaf66b8e1b/include/aws/io/io.h:21:5)"}, f::Symbol, v)
+function Base.setproperty!(x::Ptr{var"union (unnamed at /home/runner/.julia/artifacts/93526ace4f05c0cd8cd2568e3df5d32e02109f5b/include/aws/io/io.h:21:5)"}, f::Symbol, v)
     unsafe_store!(getproperty(x, f), v)
 end
 
@@ -1352,7 +1352,7 @@ struct aws_io_handle
 end
 
 function Base.getproperty(x::Ptr{aws_io_handle}, f::Symbol)
-    f === :data && return Ptr{var"union (unnamed at /home/runner/.julia/artifacts/9a3d642422541e213b1ff6d9134ddbeaf66b8e1b/include/aws/io/io.h:21:5)"}(x + 0)
+    f === :data && return Ptr{var"union (unnamed at /home/runner/.julia/artifacts/93526ace4f05c0cd8cd2568e3df5d32e02109f5b/include/aws/io/io.h:21:5)"}(x + 0)
     f === :additional_data && return Ptr{Ptr{Cvoid}}(x + 8)
     f === :set_queue && return Ptr{Ptr{aws_io_set_queue_on_handle_fn}}(x + 16)
     return getfield(x, f)
@@ -1507,7 +1507,6 @@ struct aws_event_loop_vtable
     subscribe_to_io_events::Ptr{Cvoid}
     unsubscribe_from_io_events::Ptr{Cvoid}
     free_io_event_resources::Ptr{Cvoid}
-    get_base_event_loop_group::Ptr{Cvoid}
     is_on_callers_thread::Ptr{Cvoid}
 end
 
@@ -1661,6 +1660,36 @@ void aws_event_loop_group_release(struct aws_event_loop_group *el_group);
 """
 function aws_event_loop_group_release(el_group)
     ccall((:aws_event_loop_group_release, libaws_c_io), Cvoid, (Ptr{aws_event_loop_group},), el_group)
+end
+
+"""
+    aws_event_loop_group_acquire_from_event_loop(event_loop)
+
+Increments the reference count on the event loop group from event loop, allowing the caller to take a reference to it.
+
+Returns the base event loop group of the event loop, or null if the event loop does not belong to a group.
+
+### Prototype
+```c
+struct aws_event_loop_group *aws_event_loop_group_acquire_from_event_loop(struct aws_event_loop *event_loop);
+```
+"""
+function aws_event_loop_group_acquire_from_event_loop(event_loop)
+    ccall((:aws_event_loop_group_acquire_from_event_loop, libaws_c_io), Ptr{aws_event_loop_group}, (Ptr{aws_event_loop},), event_loop)
+end
+
+"""
+    aws_event_loop_group_release_from_event_loop(event_loop)
+
+Decrements the ref count of the event loop's base event loop group. When the ref count drops to zero, the event loop group will be destroyed.
+
+### Prototype
+```c
+void aws_event_loop_group_release_from_event_loop(struct aws_event_loop *event_loop);
+```
+"""
+function aws_event_loop_group_release_from_event_loop(event_loop)
+    ccall((:aws_event_loop_group_release_from_event_loop, libaws_c_io), Cvoid, (Ptr{aws_event_loop},), event_loop)
 end
 
 """
@@ -5763,11 +5792,11 @@ struct aws_async_input_stream_tester_options
 end
 
 """
-    var"struct (unnamed at /home/runner/.julia/artifacts/9a3d642422541e213b1ff6d9134ddbeaf66b8e1b/include/aws/testing/async_stream_tester.h:55:5)"
+    var"struct (unnamed at /home/runner/.julia/artifacts/93526ace4f05c0cd8cd2568e3df5d32e02109f5b/include/aws/testing/async_stream_tester.h:55:5)"
 
 Documentation not found.
 """
-struct var"struct (unnamed at /home/runner/.julia/artifacts/9a3d642422541e213b1ff6d9134ddbeaf66b8e1b/include/aws/testing/async_stream_tester.h:55:5)"
+struct var"struct (unnamed at /home/runner/.julia/artifacts/93526ace4f05c0cd8cd2568e3df5d32e02109f5b/include/aws/testing/async_stream_tester.h:55:5)"
     lock::aws_mutex
     cvar::aws_condition_variable
     read_dest::Ptr{aws_byte_buf}
@@ -5790,7 +5819,7 @@ function Base.getproperty(x::Ptr{aws_async_input_stream_tester}, f::Symbol)
     f === :options && return Ptr{aws_async_input_stream_tester_options}(x + 56)
     f === :source_stream && return Ptr{Ptr{aws_input_stream}}(x + 152)
     f === :thread && return Ptr{aws_thread}(x + 160)
-    f === :synced_data && return Ptr{var"struct (unnamed at /home/runner/.julia/artifacts/9a3d642422541e213b1ff6d9134ddbeaf66b8e1b/include/aws/testing/async_stream_tester.h:55:5)"}(x + 184)
+    f === :synced_data && return Ptr{var"struct (unnamed at /home/runner/.julia/artifacts/93526ace4f05c0cd8cd2568e3df5d32e02109f5b/include/aws/testing/async_stream_tester.h:55:5)"}(x + 184)
     f === :num_outstanding_reads && return Ptr{aws_atomic_var}(x + 240)
     return getfield(x, f)
 end
