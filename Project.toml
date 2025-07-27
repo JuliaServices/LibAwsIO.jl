@@ -9,7 +9,7 @@ LibAwsCommon = "c6e421ba-b5f8-4792-a1c4-42948de3ed9d"
 aws_c_io_jll = "13c41daa-f319-5298-b5eb-5754e0170d52"
 
 [compat]
-Aqua = "0.7"
+Aqua = "0.7,0.8"
 CEnum = "0.5"
 LibAwsCal = "1.1.5"
 LibAwsCommon = "1.2.4"
