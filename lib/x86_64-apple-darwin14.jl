@@ -1,28 +1,28 @@
 using CEnum
 
 """
-    union (unnamed at /home/runner/.julia/artifacts/ec92e041cea745d3a19668267439788457587b38/include/aws/common/task_scheduler.h:40:5)
+    union (unnamed at /home/runner/.julia/artifacts/81c525c57870bc80591eed7434615005a1544642/include/aws/common/task_scheduler.h:40:5)
 
 Documentation not found.
 """
-struct var"union (unnamed at /home/runner/.julia/artifacts/ec92e041cea745d3a19668267439788457587b38/include/aws/common/task_scheduler.h:40:5)"
+struct var"union (unnamed at /home/runner/.julia/artifacts/81c525c57870bc80591eed7434615005a1544642/include/aws/common/task_scheduler.h:40:5)"
     data::NTuple{8, UInt8}
 end
 
-function Base.getproperty(x::Ptr{var"union (unnamed at /home/runner/.julia/artifacts/ec92e041cea745d3a19668267439788457587b38/include/aws/common/task_scheduler.h:40:5)"}, f::Symbol)
+function Base.getproperty(x::Ptr{var"union (unnamed at /home/runner/.julia/artifacts/81c525c57870bc80591eed7434615005a1544642/include/aws/common/task_scheduler.h:40:5)"}, f::Symbol)
     f === :scheduled && return Ptr{Bool}(x + 0)
     f === :reserved && return Ptr{Csize_t}(x + 0)
     return getfield(x, f)
 end
 
-function Base.getproperty(x::var"union (unnamed at /home/runner/.julia/artifacts/ec92e041cea745d3a19668267439788457587b38/include/aws/common/task_scheduler.h:40:5)", f::Symbol)
-    r = Ref{var"union (unnamed at /home/runner/.julia/artifacts/ec92e041cea745d3a19668267439788457587b38/include/aws/common/task_scheduler.h:40:5)"}(x)
-    ptr = Base.unsafe_convert(Ptr{var"union (unnamed at /home/runner/.julia/artifacts/ec92e041cea745d3a19668267439788457587b38/include/aws/common/task_scheduler.h:40:5)"}, r)
+function Base.getproperty(x::var"union (unnamed at /home/runner/.julia/artifacts/81c525c57870bc80591eed7434615005a1544642/include/aws/common/task_scheduler.h:40:5)", f::Symbol)
+    r = Ref{var"union (unnamed at /home/runner/.julia/artifacts/81c525c57870bc80591eed7434615005a1544642/include/aws/common/task_scheduler.h:40:5)"}(x)
+    ptr = Base.unsafe_convert(Ptr{var"union (unnamed at /home/runner/.julia/artifacts/81c525c57870bc80591eed7434615005a1544642/include/aws/common/task_scheduler.h:40:5)"}, r)
     fptr = getproperty(ptr, f)
     GC.@preserve r unsafe_load(fptr)
 end
 
-function Base.setproperty!(x::Ptr{var"union (unnamed at /home/runner/.julia/artifacts/ec92e041cea745d3a19668267439788457587b38/include/aws/common/task_scheduler.h:40:5)"}, f::Symbol, v)
+function Base.setproperty!(x::Ptr{var"union (unnamed at /home/runner/.julia/artifacts/81c525c57870bc80591eed7434615005a1544642/include/aws/common/task_scheduler.h:40:5)"}, f::Symbol, v)
     unsafe_store!(getproperty(x, f), v)
 end
 
@@ -1311,28 +1311,28 @@ struct aws_socket_endpoint
 end
 
 """
-    union (unnamed at /home/runner/.julia/artifacts/65b7c5ccd51445e4d59baf463b71d53090e55511/include/aws/io/io.h:21:5)
+    union (unnamed at /home/runner/.julia/artifacts/b2f91522402f8ea2c6688de0dab7c61427ba2b82/include/aws/io/io.h:21:5)
 
 Documentation not found.
 """
-struct var"union (unnamed at /home/runner/.julia/artifacts/65b7c5ccd51445e4d59baf463b71d53090e55511/include/aws/io/io.h:21:5)"
+struct var"union (unnamed at /home/runner/.julia/artifacts/b2f91522402f8ea2c6688de0dab7c61427ba2b82/include/aws/io/io.h:21:5)"
     data::NTuple{8, UInt8}
 end
 
-function Base.getproperty(x::Ptr{var"union (unnamed at /home/runner/.julia/artifacts/65b7c5ccd51445e4d59baf463b71d53090e55511/include/aws/io/io.h:21:5)"}, f::Symbol)
+function Base.getproperty(x::Ptr{var"union (unnamed at /home/runner/.julia/artifacts/b2f91522402f8ea2c6688de0dab7c61427ba2b82/include/aws/io/io.h:21:5)"}, f::Symbol)
     f === :fd && return Ptr{Cint}(x + 0)
     f === :handle && return Ptr{Ptr{Cvoid}}(x + 0)
     return getfield(x, f)
 end
 
-function Base.getproperty(x::var"union (unnamed at /home/runner/.julia/artifacts/65b7c5ccd51445e4d59baf463b71d53090e55511/include/aws/io/io.h:21:5)", f::Symbol)
-    r = Ref{var"union (unnamed at /home/runner/.julia/artifacts/65b7c5ccd51445e4d59baf463b71d53090e55511/include/aws/io/io.h:21:5)"}(x)
-    ptr = Base.unsafe_convert(Ptr{var"union (unnamed at /home/runner/.julia/artifacts/65b7c5ccd51445e4d59baf463b71d53090e55511/include/aws/io/io.h:21:5)"}, r)
+function Base.getproperty(x::var"union (unnamed at /home/runner/.julia/artifacts/b2f91522402f8ea2c6688de0dab7c61427ba2b82/include/aws/io/io.h:21:5)", f::Symbol)
+    r = Ref{var"union (unnamed at /home/runner/.julia/artifacts/b2f91522402f8ea2c6688de0dab7c61427ba2b82/include/aws/io/io.h:21:5)"}(x)
+    ptr = Base.unsafe_convert(Ptr{var"union (unnamed at /home/runner/.julia/artifacts/b2f91522402f8ea2c6688de0dab7c61427ba2b82/include/aws/io/io.h:21:5)"}, r)
     fptr = getproperty(ptr, f)
     GC.@preserve r unsafe_load(fptr)
 end
 
-function Base.setproperty!(x::Ptr{var"union (unnamed at /home/runner/.julia/artifacts/65b7c5ccd51445e4d59baf463b71d53090e55511/include/aws/io/io.h:21:5)"}, f::Symbol, v)
+function Base.setproperty!(x::Ptr{var"union (unnamed at /home/runner/.julia/artifacts/b2f91522402f8ea2c6688de0dab7c61427ba2b82/include/aws/io/io.h:21:5)"}, f::Symbol, v)
     unsafe_store!(getproperty(x, f), v)
 end
 
@@ -1352,7 +1352,7 @@ struct aws_io_handle
 end
 
 function Base.getproperty(x::Ptr{aws_io_handle}, f::Symbol)
-    f === :data && return Ptr{var"union (unnamed at /home/runner/.julia/artifacts/65b7c5ccd51445e4d59baf463b71d53090e55511/include/aws/io/io.h:21:5)"}(x + 0)
+    f === :data && return Ptr{var"union (unnamed at /home/runner/.julia/artifacts/b2f91522402f8ea2c6688de0dab7c61427ba2b82/include/aws/io/io.h:21:5)"}(x + 0)
     f === :additional_data && return Ptr{Ptr{Cvoid}}(x + 8)
     f === :set_queue && return Ptr{Ptr{aws_io_set_queue_on_handle_fn}}(x + 16)
     return getfield(x, f)
@@ -4413,6 +4413,48 @@ function aws_socket_get_default_impl_type()
 end
 
 """
+    aws_parse_ipv4_address(src, dst)
+
+Parse an IPv4 address string and convert it to binary representation.
+
+This function converts a string representation of an IPv4 address into its binary network byte order (big-endian) representation.
+
+# Arguments
+* `src`: The IPv4 address string to parse. Must be a valid IPv4 address in dotted decimal notation.
+* `dst`: Pointer to a uint32\\_t where the parsed address will be stored in network byte order.
+# Returns
+AWS\\_OP\\_SUCCESS on success, or AWS\\_OP\\_ERR on failure. On failure, aws\\_last\\_error() will be set to: - AWS\\_IO\\_SOCKET\\_INVALID\\_ADDRESS if the input string is not a valid IPv4 address
+### Prototype
+```c
+int aws_parse_ipv4_address(const struct aws_string *src, uint32_t *dst);
+```
+"""
+function aws_parse_ipv4_address(src, dst)
+    ccall((:aws_parse_ipv4_address, libaws_c_io), Cint, (Ptr{aws_string}, Ptr{UInt32}), src, dst)
+end
+
+"""
+    aws_parse_ipv6_address(src, dst)
+
+Parse an IPv6 address string and convert it to binary representation.
+
+This function converts a string representation of an IPv6 address into its binary network byte order(big-endian) representation.
+
+# Arguments
+* `src`: The IPv6 address string to parse. Must be a valid IPv6 address in standard notation.
+* `dst`: Pointer to an [`aws_byte_buf`](@ref) where the parsed address will be appended. The buffer must have at least 16 bytes of available capacity. The parsed 16-byte IPv6 address will be appended to the buffer and the buffer's length will be increased by 16.
+# Returns
+AWS\\_OP\\_SUCCESS on success, or AWS\\_OP\\_ERR on failure. On failure, aws\\_last\\_error() will be set to: - AWS\\_IO\\_SOCKET\\_INVALID\\_ADDRESS if the input string is not a valid IPv6 address - AWS\\_ERROR\\_SHORT\\_BUFFER if the destination buffer doesn't have enough capacity
+### Prototype
+```c
+int aws_parse_ipv6_address(const struct aws_string *src, struct aws_byte_buf *dst);
+```
+"""
+function aws_parse_ipv6_address(src, dst)
+    ccall((:aws_parse_ipv6_address, libaws_c_io), Cint, (Ptr{aws_string}, Ptr{aws_byte_buf}), src, dst)
+end
+
+"""
     aws_socket_handler_new(allocator, socket, slot, max_read_size)
 
 Socket handlers should be the first slot/handler in a channel. It interacts directly with the channel's event loop for read and write notifications. max\\_read\\_size is the maximum amount of data it will read from the socket before a context switch (a continuation task will be scheduled).
@@ -4783,6 +4825,7 @@ Documentation not found.
     AWS_IO_TLS_CIPHER_PREF_PQ_TLSv1_0_2021_05 = 6
     AWS_IO_TLS_CIPHER_PREF_PQ_TLSV1_2_2024_10 = 7
     AWS_IO_TLS_CIPHER_PREF_PQ_DEFAULT = 8
+    AWS_IO_TLS_CIPHER_PREF_TLSV1_2_2025_07 = 9
     AWS_IO_TLS_CIPHER_PREF_END_RANGE = 65535
 end
 
@@ -5796,11 +5839,11 @@ struct aws_async_input_stream_tester_options
 end
 
 """
-    var"struct (unnamed at /home/runner/.julia/artifacts/65b7c5ccd51445e4d59baf463b71d53090e55511/include/aws/testing/async_stream_tester.h:55:5)"
+    var"struct (unnamed at /home/runner/.julia/artifacts/b2f91522402f8ea2c6688de0dab7c61427ba2b82/include/aws/testing/async_stream_tester.h:55:5)"
 
 Documentation not found.
 """
-struct var"struct (unnamed at /home/runner/.julia/artifacts/65b7c5ccd51445e4d59baf463b71d53090e55511/include/aws/testing/async_stream_tester.h:55:5)"
+struct var"struct (unnamed at /home/runner/.julia/artifacts/b2f91522402f8ea2c6688de0dab7c61427ba2b82/include/aws/testing/async_stream_tester.h:55:5)"
     lock::aws_mutex
     cvar::aws_condition_variable
     read_dest::Ptr{aws_byte_buf}
@@ -5823,7 +5866,7 @@ function Base.getproperty(x::Ptr{aws_async_input_stream_tester}, f::Symbol)
     f === :options && return Ptr{aws_async_input_stream_tester_options}(x + 56)
     f === :source_stream && return Ptr{Ptr{aws_input_stream}}(x + 152)
     f === :thread && return Ptr{aws_thread}(x + 160)
-    f === :synced_data && return Ptr{var"struct (unnamed at /home/runner/.julia/artifacts/65b7c5ccd51445e4d59baf463b71d53090e55511/include/aws/testing/async_stream_tester.h:55:5)"}(x + 184)
+    f === :synced_data && return Ptr{var"struct (unnamed at /home/runner/.julia/artifacts/b2f91522402f8ea2c6688de0dab7c61427ba2b82/include/aws/testing/async_stream_tester.h:55:5)"}(x + 184)
     f === :num_outstanding_reads && return Ptr{aws_atomic_var}(x + 336)
     return getfield(x, f)
 end
