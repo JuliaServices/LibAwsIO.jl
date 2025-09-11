@@ -1501,6 +1501,7 @@ struct aws_event_loop_vtable
     stop::Ptr{Cvoid}
     wait_for_stop_completion::Ptr{Cvoid}
     schedule_task_now::Ptr{Cvoid}
+    schedule_task_now_serialized::Ptr{Cvoid}
     schedule_task_future::Ptr{Cvoid}
     cancel_task::Ptr{Cvoid}
     connect_to_io_completion_port::Ptr{Cvoid}
@@ -1558,6 +1559,22 @@ void aws_event_loop_schedule_task_now(struct aws_event_loop *event_loop, struct 
 """
 function aws_event_loop_schedule_task_now(event_loop, task)
     ccall((:aws_event_loop_schedule_task_now, libaws_c_io), Cvoid, (Ptr{aws_event_loop}, Ptr{aws_task}), event_loop, task)
+end
+
+"""
+    aws_event_loop_schedule_task_now_serialized(event_loop, task)
+
+Variant of [`aws_event_loop_schedule_task_now`](@ref) that forces all tasks to go through the cross thread task queue, guaranteeing that order-of-submission is order-of-execution. If you need this guarantee, you must use this function; the base function contains short-circuiting logic that breaks ordering invariants. Beyond that, all properties of [`aws_event_loop_schedule_task_now`](@ref) apply to this function as well.
+
+Serialization guarantee does not apply to task cancellation (which can occur out-of-order or even out-of-thread in certain cases).
+
+### Prototype
+```c
+void aws_event_loop_schedule_task_now_serialized(struct aws_event_loop *event_loop, struct aws_task *task);
+```
+"""
+function aws_event_loop_schedule_task_now_serialized(event_loop, task)
+    ccall((:aws_event_loop_schedule_task_now_serialized, libaws_c_io), Cvoid, (Ptr{aws_event_loop}, Ptr{aws_task}), event_loop, task)
 end
 
 """
