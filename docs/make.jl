@@ -1,10 +1,14 @@
 using LibAwsIO
+using LibAwsCommon
+using LibAwsCal
 using Documenter
 
 DocMeta.setdocmeta!(LibAwsIO, :DocTestSetup, :(using LibAwsIO); recursive=true)
 
 makedocs(;
-    modules=[LibAwsIO],
+    modules=[LibAwsIO, LibAwsCommon, LibAwsCal],
+    checkdocs=:none,
+    warnonly=[:cross_references, :missing_docs],
     repo="https://github.com/JuliaServices/LibAwsIO.jl/blob/{commit}{path}#{line}",
     sitename="LibAwsIO.jl",
     format=Documenter.HTML(;

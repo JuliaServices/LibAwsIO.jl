@@ -1365,28 +1365,28 @@ struct aws_socket_endpoint
 end
 
 """
-    union (unnamed at /home/runner/.julia/artifacts/3fcad08e7e99497b796417b63d68da73e1e0b231/include/aws/io/io.h:21:5)
+    union (unnamed at /home/runner/.julia/artifacts/b16c138a239c06ce3f5d19c88b2cc44e0e818493/include/aws/io/io.h:21:5)
 
 Documentation not found.
 """
-struct var"union (unnamed at /home/runner/.julia/artifacts/3fcad08e7e99497b796417b63d68da73e1e0b231/include/aws/io/io.h:21:5)"
+struct var"union (unnamed at /home/runner/.julia/artifacts/b16c138a239c06ce3f5d19c88b2cc44e0e818493/include/aws/io/io.h:21:5)"
     data::NTuple{8, UInt8}
 end
 
-function Base.getproperty(x::Ptr{var"union (unnamed at /home/runner/.julia/artifacts/3fcad08e7e99497b796417b63d68da73e1e0b231/include/aws/io/io.h:21:5)"}, f::Symbol)
+function Base.getproperty(x::Ptr{var"union (unnamed at /home/runner/.julia/artifacts/b16c138a239c06ce3f5d19c88b2cc44e0e818493/include/aws/io/io.h:21:5)"}, f::Symbol)
     f === :fd && return Ptr{Cint}(x + 0)
     f === :handle && return Ptr{Ptr{Cvoid}}(x + 0)
     return getfield(x, f)
 end
 
-function Base.getproperty(x::var"union (unnamed at /home/runner/.julia/artifacts/3fcad08e7e99497b796417b63d68da73e1e0b231/include/aws/io/io.h:21:5)", f::Symbol)
-    r = Ref{var"union (unnamed at /home/runner/.julia/artifacts/3fcad08e7e99497b796417b63d68da73e1e0b231/include/aws/io/io.h:21:5)"}(x)
-    ptr = Base.unsafe_convert(Ptr{var"union (unnamed at /home/runner/.julia/artifacts/3fcad08e7e99497b796417b63d68da73e1e0b231/include/aws/io/io.h:21:5)"}, r)
+function Base.getproperty(x::var"union (unnamed at /home/runner/.julia/artifacts/b16c138a239c06ce3f5d19c88b2cc44e0e818493/include/aws/io/io.h:21:5)", f::Symbol)
+    r = Ref{var"union (unnamed at /home/runner/.julia/artifacts/b16c138a239c06ce3f5d19c88b2cc44e0e818493/include/aws/io/io.h:21:5)"}(x)
+    ptr = Base.unsafe_convert(Ptr{var"union (unnamed at /home/runner/.julia/artifacts/b16c138a239c06ce3f5d19c88b2cc44e0e818493/include/aws/io/io.h:21:5)"}, r)
     fptr = getproperty(ptr, f)
     GC.@preserve r unsafe_load(fptr)
 end
 
-function Base.setproperty!(x::Ptr{var"union (unnamed at /home/runner/.julia/artifacts/3fcad08e7e99497b796417b63d68da73e1e0b231/include/aws/io/io.h:21:5)"}, f::Symbol, v)
+function Base.setproperty!(x::Ptr{var"union (unnamed at /home/runner/.julia/artifacts/b16c138a239c06ce3f5d19c88b2cc44e0e818493/include/aws/io/io.h:21:5)"}, f::Symbol, v)
     unsafe_store!(getproperty(x, f), v)
 end
 
@@ -1406,7 +1406,7 @@ struct aws_io_handle
 end
 
 function Base.getproperty(x::Ptr{aws_io_handle}, f::Symbol)
-    f === :data && return Ptr{var"union (unnamed at /home/runner/.julia/artifacts/3fcad08e7e99497b796417b63d68da73e1e0b231/include/aws/io/io.h:21:5)"}(x + 0)
+    f === :data && return Ptr{var"union (unnamed at /home/runner/.julia/artifacts/b16c138a239c06ce3f5d19c88b2cc44e0e818493/include/aws/io/io.h:21:5)"}(x + 0)
     f === :additional_data && return Ptr{Ptr{Cvoid}}(x + 8)
     f === :set_queue && return Ptr{Ptr{aws_io_set_queue_on_handle_fn}}(x + 16)
     return getfield(x, f)
@@ -5889,11 +5889,11 @@ struct aws_async_input_stream_tester_options
 end
 
 """
-    var"struct (unnamed at /home/runner/.julia/artifacts/3fcad08e7e99497b796417b63d68da73e1e0b231/include/aws/testing/async_stream_tester.h:55:5)"
+    var"struct (unnamed at /home/runner/.julia/artifacts/b16c138a239c06ce3f5d19c88b2cc44e0e818493/include/aws/testing/async_stream_tester.h:55:5)"
 
 Documentation not found.
 """
-struct var"struct (unnamed at /home/runner/.julia/artifacts/3fcad08e7e99497b796417b63d68da73e1e0b231/include/aws/testing/async_stream_tester.h:55:5)"
+struct var"struct (unnamed at /home/runner/.julia/artifacts/b16c138a239c06ce3f5d19c88b2cc44e0e818493/include/aws/testing/async_stream_tester.h:55:5)"
     lock::aws_mutex
     cvar::aws_condition_variable
     read_dest::Ptr{aws_byte_buf}
@@ -5916,7 +5916,7 @@ function Base.getproperty(x::Ptr{aws_async_input_stream_tester}, f::Symbol)
     f === :options && return Ptr{aws_async_input_stream_tester_options}(x + 56)
     f === :source_stream && return Ptr{Ptr{aws_input_stream}}(x + 152)
     f === :thread && return Ptr{aws_thread}(x + 160)
-    f === :synced_data && return Ptr{var"struct (unnamed at /home/runner/.julia/artifacts/3fcad08e7e99497b796417b63d68da73e1e0b231/include/aws/testing/async_stream_tester.h:55:5)"}(x + 184)
+    f === :synced_data && return Ptr{var"struct (unnamed at /home/runner/.julia/artifacts/b16c138a239c06ce3f5d19c88b2cc44e0e818493/include/aws/testing/async_stream_tester.h:55:5)"}(x + 184)
     f === :num_outstanding_reads && return Ptr{aws_atomic_var}(x + 312)
     return getfield(x, f)
 end
