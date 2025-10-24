@@ -72,6 +72,14 @@ jobs:
           NEW_LIBAWS_VERSION=$(echo $CURRENT_LIBAWS_VERSION | awk -F. '{print $1"."$2"."'"$PATCH"'}')
           sed -i "s/version = \"$CURRENT_LIBAWS_VERSION\"/version = \"$NEW_LIBAWS_VERSION\"/" ${{ env.LIBAWS_PATH }}/Project.toml
 
+      - name: Free up disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /usr/local/share/boost
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+          df -h
+
       - uses: julia-actions/cache@v2
 
       - name: Run the generator
