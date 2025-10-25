@@ -1,28 +1,28 @@
 using CEnum
 
 """
-    union (unnamed at /home/runner/.julia/artifacts/2668429b906ded4385b08f8a7fb9a0c13b05ebcc/include/aws/common/task_scheduler.h:40:5)
+    union (unnamed at /home/runner/.julia/artifacts/e7f81f17200b82e6fd9460b1d65c223719604cc1/include/aws/common/task_scheduler.h:40:5)
 
 Documentation not found.
 """
-struct var"union (unnamed at /home/runner/.julia/artifacts/2668429b906ded4385b08f8a7fb9a0c13b05ebcc/include/aws/common/task_scheduler.h:40:5)"
+struct var"union (unnamed at /home/runner/.julia/artifacts/e7f81f17200b82e6fd9460b1d65c223719604cc1/include/aws/common/task_scheduler.h:40:5)"
     data::NTuple{4, UInt8}
 end
 
-function Base.getproperty(x::Ptr{var"union (unnamed at /home/runner/.julia/artifacts/2668429b906ded4385b08f8a7fb9a0c13b05ebcc/include/aws/common/task_scheduler.h:40:5)"}, f::Symbol)
+function Base.getproperty(x::Ptr{var"union (unnamed at /home/runner/.julia/artifacts/e7f81f17200b82e6fd9460b1d65c223719604cc1/include/aws/common/task_scheduler.h:40:5)"}, f::Symbol)
     f === :scheduled && return Ptr{Bool}(x + 0)
     f === :reserved && return Ptr{Csize_t}(x + 0)
     return getfield(x, f)
 end
 
-function Base.getproperty(x::var"union (unnamed at /home/runner/.julia/artifacts/2668429b906ded4385b08f8a7fb9a0c13b05ebcc/include/aws/common/task_scheduler.h:40:5)", f::Symbol)
-    r = Ref{var"union (unnamed at /home/runner/.julia/artifacts/2668429b906ded4385b08f8a7fb9a0c13b05ebcc/include/aws/common/task_scheduler.h:40:5)"}(x)
-    ptr = Base.unsafe_convert(Ptr{var"union (unnamed at /home/runner/.julia/artifacts/2668429b906ded4385b08f8a7fb9a0c13b05ebcc/include/aws/common/task_scheduler.h:40:5)"}, r)
+function Base.getproperty(x::var"union (unnamed at /home/runner/.julia/artifacts/e7f81f17200b82e6fd9460b1d65c223719604cc1/include/aws/common/task_scheduler.h:40:5)", f::Symbol)
+    r = Ref{var"union (unnamed at /home/runner/.julia/artifacts/e7f81f17200b82e6fd9460b1d65c223719604cc1/include/aws/common/task_scheduler.h:40:5)"}(x)
+    ptr = Base.unsafe_convert(Ptr{var"union (unnamed at /home/runner/.julia/artifacts/e7f81f17200b82e6fd9460b1d65c223719604cc1/include/aws/common/task_scheduler.h:40:5)"}, r)
     fptr = getproperty(ptr, f)
     GC.@preserve r unsafe_load(fptr)
 end
 
-function Base.setproperty!(x::Ptr{var"union (unnamed at /home/runner/.julia/artifacts/2668429b906ded4385b08f8a7fb9a0c13b05ebcc/include/aws/common/task_scheduler.h:40:5)"}, f::Symbol, v)
+function Base.setproperty!(x::Ptr{var"union (unnamed at /home/runner/.julia/artifacts/e7f81f17200b82e6fd9460b1d65c223719604cc1/include/aws/common/task_scheduler.h:40:5)"}, f::Symbol, v)
     unsafe_store!(getproperty(x, f), v)
 end
 
@@ -1365,28 +1365,28 @@ struct aws_socket_endpoint
 end
 
 """
-    union (unnamed at /home/runner/.julia/artifacts/f49dd7e4480022bc342fe7b7b5d886601252cb92/include/aws/io/io.h:21:5)
+    union (unnamed at /home/runner/.julia/artifacts/fec90bd565d6ee1c4597b9ec4515f1a471c9fa3c/include/aws/io/io.h:21:5)
 
 Documentation not found.
 """
-struct var"union (unnamed at /home/runner/.julia/artifacts/f49dd7e4480022bc342fe7b7b5d886601252cb92/include/aws/io/io.h:21:5)"
+struct var"union (unnamed at /home/runner/.julia/artifacts/fec90bd565d6ee1c4597b9ec4515f1a471c9fa3c/include/aws/io/io.h:21:5)"
     data::NTuple{4, UInt8}
 end
 
-function Base.getproperty(x::Ptr{var"union (unnamed at /home/runner/.julia/artifacts/f49dd7e4480022bc342fe7b7b5d886601252cb92/include/aws/io/io.h:21:5)"}, f::Symbol)
+function Base.getproperty(x::Ptr{var"union (unnamed at /home/runner/.julia/artifacts/fec90bd565d6ee1c4597b9ec4515f1a471c9fa3c/include/aws/io/io.h:21:5)"}, f::Symbol)
     f === :fd && return Ptr{Cint}(x + 0)
     f === :handle && return Ptr{Ptr{Cvoid}}(x + 0)
     return getfield(x, f)
 end
 
-function Base.getproperty(x::var"union (unnamed at /home/runner/.julia/artifacts/f49dd7e4480022bc342fe7b7b5d886601252cb92/include/aws/io/io.h:21:5)", f::Symbol)
-    r = Ref{var"union (unnamed at /home/runner/.julia/artifacts/f49dd7e4480022bc342fe7b7b5d886601252cb92/include/aws/io/io.h:21:5)"}(x)
-    ptr = Base.unsafe_convert(Ptr{var"union (unnamed at /home/runner/.julia/artifacts/f49dd7e4480022bc342fe7b7b5d886601252cb92/include/aws/io/io.h:21:5)"}, r)
+function Base.getproperty(x::var"union (unnamed at /home/runner/.julia/artifacts/fec90bd565d6ee1c4597b9ec4515f1a471c9fa3c/include/aws/io/io.h:21:5)", f::Symbol)
+    r = Ref{var"union (unnamed at /home/runner/.julia/artifacts/fec90bd565d6ee1c4597b9ec4515f1a471c9fa3c/include/aws/io/io.h:21:5)"}(x)
+    ptr = Base.unsafe_convert(Ptr{var"union (unnamed at /home/runner/.julia/artifacts/fec90bd565d6ee1c4597b9ec4515f1a471c9fa3c/include/aws/io/io.h:21:5)"}, r)
     fptr = getproperty(ptr, f)
     GC.@preserve r unsafe_load(fptr)
 end
 
-function Base.setproperty!(x::Ptr{var"union (unnamed at /home/runner/.julia/artifacts/f49dd7e4480022bc342fe7b7b5d886601252cb92/include/aws/io/io.h:21:5)"}, f::Symbol, v)
+function Base.setproperty!(x::Ptr{var"union (unnamed at /home/runner/.julia/artifacts/fec90bd565d6ee1c4597b9ec4515f1a471c9fa3c/include/aws/io/io.h:21:5)"}, f::Symbol, v)
     unsafe_store!(getproperty(x, f), v)
 end
 
@@ -1406,7 +1406,7 @@ struct aws_io_handle
 end
 
 function Base.getproperty(x::Ptr{aws_io_handle}, f::Symbol)
-    f === :data && return Ptr{var"union (unnamed at /home/runner/.julia/artifacts/f49dd7e4480022bc342fe7b7b5d886601252cb92/include/aws/io/io.h:21:5)"}(x + 0)
+    f === :data && return Ptr{var"union (unnamed at /home/runner/.julia/artifacts/fec90bd565d6ee1c4597b9ec4515f1a471c9fa3c/include/aws/io/io.h:21:5)"}(x + 0)
     f === :additional_data && return Ptr{Ptr{Cvoid}}(x + 4)
     f === :set_queue && return Ptr{Ptr{aws_io_set_queue_on_handle_fn}}(x + 8)
     return getfield(x, f)
@@ -1555,6 +1555,7 @@ struct aws_event_loop_vtable
     stop::Ptr{Cvoid}
     wait_for_stop_completion::Ptr{Cvoid}
     schedule_task_now::Ptr{Cvoid}
+    schedule_task_now_serialized::Ptr{Cvoid}
     schedule_task_future::Ptr{Cvoid}
     cancel_task::Ptr{Cvoid}
     connect_to_io_completion_port::Ptr{Cvoid}
@@ -1612,6 +1613,22 @@ void aws_event_loop_schedule_task_now(struct aws_event_loop *event_loop, struct 
 """
 function aws_event_loop_schedule_task_now(event_loop, task)
     ccall((:aws_event_loop_schedule_task_now, libaws_c_io), Cvoid, (Ptr{aws_event_loop}, Ptr{aws_task}), event_loop, task)
+end
+
+"""
+    aws_event_loop_schedule_task_now_serialized(event_loop, task)
+
+Variant of [`aws_event_loop_schedule_task_now`](@ref) that forces all tasks to go through the cross thread task queue, guaranteeing that order-of-submission is order-of-execution. If you need this guarantee, you must use this function; the base function contains short-circuiting logic that breaks ordering invariants. Beyond that, all properties of [`aws_event_loop_schedule_task_now`](@ref) apply to this function as well.
+
+Serialization guarantee does not apply to task cancellation (which can occur out-of-order or even out-of-thread in certain cases).
+
+### Prototype
+```c
+void aws_event_loop_schedule_task_now_serialized(struct aws_event_loop *event_loop, struct aws_task *task);
+```
+"""
+function aws_event_loop_schedule_task_now_serialized(event_loop, task)
+    ccall((:aws_event_loop_schedule_task_now_serialized, libaws_c_io), Cvoid, (Ptr{aws_event_loop}, Ptr{aws_task}), event_loop, task)
 end
 
 """
@@ -4880,6 +4897,7 @@ Documentation not found.
     AWS_IO_TLS_CIPHER_PREF_PQ_TLSV1_2_2024_10 = 7
     AWS_IO_TLS_CIPHER_PREF_PQ_DEFAULT = 8
     AWS_IO_TLS_CIPHER_PREF_TLSV1_2_2025_07 = 9
+    AWS_IO_TLS_CIPHER_PREF_TLSV1_0_2023_06 = 10
     AWS_IO_TLS_CIPHER_PREF_END_RANGE = 65535
 end
 
@@ -5889,11 +5907,11 @@ struct aws_async_input_stream_tester_options
 end
 
 """
-    var"struct (unnamed at /home/runner/.julia/artifacts/f49dd7e4480022bc342fe7b7b5d886601252cb92/include/aws/testing/async_stream_tester.h:55:5)"
+    var"struct (unnamed at /home/runner/.julia/artifacts/fec90bd565d6ee1c4597b9ec4515f1a471c9fa3c/include/aws/testing/async_stream_tester.h:55:5)"
 
 Documentation not found.
 """
-struct var"struct (unnamed at /home/runner/.julia/artifacts/f49dd7e4480022bc342fe7b7b5d886601252cb92/include/aws/testing/async_stream_tester.h:55:5)"
+struct var"struct (unnamed at /home/runner/.julia/artifacts/fec90bd565d6ee1c4597b9ec4515f1a471c9fa3c/include/aws/testing/async_stream_tester.h:55:5)"
     lock::aws_mutex
     cvar::aws_condition_variable
     read_dest::Ptr{aws_byte_buf}
@@ -5916,7 +5934,7 @@ function Base.getproperty(x::Ptr{aws_async_input_stream_tester}, f::Symbol)
     f === :options && return Ptr{aws_async_input_stream_tester_options}(x + 32)
     f === :source_stream && return Ptr{Ptr{aws_input_stream}}(x + 88)
     f === :thread && return Ptr{aws_thread}(x + 92)
-    f === :synced_data && return Ptr{var"struct (unnamed at /home/runner/.julia/artifacts/f49dd7e4480022bc342fe7b7b5d886601252cb92/include/aws/testing/async_stream_tester.h:55:5)"}(x + 104)
+    f === :synced_data && return Ptr{var"struct (unnamed at /home/runner/.julia/artifacts/fec90bd565d6ee1c4597b9ec4515f1a471c9fa3c/include/aws/testing/async_stream_tester.h:55:5)"}(x + 104)
     f === :num_outstanding_reads && return Ptr{aws_atomic_var}(x + 196)
     return getfield(x, f)
 end
