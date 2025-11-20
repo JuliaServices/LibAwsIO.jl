@@ -1,4 +1,38 @@
-using CEnum
+using CEnum: CEnum, @cenum
+
+"""
+    __JL_Ctag_217
+
+Documentation not found.
+"""
+struct __JL_Ctag_217
+    data::NTuple{8, UInt8}
+end
+
+function Base.getproperty(x::Ptr{__JL_Ctag_217}, f::Symbol)
+    f === :scheduled && return Ptr{Bool}(x + 0)
+    f === :reserved && return Ptr{Csize_t}(x + 0)
+    return getfield(x, f)
+end
+
+function Base.getproperty(x::__JL_Ctag_217, f::Symbol)
+    r = Ref{__JL_Ctag_217}(x)
+    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_217}, r)
+    fptr = getproperty(ptr, f)
+    GC.@preserve r unsafe_load(fptr)
+end
+
+function Base.setproperty!(x::Ptr{__JL_Ctag_217}, f::Symbol, v)
+    unsafe_store!(getproperty(x, f), v)
+end
+
+function Base.propertynames(x::__JL_Ctag_217, private::Bool = false)
+    (:scheduled, :reserved, if private
+            fieldnames(typeof(x))
+        else
+            ()
+        end...)
+end
 
 """
     aws_async_input_stream_vtable
@@ -65,7 +99,7 @@ function aws_async_input_stream_release(stream)
 end
 
 """
-Documentation not found.
+aws\\_future<bool> See top of future.h for docs.
 """
 mutable struct aws_future_bool end
 
@@ -217,6 +251,14 @@ end
 
 function Base.setproperty!(x::Ptr{aws_channel_task}, f::Symbol, v)
     unsafe_store!(getproperty(x, f), v)
+end
+
+function Base.propertynames(x::aws_channel_task, private::Bool = false)
+    (:wrapper_task, :task_fn, :arg, :type_tag, :node, if private
+            fieldnames(typeof(x))
+        else
+            ()
+        end...)
 end
 
 """
@@ -1285,29 +1327,37 @@ struct aws_socket_endpoint
 end
 
 """
-    union (unnamed at /home/runner/.julia/artifacts/e6aa66d2a483434eb3b73f46d29285ab376004ff/include/aws/io/io.h:21:5)
+    __JL_Ctag_218
 
 Documentation not found.
 """
-struct var"union (unnamed at /home/runner/.julia/artifacts/e6aa66d2a483434eb3b73f46d29285ab376004ff/include/aws/io/io.h:21:5)"
+struct __JL_Ctag_218
     data::NTuple{8, UInt8}
 end
 
-function Base.getproperty(x::Ptr{var"union (unnamed at /home/runner/.julia/artifacts/e6aa66d2a483434eb3b73f46d29285ab376004ff/include/aws/io/io.h:21:5)"}, f::Symbol)
+function Base.getproperty(x::Ptr{__JL_Ctag_218}, f::Symbol)
     f === :fd && return Ptr{Cint}(x + 0)
     f === :handle && return Ptr{Ptr{Cvoid}}(x + 0)
     return getfield(x, f)
 end
 
-function Base.getproperty(x::var"union (unnamed at /home/runner/.julia/artifacts/e6aa66d2a483434eb3b73f46d29285ab376004ff/include/aws/io/io.h:21:5)", f::Symbol)
-    r = Ref{var"union (unnamed at /home/runner/.julia/artifacts/e6aa66d2a483434eb3b73f46d29285ab376004ff/include/aws/io/io.h:21:5)"}(x)
-    ptr = Base.unsafe_convert(Ptr{var"union (unnamed at /home/runner/.julia/artifacts/e6aa66d2a483434eb3b73f46d29285ab376004ff/include/aws/io/io.h:21:5)"}, r)
+function Base.getproperty(x::__JL_Ctag_218, f::Symbol)
+    r = Ref{__JL_Ctag_218}(x)
+    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_218}, r)
     fptr = getproperty(ptr, f)
     GC.@preserve r unsafe_load(fptr)
 end
 
-function Base.setproperty!(x::Ptr{var"union (unnamed at /home/runner/.julia/artifacts/e6aa66d2a483434eb3b73f46d29285ab376004ff/include/aws/io/io.h:21:5)"}, f::Symbol, v)
+function Base.setproperty!(x::Ptr{__JL_Ctag_218}, f::Symbol, v)
     unsafe_store!(getproperty(x, f), v)
+end
+
+function Base.propertynames(x::__JL_Ctag_218, private::Bool = false)
+    (:fd, :handle, if private
+            fieldnames(typeof(x))
+        else
+            ()
+        end...)
 end
 
 # typedef void aws_io_set_queue_on_handle_fn ( struct aws_io_handle * handle , void * queue )
@@ -1326,7 +1376,7 @@ struct aws_io_handle
 end
 
 function Base.getproperty(x::Ptr{aws_io_handle}, f::Symbol)
-    f === :data && return Ptr{var"union (unnamed at /home/runner/.julia/artifacts/e6aa66d2a483434eb3b73f46d29285ab376004ff/include/aws/io/io.h:21:5)"}(x + 0)
+    f === :data && return Ptr{__JL_Ctag_218}(x + 0)
     f === :additional_data && return Ptr{Ptr{Cvoid}}(x + 8)
     f === :set_queue && return Ptr{Ptr{aws_io_set_queue_on_handle_fn}}(x + 16)
     return getfield(x, f)
@@ -1341,6 +1391,14 @@ end
 
 function Base.setproperty!(x::Ptr{aws_io_handle}, f::Symbol, v)
     unsafe_store!(getproperty(x, f), v)
+end
+
+function Base.propertynames(x::aws_io_handle, private::Bool = false)
+    (:data, :additional_data, :set_queue, if private
+            fieldnames(typeof(x))
+        else
+            ()
+        end...)
 end
 
 # typedef void ( aws_socket_on_readable_fn ) ( struct aws_socket * socket , int error_code , void * user_data )
@@ -1410,6 +1468,14 @@ end
 
 function Base.setproperty!(x::Ptr{aws_socket}, f::Symbol, v)
     unsafe_store!(getproperty(x, f), v)
+end
+
+function Base.propertynames(x::aws_socket, private::Bool = false)
+    (:vtable, :allocator, :local_endpoint, :remote_endpoint, :options, :io_handle, :event_loop, :handler, :state, :readable_fn, :readable_user_data, :connection_result_fn, :accept_result_fn, :connect_accept_user_data, :impl, if private
+            fieldnames(typeof(x))
+        else
+            ()
+        end...)
 end
 
 """
@@ -1709,6 +1775,20 @@ size_t aws_event_loop_group_get_loop_count(const struct aws_event_loop_group *el
 """
 function aws_event_loop_group_get_loop_count(el_group)
     ccall((:aws_event_loop_group_get_loop_count, libaws_c_io), Csize_t, (Ptr{aws_event_loop_group},), el_group)
+end
+
+"""
+    aws_event_loop_group_get_type(el_group)
+
+Gets the event loop type used by an event loop group.
+
+### Prototype
+```c
+enum aws_event_loop_type aws_event_loop_group_get_type(const struct aws_event_loop_group *el_group);
+```
+"""
+function aws_event_loop_group_get_type(el_group)
+    ccall((:aws_event_loop_group_get_type, libaws_c_io), aws_event_loop_type, (Ptr{aws_event_loop_group},), el_group)
 end
 
 """
@@ -2148,14 +2228,15 @@ function aws_future_impl_new_pointer_with_release(alloc, result_release)
 end
 
 """
-Documentation not found.
+aws\\_future<size\\_t> See top of future.h for docs.
 """
 mutable struct aws_future_size end
 
 """
     aws_future_size_new(alloc)
 
-Documentation not found.
+aws\\_future<size\\_t> See top of future.h for docs.
+
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_size, size_t, AWS_IO_API);
@@ -2168,7 +2249,8 @@ end
 """
     aws_future_size_set_result(future, result)
 
-Documentation not found.
+aws\\_future<size\\_t> See top of future.h for docs.
+
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_size, size_t, AWS_IO_API);
@@ -2181,7 +2263,8 @@ end
 """
     aws_future_size_get_result(future)
 
-Documentation not found.
+aws\\_future<size\\_t> See top of future.h for docs.
+
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_size, size_t, AWS_IO_API);
@@ -2194,7 +2277,8 @@ end
 """
     aws_future_size_acquire(future)
 
-Documentation not found.
+aws\\_future<size\\_t> See top of future.h for docs.
+
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_size, size_t, AWS_IO_API);
@@ -2207,7 +2291,8 @@ end
 """
     aws_future_size_release(future)
 
-Documentation not found.
+aws\\_future<size\\_t> See top of future.h for docs.
+
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_size, size_t, AWS_IO_API);
@@ -2220,7 +2305,8 @@ end
 """
     aws_future_size_set_error(future, error_code)
 
-Documentation not found.
+aws\\_future<size\\_t> See top of future.h for docs.
+
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_size, size_t, AWS_IO_API);
@@ -2233,7 +2319,8 @@ end
 """
     aws_future_size_is_done(future)
 
-Documentation not found.
+aws\\_future<size\\_t> See top of future.h for docs.
+
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_size, size_t, AWS_IO_API);
@@ -2246,7 +2333,8 @@ end
 """
     aws_future_size_get_error(future)
 
-Documentation not found.
+aws\\_future<size\\_t> See top of future.h for docs.
+
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_size, size_t, AWS_IO_API);
@@ -2259,7 +2347,8 @@ end
 """
     aws_future_size_register_callback(future, on_done, user_data)
 
-Documentation not found.
+aws\\_future<size\\_t> See top of future.h for docs.
+
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_size, size_t, AWS_IO_API);
@@ -2272,7 +2361,8 @@ end
 """
     aws_future_size_register_callback_if_not_done(future, on_done, user_data)
 
-Documentation not found.
+aws\\_future<size\\_t> See top of future.h for docs.
+
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_size, size_t, AWS_IO_API);
@@ -2285,7 +2375,8 @@ end
 """
     aws_future_size_register_event_loop_callback(future, event_loop, on_done, user_data)
 
-Documentation not found.
+aws\\_future<size\\_t> See top of future.h for docs.
+
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_size, size_t, AWS_IO_API);
@@ -2298,7 +2389,8 @@ end
 """
     aws_future_size_register_channel_callback(future, channel, on_done, user_data)
 
-Documentation not found.
+aws\\_future<size\\_t> See top of future.h for docs.
+
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_size, size_t, AWS_IO_API);
@@ -2311,7 +2403,8 @@ end
 """
     aws_future_size_wait(future, timeout_ns)
 
-Documentation not found.
+aws\\_future<size\\_t> See top of future.h for docs.
+
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_size, size_t, AWS_IO_API);
@@ -2324,7 +2417,8 @@ end
 """
     aws_future_bool_new(alloc)
 
-Documentation not found.
+aws\\_future<bool> See top of future.h for docs.
+
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_bool, bool, AWS_IO_API);
@@ -2337,7 +2431,8 @@ end
 """
     aws_future_bool_set_result(future, result)
 
-Documentation not found.
+aws\\_future<bool> See top of future.h for docs.
+
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_bool, bool, AWS_IO_API);
@@ -2350,7 +2445,8 @@ end
 """
     aws_future_bool_get_result(future)
 
-Documentation not found.
+aws\\_future<bool> See top of future.h for docs.
+
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_bool, bool, AWS_IO_API);
@@ -2363,7 +2459,8 @@ end
 """
     aws_future_bool_acquire(future)
 
-Documentation not found.
+aws\\_future<bool> See top of future.h for docs.
+
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_bool, bool, AWS_IO_API);
@@ -2376,7 +2473,8 @@ end
 """
     aws_future_bool_release(future)
 
-Documentation not found.
+aws\\_future<bool> See top of future.h for docs.
+
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_bool, bool, AWS_IO_API);
@@ -2389,7 +2487,8 @@ end
 """
     aws_future_bool_set_error(future, error_code)
 
-Documentation not found.
+aws\\_future<bool> See top of future.h for docs.
+
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_bool, bool, AWS_IO_API);
@@ -2402,7 +2501,8 @@ end
 """
     aws_future_bool_is_done(future)
 
-Documentation not found.
+aws\\_future<bool> See top of future.h for docs.
+
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_bool, bool, AWS_IO_API);
@@ -2415,7 +2515,8 @@ end
 """
     aws_future_bool_get_error(future)
 
-Documentation not found.
+aws\\_future<bool> See top of future.h for docs.
+
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_bool, bool, AWS_IO_API);
@@ -2428,7 +2529,8 @@ end
 """
     aws_future_bool_register_callback(future, on_done, user_data)
 
-Documentation not found.
+aws\\_future<bool> See top of future.h for docs.
+
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_bool, bool, AWS_IO_API);
@@ -2441,7 +2543,8 @@ end
 """
     aws_future_bool_register_callback_if_not_done(future, on_done, user_data)
 
-Documentation not found.
+aws\\_future<bool> See top of future.h for docs.
+
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_bool, bool, AWS_IO_API);
@@ -2454,7 +2557,8 @@ end
 """
     aws_future_bool_register_event_loop_callback(future, event_loop, on_done, user_data)
 
-Documentation not found.
+aws\\_future<bool> See top of future.h for docs.
+
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_bool, bool, AWS_IO_API);
@@ -2467,7 +2571,8 @@ end
 """
     aws_future_bool_register_channel_callback(future, channel, on_done, user_data)
 
-Documentation not found.
+aws\\_future<bool> See top of future.h for docs.
+
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_bool, bool, AWS_IO_API);
@@ -2480,7 +2585,8 @@ end
 """
     aws_future_bool_wait(future, timeout_ns)
 
-Documentation not found.
+aws\\_future<bool> See top of future.h for docs.
+
 ### Prototype
 ```c
 AWS_FUTURE_T_BY_VALUE_DECLARATION(aws_future_bool, bool, AWS_IO_API);
@@ -2491,7 +2597,7 @@ function aws_future_bool_wait(future, timeout_ns)
 end
 
 """
-Documentation not found.
+aws\\_future<void> See top of future.h for docs.
 """
 mutable struct aws_future_void end
 
@@ -5827,17 +5933,37 @@ struct aws_async_input_stream_tester_options
 end
 
 """
-    var"struct (unnamed at /home/runner/.julia/artifacts/e6aa66d2a483434eb3b73f46d29285ab376004ff/include/aws/testing/async_stream_tester.h:55:5)"
+    __JL_Ctag_219
 
 Documentation not found.
 """
-struct var"struct (unnamed at /home/runner/.julia/artifacts/e6aa66d2a483434eb3b73f46d29285ab376004ff/include/aws/testing/async_stream_tester.h:55:5)"
+struct __JL_Ctag_219
     lock::aws_mutex
     cvar::aws_condition_variable
     read_dest::Ptr{aws_byte_buf}
     read_future::Ptr{aws_future_bool}
     do_shutdown::Bool
 end
+function Base.getproperty(x::Ptr{__JL_Ctag_219}, f::Symbol)
+    f === :lock && return Ptr{aws_mutex}(x + 0)
+    f === :cvar && return Ptr{aws_condition_variable}(x + 48)
+    f === :read_dest && return Ptr{Ptr{aws_byte_buf}}(x + 104)
+    f === :read_future && return Ptr{Ptr{aws_future_bool}}(x + 112)
+    f === :do_shutdown && return Ptr{Bool}(x + 120)
+    return getfield(x, f)
+end
+
+function Base.getproperty(x::__JL_Ctag_219, f::Symbol)
+    r = Ref{__JL_Ctag_219}(x)
+    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_219}, r)
+    fptr = getproperty(ptr, f)
+    GC.@preserve r unsafe_load(fptr)
+end
+
+function Base.setproperty!(x::Ptr{__JL_Ctag_219}, f::Symbol, v)
+    unsafe_store!(getproperty(x, f), v)
+end
+
 
 """
     aws_async_input_stream_tester
@@ -5854,7 +5980,7 @@ function Base.getproperty(x::Ptr{aws_async_input_stream_tester}, f::Symbol)
     f === :options && return Ptr{aws_async_input_stream_tester_options}(x + 56)
     f === :source_stream && return Ptr{Ptr{aws_input_stream}}(x + 152)
     f === :thread && return Ptr{aws_thread}(x + 160)
-    f === :synced_data && return Ptr{var"struct (unnamed at /home/runner/.julia/artifacts/e6aa66d2a483434eb3b73f46d29285ab376004ff/include/aws/testing/async_stream_tester.h:55:5)"}(x + 184)
+    f === :synced_data && return Ptr{__JL_Ctag_219}(x + 184)
     f === :num_outstanding_reads && return Ptr{aws_atomic_var}(x + 312)
     return getfield(x, f)
 end
@@ -5868,6 +5994,14 @@ end
 
 function Base.setproperty!(x::Ptr{aws_async_input_stream_tester}, f::Symbol, v)
     unsafe_store!(getproperty(x, f), v)
+end
+
+function Base.propertynames(x::aws_async_input_stream_tester, private::Bool = false)
+    (:base, :alloc, :options, :source_stream, :thread, :synced_data, :num_outstanding_reads, if private
+            fieldnames(typeof(x))
+        else
+            ()
+        end...)
 end
 
 """
@@ -6863,6 +6997,45 @@ static inline struct aws_input_stream *aws_input_stream_new_tester( struct aws_a
 function aws_input_stream_new_tester(alloc, options)
     ccall((:aws_input_stream_new_tester, libaws_c_io), Ptr{aws_input_stream}, (Ptr{aws_allocator}, Ptr{aws_input_stream_tester_options}), alloc, options)
 end
+
+"""
+    __JL_Ctag_216
+
+Documentation not found.
+"""
+struct __JL_Ctag_216
+    __lock::Cint
+    __futex::Cuint
+    __total_seq::Culonglong
+    __wakeup_seq::Culonglong
+    __woken_seq::Culonglong
+    __mutex::Ptr{Cvoid}
+    __nwaiters::Cuint
+    __broadcast_seq::Cuint
+end
+function Base.getproperty(x::Ptr{__JL_Ctag_216}, f::Symbol)
+    f === :__lock && return Ptr{Cint}(x + 0)
+    f === :__futex && return Ptr{Cuint}(x + 4)
+    f === :__total_seq && return Ptr{Culonglong}(x + 8)
+    f === :__wakeup_seq && return Ptr{Culonglong}(x + 16)
+    f === :__woken_seq && return Ptr{Culonglong}(x + 24)
+    f === :__mutex && return Ptr{Ptr{Cvoid}}(x + 32)
+    f === :__nwaiters && return Ptr{Cuint}(x + 40)
+    f === :__broadcast_seq && return Ptr{Cuint}(x + 44)
+    return getfield(x, f)
+end
+
+function Base.getproperty(x::__JL_Ctag_216, f::Symbol)
+    r = Ref{__JL_Ctag_216}(x)
+    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_216}, r)
+    fptr = getproperty(ptr, f)
+    GC.@preserve r unsafe_load(fptr)
+end
+
+function Base.setproperty!(x::Ptr{__JL_Ctag_216}, f::Symbol, v)
+    unsafe_store!(getproperty(x, f), v)
+end
+
 
 """
 Documentation not found.
