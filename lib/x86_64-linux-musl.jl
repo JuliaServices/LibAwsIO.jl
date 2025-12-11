@@ -1624,9 +1624,9 @@ end
 """
     aws_event_loop_type
 
-Event Loop Type. If set to `AWS_EVENT_LOOP_PLATFORM_DEFAULT`, the event loop will automatically use the platform’s default.
+Event Loop Type. If set to `AWS_EVENT_LOOP_PLATFORM_DEFAULT`, the event loop will automatically use the platform’s default. The default is determined via the `aws\\_event\\_loop\\_get\\_default\\_type()` function based on which event loop types have been defined.
 
-Default Event Loop Type Linux | AWS\\_EVENT\\_LOOP\\_EPOLL Windows | AWS\\_EVENT\\_LOOP\\_IOCP BSD Variants| AWS\\_EVENT\\_LOOP\\_KQUEUE macOS | AWS\\_EVENT\\_LOOP\\_KQUEUE iOS | AWS\\_EVENT\\_LOOP\\_DISPATCH\\_QUEUE
+Default Event Loop Type Linux | AWS\\_EVENT\\_LOOP\\_EPOLL Windows | AWS\\_EVENT\\_LOOP\\_IOCP BSD Variants| AWS\\_EVENT\\_LOOP\\_KQUEUE Apple | AWS\\_EVENT\\_LOOP\\_DISPATCH\\_QUEUE
 """
 @cenum aws_event_loop_type::UInt32 begin
     AWS_EVENT_LOOP_PLATFORM_DEFAULT = 0
