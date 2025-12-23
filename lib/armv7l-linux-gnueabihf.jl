@@ -3220,6 +3220,7 @@ Documentation not found.
     AWS_IO_TLS_CLOSED_ABORT = 1192
     AWS_IO_TLS_INVALID_CERTIFICATE_CHAIN = 1193
     AWS_IO_TLS_HOST_NAME_MISMATCH = 1194
+    AWS_IO_DNS_QUERY_AGAIN = 1195
     AWS_IO_ERROR_END_RANGE = 2047
     AWS_IO_INVALID_FILE_HANDLE = 50
 end
@@ -3263,6 +3264,19 @@ void aws_io_fatal_assert_library_initialized(void);
 """
 function aws_io_fatal_assert_library_initialized()
     ccall((:aws_io_fatal_assert_library_initialized, libaws_c_io), Cvoid, ())
+end
+
+"""
+    aws_io_error_code_is_retryable(error_code)
+
+Documentation not found.
+### Prototype
+```c
+bool aws_io_error_code_is_retryable(int error_code);
+```
+"""
+function aws_io_error_code_is_retryable(error_code)
+    ccall((:aws_io_error_code_is_retryable, libaws_c_io), Bool, (Cint,), error_code)
 end
 
 """
