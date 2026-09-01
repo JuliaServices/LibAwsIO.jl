@@ -815,7 +815,7 @@ end
 """
     aws_channel_handler_increment_read_window(handler, slot, size)
 
-Calls on\\_window\\_update on handler's vtable.
+Calls increment\\_read\\_window on handler's vtable.
 
 ### Prototype
 ```c
@@ -1070,6 +1070,17 @@ PLATFORM DEFAULT SOCKET IMPLEMENTATION TYPE Linux | AWS\\_SOCKET\\_IMPL\\_POSIX 
 end
 
 """
+    aws_socket_tcp_nodelay
+
+Controls the TCP\\_NODELAY socket option (whether Nagle's algorithm is disabled). TCP only. Ignored for UDP and AWS\\_SOCKET\\_LOCAL sockets.
+"""
+@cenum aws_socket_tcp_nodelay::UInt32 begin
+    AWS_SOCKET_TCP_NODELAY_DEFAULT = 0
+    AWS_SOCKET_TCP_NODELAY_ON = 1
+    AWS_SOCKET_TCP_NODELAY_OFF = 2
+end
+
+"""
     aws_socket_options
 
 Documentation not found.
@@ -1083,6 +1094,7 @@ struct aws_socket_options
     keep_alive_timeout_sec::UInt16
     keep_alive_max_failed_probes::UInt16
     keepalive::Bool
+    tcp_nodelay::aws_socket_tcp_nodelay
     network_interface_name::NTuple{16, Cchar}
 end
 
@@ -1090,7 +1102,7 @@ end
 """
 Invoked upon completion of the TLS handshake. If successful error\\_code will be AWS\\_OP\\_SUCCESS, otherwise the negotiation failed and immediately after this function is invoked, the channel will be shutting down.
 
-NOTE: When using SecItem the handler and slot arguments will be pointers to the socket slot and socket handler. This is due to TLS negotiaion being handled by the Apple Network Framework connection in the socket slot/handler.
+NOTE: When using SecItem the handler and slot arguments will be pointers to the socket slot and socket handler. This is due to TLS negotiation being handled by the Apple Network Framework connection in the socket slot/handler.
 """
 const aws_tls_on_negotiation_result_fn = Cvoid
 
@@ -1437,7 +1449,7 @@ const aws_socket_on_accept_result_fn = Cvoid
 Documentation not found.
 """
 struct aws_socket
-    data::NTuple{368, UInt8}
+    data::NTuple{376, UInt8}
 end
 
 function Base.getproperty(x::Ptr{aws_socket}, f::Symbol)
@@ -1446,16 +1458,16 @@ function Base.getproperty(x::Ptr{aws_socket}, f::Symbol)
     f === :local_endpoint && return Ptr{aws_socket_endpoint}(x + 16)
     f === :remote_endpoint && return Ptr{aws_socket_endpoint}(x + 124)
     f === :options && return Ptr{aws_socket_options}(x + 232)
-    f === :io_handle && return Ptr{aws_io_handle}(x + 272)
-    f === :event_loop && return Ptr{Ptr{aws_event_loop}}(x + 296)
-    f === :handler && return Ptr{Ptr{aws_channel_handler}}(x + 304)
-    f === :state && return Ptr{Cint}(x + 312)
-    f === :readable_fn && return Ptr{Ptr{aws_socket_on_readable_fn}}(x + 320)
-    f === :readable_user_data && return Ptr{Ptr{Cvoid}}(x + 328)
-    f === :connection_result_fn && return Ptr{Ptr{aws_socket_on_connection_result_fn}}(x + 336)
-    f === :accept_result_fn && return Ptr{Ptr{aws_socket_on_accept_result_fn}}(x + 344)
-    f === :connect_accept_user_data && return Ptr{Ptr{Cvoid}}(x + 352)
-    f === :impl && return Ptr{Ptr{Cvoid}}(x + 360)
+    f === :io_handle && return Ptr{aws_io_handle}(x + 280)
+    f === :event_loop && return Ptr{Ptr{aws_event_loop}}(x + 304)
+    f === :handler && return Ptr{Ptr{aws_channel_handler}}(x + 312)
+    f === :state && return Ptr{Cint}(x + 320)
+    f === :readable_fn && return Ptr{Ptr{aws_socket_on_readable_fn}}(x + 328)
+    f === :readable_user_data && return Ptr{Ptr{Cvoid}}(x + 336)
+    f === :connection_result_fn && return Ptr{Ptr{aws_socket_on_connection_result_fn}}(x + 344)
+    f === :accept_result_fn && return Ptr{Ptr{aws_socket_on_accept_result_fn}}(x + 352)
+    f === :connect_accept_user_data && return Ptr{Ptr{Cvoid}}(x + 360)
+    f === :impl && return Ptr{Ptr{Cvoid}}(x + 368)
     return getfield(x, f)
 end
 
@@ -2840,7 +2852,7 @@ end
 """
     aws_host_address_move(from, to)
 
-Moves `from` to `to`. After this call, from is no longer usable. Though, it could be resused for another move or copy operation.
+Moves `from` to `to`. After this call, from is no longer usable. Though, it could be reused for another move or copy operation.
 
 ### Prototype
 ```c
@@ -3537,6 +3549,20 @@ int aws_pem_objects_init_from_file_path( struct aws_array_list *pem_objects, str
 """
 function aws_pem_objects_init_from_file_path(pem_objects, allocator, filename)
     ccall((:aws_pem_objects_init_from_file_path, libaws_c_io), Cint, (Ptr{aws_array_list}, Ptr{aws_allocator}, Ptr{Cchar}), pem_objects, allocator, filename)
+end
+
+"""
+    aws_der_cert_to_pem(alloc, der_cert)
+
+Encodes DER-encoded certificate bytes into a PEM-formatted, null-terminated string. Returns a new [`aws_string`](@ref) on success, or NULL on failure. Caller is responsible for calling aws\\_string\\_destroy() on the result.
+
+### Prototype
+```c
+struct aws_string *aws_der_cert_to_pem(struct aws_allocator *alloc, struct aws_byte_cursor der_cert);
+```
+"""
+function aws_der_cert_to_pem(alloc, der_cert)
+    ccall((:aws_der_cert_to_pem, libaws_c_io), Ptr{aws_string}, (Ptr{aws_allocator}, aws_byte_cursor), alloc, der_cert)
 end
 
 """
@@ -4470,7 +4496,7 @@ end
 """
     aws_socket_validate_port_for_bind(port, domain)
 
-Raises AWS\\_IO\\_SOCKET\\_INVALID\\_ADDRESS and logs an error if binding to this port is illegal. For example, port must in range 0-65535 to bind with IPv4. These port values would fail eventually in [`aws_socket_bind`](@ref)(), but you can use this function to validate earlier.
+Raises AWS\\_IO\\_SOCKET\\_INVALID\\_ADDRESS and logs an error if binding to this port is illegal. For example, port must be in range 0-65535 to bind with IPv4. These port values would fail eventually in [`aws_socket_bind`](@ref)(), but you can use this function to validate earlier.
 
 ### Prototype
 ```c
@@ -4512,7 +4538,7 @@ end
 """
     aws_socket_get_default_impl_type()
 
-Get default impl type based on the platform. For user in internal tests only.
+Get default impl type based on the platform. For use in internal tests only.
 
 ### Prototype
 ```c
@@ -5035,6 +5061,7 @@ struct aws_tls_ctx_options
     verify_peer::Bool
     ctx_options_extension::Ptr{Cvoid}
     custom_key_op_handler::Ptr{aws_custom_key_op_handler}
+    no_certificate_revocation::Bool
 end
 
 """
@@ -5296,7 +5323,7 @@ end
 """
     aws_tls_ctx_options_init_client_mtls_from_system_path(options, allocator, cert_reg_path)
 
-Initializes options for use with mutual tls in client mode. cert\\_reg\\_path is the path to a system installed certficate/private key pair. Example: CurrentUser\\MY\\<thumprint>
+Initializes options for use with mutual tls in client mode. cert\\_reg\\_path is the path to a system installed certficate/private key pair. Example: CurrentUser\\MY\\<thumbprint>
 
 NOTE: This only works on Windows.
 
@@ -5312,7 +5339,7 @@ end
 """
     aws_tls_ctx_options_init_default_server_from_system_path(options, allocator, cert_reg_path)
 
-Initializes options for use with server mode. cert\\_reg\\_path is the path to a system installed certficate/private key pair. Example: CurrentUser\\MY\\<thumprint>
+Initializes options for use with server mode. cert\\_reg\\_path is the path to a system installed certficate/private key pair. Example: CurrentUser\\MY\\<thumbprint>
 
 NOTE: This only works on Windows.
 
@@ -5415,6 +5442,26 @@ void aws_tls_ctx_options_set_verify_peer(struct aws_tls_ctx_options *options, bo
 """
 function aws_tls_ctx_options_set_verify_peer(options, verify_peer)
     ccall((:aws_tls_ctx_options_set_verify_peer, libaws_c_io), Cvoid, (Ptr{aws_tls_ctx_options}, Bool), options, verify_peer)
+end
+
+"""
+    aws_tls_ctx_options_set_no_certificate_revocation(options, no_revocation)
+
+Enables or disables certificate revocation checking during TLS negotiation.
+
+On Windows (SChannel), the TLS handshake will make outbound network calls to CRL/OCSP revocation endpoints and makes a best-effort check. In environments without internet access, this can cause the handshake to block for minutes while waiting for network timeouts.
+
+On Linux (s2n) checks against stapled responses
+
+Set this to true to skip revocation checking entirely.
+
+### Prototype
+```c
+void aws_tls_ctx_options_set_no_certificate_revocation( struct aws_tls_ctx_options *options, bool no_revocation);
+```
+"""
+function aws_tls_ctx_options_set_no_certificate_revocation(options, no_revocation)
+    ccall((:aws_tls_ctx_options_set_no_certificate_revocation, libaws_c_io), Cvoid, (Ptr{aws_tls_ctx_options}, Bool), options, no_revocation)
 end
 
 """
@@ -5790,7 +5837,7 @@ end
 """
     aws_tls_key_operation_get_type(operation)
 
-Returns the type of operation that needs to be performed by the custom key operation. If the implementation cannot perform the operation, use [`aws_tls_key_operation_complete_with_error`](@ref)() to preventing stalling the TLS connection.
+Returns the type of operation that needs to be performed by the custom key operation. If the implementation cannot perform the operation, use [`aws_tls_key_operation_complete_with_error`](@ref)() to prevent stalling the TLS connection.
 
 ### Prototype
 ```c
@@ -5804,7 +5851,7 @@ end
 """
     aws_tls_key_operation_get_signature_algorithm(operation)
 
-Returns the algorithm the operation is expected to be operated with. If the implementation does not support the signature algorithm, use [`aws_tls_key_operation_complete_with_error`](@ref)() to preventing stalling the TLS connection.
+Returns the algorithm the operation is expected to be operated with. If the implementation does not support the signature algorithm, use [`aws_tls_key_operation_complete_with_error`](@ref)() to prevent stalling the TLS connection.
 
 ### Prototype
 ```c
@@ -5818,7 +5865,7 @@ end
 """
     aws_tls_key_operation_get_digest_algorithm(operation)
 
-Returns the algorithm the operation digest is signed with. If the implementation does not support the digest algorithm, use [`aws_tls_key_operation_complete_with_error`](@ref)() to preventing stalling the TLS connection.
+Returns the algorithm the operation digest is signed with. If the implementation does not support the digest algorithm, use [`aws_tls_key_operation_complete_with_error`](@ref)() to prevent stalling the TLS connection.
 
 ### Prototype
 ```c
@@ -5874,7 +5921,7 @@ end
 """
     aws_tls_key_operation_type_str(operation_type)
 
-Given enum, return string like: AWS\\_TLS\\_SIGNATURE\\_RSA -> "RSA"
+Given enum, return string like: AWS\\_TLS\\_KEY\\_OPERATION\\_SIGN -> "SIGN"
 
 ### Prototype
 ```c
@@ -6595,7 +6642,7 @@ end
 """
     testing_channel_set_is_on_users_thread(testing, on_users_thread)
 
-When you want to force the "not on channel thread path" for your handler, set 'on\\_users\\_thread' to false. when you want to undo that, set it back to true. If you set it to false, you'll need to call 'testing\\_channel\\_execute\\_queued\\_tasks()' to invoke the tasks that ended up being scheduled.
+When you want to force the "not on channel thread path" for your handler, set 'on\\_users\\_thread' to false. when you want to undo that, set it back to true. If you set it to false, you'll need to call '[`testing_channel_drain_queued_tasks`](@ref)()' to invoke the tasks that ended up being scheduled.
 
 ### Prototype
 ```c
