@@ -74,6 +74,9 @@ for target in JLLEnvs.JLL_ENV_TRIPLES
     headers = String[]
     for header_dir in header_dirs
         for (root, dirs, files) in walkdir(header_dir)
+            # aws-c-io ships unstable test helpers under aws/testing; they require
+            # AWS_UNSTABLE_TESTING_API and are not part of the public API.
+            filter!(d -> d != "testing", dirs)
             for file in files
                 if endswith(file, ".h")
                     push!(headers, joinpath(root, file))
