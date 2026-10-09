@@ -1,32 +1,32 @@
 using CEnum: CEnum, @cenum
 
 """
-    __JL_Ctag_220
+    __JL_Ctag_296
 
 Documentation not found.
 """
-struct __JL_Ctag_220
+struct __JL_Ctag_296
     data::NTuple{8, UInt8}
 end
 
-function Base.getproperty(x::Ptr{__JL_Ctag_220}, f::Symbol)
+function Base.getproperty(x::Ptr{__JL_Ctag_296}, f::Symbol)
     f === :scheduled && return Ptr{Bool}(x + 0)
     f === :reserved && return Ptr{Csize_t}(x + 0)
     return getfield(x, f)
 end
 
-function Base.getproperty(x::__JL_Ctag_220, f::Symbol)
-    r = Ref{__JL_Ctag_220}(x)
-    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_220}, r)
+function Base.getproperty(x::__JL_Ctag_296, f::Symbol)
+    r = Ref{__JL_Ctag_296}(x)
+    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_296}, r)
     fptr = getproperty(ptr, f)
     GC.@preserve r unsafe_load(fptr)
 end
 
-function Base.setproperty!(x::Ptr{__JL_Ctag_220}, f::Symbol, v)
+function Base.setproperty!(x::Ptr{__JL_Ctag_296}, f::Symbol, v)
     unsafe_store!(getproperty(x, f), v)
 end
 
-function Base.propertynames(x::__JL_Ctag_220, private::Bool = false)
+function Base.propertynames(x::__JL_Ctag_296, private::Bool = false)
     (:scheduled, :reserved, if private
             fieldnames(typeof(x))
         else
@@ -1147,6 +1147,11 @@ struct aws_tls_connection_options
 end
 
 """
+Documentation not found.
+"""
+mutable struct aws_l4_proxy_config end
+
+"""
     aws_socket_channel_bootstrap_options
 
 Socket-based channel creation options.
@@ -1168,6 +1173,7 @@ struct aws_socket_channel_bootstrap_options
     user_data::Ptr{Cvoid}
     requested_event_loop::Ptr{aws_event_loop}
     host_resolution_override_config::Ptr{aws_host_resolution_config}
+    l4_proxy_config::Ptr{aws_l4_proxy_config}
 end
 
 """
@@ -1339,32 +1345,32 @@ struct aws_socket_endpoint
 end
 
 """
-    __JL_Ctag_221
+    __JL_Ctag_298
 
 Documentation not found.
 """
-struct __JL_Ctag_221
+struct __JL_Ctag_298
     data::NTuple{8, UInt8}
 end
 
-function Base.getproperty(x::Ptr{__JL_Ctag_221}, f::Symbol)
+function Base.getproperty(x::Ptr{__JL_Ctag_298}, f::Symbol)
     f === :fd && return Ptr{Cint}(x + 0)
     f === :handle && return Ptr{Ptr{Cvoid}}(x + 0)
     return getfield(x, f)
 end
 
-function Base.getproperty(x::__JL_Ctag_221, f::Symbol)
-    r = Ref{__JL_Ctag_221}(x)
-    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_221}, r)
+function Base.getproperty(x::__JL_Ctag_298, f::Symbol)
+    r = Ref{__JL_Ctag_298}(x)
+    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_298}, r)
     fptr = getproperty(ptr, f)
     GC.@preserve r unsafe_load(fptr)
 end
 
-function Base.setproperty!(x::Ptr{__JL_Ctag_221}, f::Symbol, v)
+function Base.setproperty!(x::Ptr{__JL_Ctag_298}, f::Symbol, v)
     unsafe_store!(getproperty(x, f), v)
 end
 
-function Base.propertynames(x::__JL_Ctag_221, private::Bool = false)
+function Base.propertynames(x::__JL_Ctag_298, private::Bool = false)
     (:fd, :handle, if private
             fieldnames(typeof(x))
         else
@@ -1388,7 +1394,7 @@ struct aws_io_handle
 end
 
 function Base.getproperty(x::Ptr{aws_io_handle}, f::Symbol)
-    f === :data && return Ptr{__JL_Ctag_221}(x + 0)
+    f === :data && return Ptr{__JL_Ctag_298}(x + 0)
     f === :additional_data && return Ptr{Ptr{Cvoid}}(x + 8)
     f === :set_queue && return Ptr{Ptr{aws_io_set_queue_on_handle_fn}}(x + 16)
     return getfield(x, f)
@@ -3233,6 +3239,16 @@ Documentation not found.
     AWS_IO_TLS_INVALID_CERTIFICATE_CHAIN = 1193
     AWS_IO_TLS_HOST_NAME_MISMATCH = 1194
     AWS_IO_DNS_QUERY_AGAIN = 1195
+    AWS_IO_SOCKS5_PROTOCOL_FAILURE = 1196
+    AWS_IO_SOCKS5_INTERNAL_FAILURE = 1197
+    AWS_IO_SOCKS5_PROTOCOL_VERSION_MISMATCH = 1198
+    AWS_IO_SOCKS5_SUBNEGOTIATION_VERSION_MISMATCH = 1199
+    AWS_IO_SOCKS5_NO_ACCEPTABLE_METHODS = 1200
+    AWS_IO_SOCKS5_UNEXPECTED_METHOD_ID = 1201
+    AWS_IO_SOCKS5_SUBNEGOTIATION_REJECTED = 1202
+    AWS_IO_SOCKS5_CONNECT_REQUEST_FAILED = 1203
+    AWS_IO_SOCKS5_NEGOTIATION_TIMEOUT = 1204
+    AWS_IO_L4_PROXY_SERVER_FIRST_DATA = 1205
     AWS_IO_ERROR_END_RANGE = 2047
     AWS_IO_INVALID_FILE_HANDLE = 50
 end
@@ -3292,6 +3308,57 @@ function aws_io_error_code_is_retryable(error_code)
 end
 
 """
+Documentation not found.
+"""
+mutable struct aws_l4_proxy_channel_handler end
+
+"""
+Documentation not found.
+"""
+mutable struct aws_l4_proxy_channel_handler_options end
+
+"""
+Documentation not found.
+"""
+mutable struct aws_connection_remote end
+
+"""
+    aws_l4_proxy_config_acquire(config)
+
+Adds a reference to a proxy config object
+
+# Arguments
+* `config`: the configuration to take a reference to
+# Returns
+rhe config param value
+### Prototype
+```c
+struct aws_l4_proxy_config *aws_l4_proxy_config_acquire(struct aws_l4_proxy_config *config);
+```
+"""
+function aws_l4_proxy_config_acquire(config)
+    ccall((:aws_l4_proxy_config_acquire, libaws_c_io), Ptr{aws_l4_proxy_config}, (Ptr{aws_l4_proxy_config},), config)
+end
+
+"""
+    aws_l4_proxy_config_release(config)
+
+Removes a reference from a proxy config object
+
+# Arguments
+* `config`: the configuration to remove a reference from
+# Returns
+rhe config param value
+### Prototype
+```c
+struct aws_l4_proxy_config *aws_l4_proxy_config_release(struct aws_l4_proxy_config *config);
+```
+"""
+function aws_l4_proxy_config_release(config)
+    ccall((:aws_l4_proxy_config_release, libaws_c_io), Ptr{aws_l4_proxy_config}, (Ptr{aws_l4_proxy_config},), config)
+end
+
+"""
     aws_io_log_subject
 
 Documentation not found.
@@ -3313,6 +3380,8 @@ Documentation not found.
     AWS_LS_IO_STANDARD_RETRY_STRATEGY = 1037
     AWS_LS_IO_PKCS11 = 1038
     AWS_LS_IO_PEM = 1039
+    AWS_LS_IO_SOCKS5 = 1040
+    AWS_LS_IO_L4_PROXY = 1041
     AWS_IO_LS_LAST = 2047
 end
 
@@ -4616,6 +4685,125 @@ const struct aws_socket *aws_socket_handler_get_socket(const struct aws_channel_
 """
 function aws_socket_handler_get_socket(handler)
     ccall((:aws_socket_handler_get_socket, libaws_c_io), Ptr{aws_socket}, (Ptr{aws_channel_handler},), handler)
+end
+
+"""
+    aws_socks5_proxy_negotiation_basic_auth_options
+
+Configuration options for basic authentication
+"""
+struct aws_socks5_proxy_negotiation_basic_auth_options
+    username::aws_byte_cursor
+    password::aws_byte_cursor
+end
+
+"""
+Types and APIs for creating a proxy config capable of establishing a tunnel through a SOCKS5 proxy.
+"""
+mutable struct aws_socks5_proxy_negotiation_strategy end
+
+"""
+    aws_socks5_proxy_options
+
+Configuration options for a socks5-based l4 proxy configuration
+"""
+struct aws_socks5_proxy_options
+    proxy_host::aws_byte_cursor
+    proxy_port::UInt32
+    negotiation_strategy::Ptr{aws_socks5_proxy_negotiation_strategy}
+    negotiation_timeout_ms::UInt32
+end
+
+"""
+    aws_l4_proxy_config_new_socks5(allocator, options)
+
+Creates a new l4\\_proxy\\_config capable of negotiating a tunnel through a SOCKS5 proxy
+
+# Arguments
+* `allocator`: allocator to use
+* `options`: SOCKS5 configuration options
+# Returns
+a new proxy configuration
+### Prototype
+```c
+struct aws_l4_proxy_config *aws_l4_proxy_config_new_socks5( struct aws_allocator *allocator, struct aws_socks5_proxy_options *options);
+```
+"""
+function aws_l4_proxy_config_new_socks5(allocator, options)
+    ccall((:aws_l4_proxy_config_new_socks5, libaws_c_io), Ptr{aws_l4_proxy_config}, (Ptr{aws_allocator}, Ptr{aws_socks5_proxy_options}), allocator, options)
+end
+
+"""
+    aws_socks5_proxy_negotiation_strategy_new_basic_auth(allocator, options)
+
+Creates a new SOCKS5 authentication strategy that performs basic authentication
+
+# Arguments
+* `allocator`: allocator to use
+* `options`: basic authentication options
+# Returns
+a new SOCKS5 authentication strategy
+### Prototype
+```c
+struct aws_socks5_proxy_negotiation_strategy *aws_socks5_proxy_negotiation_strategy_new_basic_auth( struct aws_allocator *allocator, struct aws_socks5_proxy_negotiation_basic_auth_options *options);
+```
+"""
+function aws_socks5_proxy_negotiation_strategy_new_basic_auth(allocator, options)
+    ccall((:aws_socks5_proxy_negotiation_strategy_new_basic_auth, libaws_c_io), Ptr{aws_socks5_proxy_negotiation_strategy}, (Ptr{aws_allocator}, Ptr{aws_socks5_proxy_negotiation_basic_auth_options}), allocator, options)
+end
+
+"""
+    aws_socks5_proxy_negotiation_strategy_new_no_auth(allocator)
+
+Creates a new SOCKS5 authentication strategy that performs no authentication
+
+# Arguments
+* `allocator`: allocator to use
+# Returns
+a new SOCKS5 authentication strategy
+### Prototype
+```c
+struct aws_socks5_proxy_negotiation_strategy *aws_socks5_proxy_negotiation_strategy_new_no_auth( struct aws_allocator *allocator);
+```
+"""
+function aws_socks5_proxy_negotiation_strategy_new_no_auth(allocator)
+    ccall((:aws_socks5_proxy_negotiation_strategy_new_no_auth, libaws_c_io), Ptr{aws_socks5_proxy_negotiation_strategy}, (Ptr{aws_allocator},), allocator)
+end
+
+"""
+    aws_socks5_proxy_negotiation_strategy_acquire(strategy)
+
+Adds a reference to a SOCKS5 negotiation strategy
+
+# Arguments
+* `strategy`: strategy to add a reference to
+# Returns
+the strategy param value
+### Prototype
+```c
+struct aws_socks5_proxy_negotiation_strategy *aws_socks5_proxy_negotiation_strategy_acquire( struct aws_socks5_proxy_negotiation_strategy *strategy);
+```
+"""
+function aws_socks5_proxy_negotiation_strategy_acquire(strategy)
+    ccall((:aws_socks5_proxy_negotiation_strategy_acquire, libaws_c_io), Ptr{aws_socks5_proxy_negotiation_strategy}, (Ptr{aws_socks5_proxy_negotiation_strategy},), strategy)
+end
+
+"""
+    aws_socks5_proxy_negotiation_strategy_release(strategy)
+
+Removes a reference from a SOCKS5 negotiation strategy
+
+# Arguments
+* `strategy`: strategy to remove a reference from
+# Returns
+NULL
+### Prototype
+```c
+struct aws_socks5_proxy_negotiation_strategy *aws_socks5_proxy_negotiation_strategy_release( struct aws_socks5_proxy_negotiation_strategy *strategy);
+```
+"""
+function aws_socks5_proxy_negotiation_strategy_release(strategy)
+    ccall((:aws_socks5_proxy_negotiation_strategy_release, libaws_c_io), Ptr{aws_socks5_proxy_negotiation_strategy}, (Ptr{aws_socks5_proxy_negotiation_strategy},), strategy)
 end
 
 """
@@ -5995,18 +6183,18 @@ struct aws_async_input_stream_tester_options
 end
 
 """
-    __JL_Ctag_222
+    __JL_Ctag_300
 
 Documentation not found.
 """
-struct __JL_Ctag_222
+struct __JL_Ctag_300
     lock::aws_mutex
     cvar::aws_condition_variable
     read_dest::Ptr{aws_byte_buf}
     read_future::Ptr{aws_future_bool}
     do_shutdown::Bool
 end
-function Base.getproperty(x::Ptr{__JL_Ctag_222}, f::Symbol)
+function Base.getproperty(x::Ptr{__JL_Ctag_300}, f::Symbol)
     f === :lock && return Ptr{aws_mutex}(x + 0)
     f === :cvar && return Ptr{aws_condition_variable}(x + 48)
     f === :read_dest && return Ptr{Ptr{aws_byte_buf}}(x + 104)
@@ -6015,14 +6203,14 @@ function Base.getproperty(x::Ptr{__JL_Ctag_222}, f::Symbol)
     return getfield(x, f)
 end
 
-function Base.getproperty(x::__JL_Ctag_222, f::Symbol)
-    r = Ref{__JL_Ctag_222}(x)
-    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_222}, r)
+function Base.getproperty(x::__JL_Ctag_300, f::Symbol)
+    r = Ref{__JL_Ctag_300}(x)
+    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_300}, r)
     fptr = getproperty(ptr, f)
     GC.@preserve r unsafe_load(fptr)
 end
 
-function Base.setproperty!(x::Ptr{__JL_Ctag_222}, f::Symbol, v)
+function Base.setproperty!(x::Ptr{__JL_Ctag_300}, f::Symbol, v)
     unsafe_store!(getproperty(x, f), v)
 end
 
@@ -6042,7 +6230,7 @@ function Base.getproperty(x::Ptr{aws_async_input_stream_tester}, f::Symbol)
     f === :options && return Ptr{aws_async_input_stream_tester_options}(x + 56)
     f === :source_stream && return Ptr{Ptr{aws_input_stream}}(x + 152)
     f === :thread && return Ptr{aws_thread}(x + 160)
-    f === :synced_data && return Ptr{__JL_Ctag_222}(x + 184)
+    f === :synced_data && return Ptr{__JL_Ctag_300}(x + 184)
     f === :num_outstanding_reads && return Ptr{aws_atomic_var}(x + 312)
     return getfield(x, f)
 end
@@ -6168,6 +6356,779 @@ static inline struct aws_async_input_stream *aws_async_input_stream_new_tester( 
 """
 function aws_async_input_stream_new_tester(alloc, options)
     ccall((:aws_async_input_stream_new_tester, libaws_c_io), Ptr{aws_async_input_stream}, (Ptr{aws_allocator}, Ptr{aws_async_input_stream_tester_options}), alloc, options)
+end
+
+# typedef void ( aws_echo_server_on_setup_fn ) ( struct aws_echo_server * server , int error_code , void * user_data )
+"""
+**** Public types *****
+"""
+const aws_echo_server_on_setup_fn = Cvoid
+
+# typedef void ( aws_echo_server_on_destroy_fn ) ( struct aws_echo_server * server , void * user_data )
+"""
+Documentation not found.
+"""
+const aws_echo_server_on_destroy_fn = Cvoid
+
+"""
+    aws_echo_server_options
+
+Configuration options for a TCP echo server
+"""
+struct aws_echo_server_options
+    elg::Ptr{aws_event_loop_group}
+    listener_bootstrap::Ptr{aws_server_bootstrap}
+    host_name::Ptr{Cchar}
+    port::UInt16
+    socket_options::aws_socket_options
+    on_setup::Ptr{aws_echo_server_on_setup_fn}
+    on_destroy::Ptr{aws_echo_server_on_destroy_fn}
+    user_data::Ptr{Cvoid}
+end
+
+"""
+    __JL_Ctag_297
+
+Documentation not found.
+"""
+struct __JL_Ctag_297
+    server_setup::Bool
+    setup_error_code::Cint
+    server_shutdown::Bool
+end
+function Base.getproperty(x::Ptr{__JL_Ctag_297}, f::Symbol)
+    f === :server_setup && return Ptr{Bool}(x + 0)
+    f === :setup_error_code && return Ptr{Cint}(x + 4)
+    f === :server_shutdown && return Ptr{Bool}(x + 8)
+    return getfield(x, f)
+end
+
+function Base.getproperty(x::__JL_Ctag_297, f::Symbol)
+    r = Ref{__JL_Ctag_297}(x)
+    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_297}, r)
+    fptr = getproperty(ptr, f)
+    GC.@preserve r unsafe_load(fptr)
+end
+
+function Base.setproperty!(x::Ptr{__JL_Ctag_297}, f::Symbol, v)
+    unsafe_store!(getproperty(x, f), v)
+end
+
+
+"""
+    aws_echo_server_config
+
+**** Static implementation *****
+"""
+struct aws_echo_server_config
+    allocator::Ptr{aws_allocator}
+    elg::Ptr{aws_event_loop_group}
+    listener_bootstrap::Ptr{aws_server_bootstrap}
+    host_name::Ptr{aws_string}
+    port::UInt16
+    socket_options::aws_socket_options
+    on_setup::Ptr{aws_echo_server_on_setup_fn}
+    on_destroy::Ptr{aws_echo_server_on_destroy_fn}
+    user_data::Ptr{Cvoid}
+end
+
+"""
+    aws_echo_server_state
+
+Documentation not found.
+"""
+@cenum aws_echo_server_state::UInt32 begin
+    AWS_ECHO_SS_INITIAL = 0
+    AWS_ECHO_SS_PENDING_LISTENER = 1
+    AWS_ECHO_SS_LISTENING = 2
+    AWS_ECHO_SS_SHUTTING_DOWN = 3
+    AWS_ECHO_SS_SHUTDOWN = 4
+end
+
+"""
+    __JL_Ctag_294
+
+Documentation not found.
+"""
+struct __JL_Ctag_294
+    state::aws_echo_server_state
+    next_id::UInt64
+    connections_by_id::aws_hash_table
+    listener_socket::Ptr{aws_socket}
+end
+function Base.getproperty(x::Ptr{__JL_Ctag_294}, f::Symbol)
+    f === :state && return Ptr{aws_echo_server_state}(x + 0)
+    f === :next_id && return Ptr{UInt64}(x + 8)
+    f === :connections_by_id && return Ptr{aws_hash_table}(x + 16)
+    f === :listener_socket && return Ptr{Ptr{aws_socket}}(x + 24)
+    return getfield(x, f)
+end
+
+function Base.getproperty(x::__JL_Ctag_294, f::Symbol)
+    r = Ref{__JL_Ctag_294}(x)
+    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_294}, r)
+    fptr = getproperty(ptr, f)
+    GC.@preserve r unsafe_load(fptr)
+end
+
+function Base.setproperty!(x::Ptr{__JL_Ctag_294}, f::Symbol, v)
+    unsafe_store!(getproperty(x, f), v)
+end
+
+
+"""
+    aws_echo_server
+
+Documentation not found.
+"""
+struct aws_echo_server
+    data::NTuple{144, UInt8}
+end
+
+function Base.getproperty(x::Ptr{aws_echo_server}, f::Symbol)
+    f === :allocator && return Ptr{Ptr{aws_allocator}}(x + 0)
+    f === :external_ref_count && return Ptr{aws_ref_count}(x + 8)
+    f === :internal_ref_count && return Ptr{aws_ref_count}(x + 32)
+    f === :config && return Ptr{Ptr{aws_echo_server_config}}(x + 56)
+    f === :lock && return Ptr{aws_mutex}(x + 64)
+    f === :sync && return Ptr{__JL_Ctag_294}(x + 112)
+    return getfield(x, f)
+end
+
+function Base.getproperty(x::aws_echo_server, f::Symbol)
+    r = Ref{aws_echo_server}(x)
+    ptr = Base.unsafe_convert(Ptr{aws_echo_server}, r)
+    fptr = getproperty(ptr, f)
+    GC.@preserve r unsafe_load(fptr)
+end
+
+function Base.setproperty!(x::Ptr{aws_echo_server}, f::Symbol, v)
+    unsafe_store!(getproperty(x, f), v)
+end
+
+function Base.propertynames(x::aws_echo_server, private::Bool = false)
+    (:allocator, :external_ref_count, :internal_ref_count, :config, :lock, :sync, if private
+            fieldnames(typeof(x))
+        else
+            ()
+        end...)
+end
+
+"""
+    aws_echo_server_test_context
+
+Documentation not found.
+"""
+struct aws_echo_server_test_context
+    data::NTuple{152, UInt8}
+end
+
+function Base.getproperty(x::Ptr{aws_echo_server_test_context}, f::Symbol)
+    f === :allocator && return Ptr{Ptr{aws_allocator}}(x + 0)
+    f === :elg && return Ptr{Ptr{aws_event_loop_group}}(x + 8)
+    f === :server_bootstrap && return Ptr{Ptr{aws_server_bootstrap}}(x + 16)
+    f === :lock && return Ptr{aws_mutex}(x + 24)
+    f === :signal && return Ptr{aws_condition_variable}(x + 72)
+    f === :sync && return Ptr{__JL_Ctag_297}(x + 128)
+    f === :server && return Ptr{Ptr{aws_echo_server}}(x + 144)
+    return getfield(x, f)
+end
+
+function Base.getproperty(x::aws_echo_server_test_context, f::Symbol)
+    r = Ref{aws_echo_server_test_context}(x)
+    ptr = Base.unsafe_convert(Ptr{aws_echo_server_test_context}, r)
+    fptr = getproperty(ptr, f)
+    GC.@preserve r unsafe_load(fptr)
+end
+
+function Base.setproperty!(x::Ptr{aws_echo_server_test_context}, f::Symbol, v)
+    unsafe_store!(getproperty(x, f), v)
+end
+
+function Base.propertynames(x::aws_echo_server_test_context, private::Bool = false)
+    (:allocator, :elg, :server_bootstrap, :lock, :signal, :sync, :server, if private
+            fieldnames(typeof(x))
+        else
+            ()
+        end...)
+end
+
+"""
+    aws_echo_server_new(allocator, options)
+
+Creates a new echo server
+
+# Arguments
+* `allocator`: allocator to use
+* `options`: server configuration options
+### Prototype
+```c
+static struct aws_echo_server *aws_echo_server_new( struct aws_allocator *allocator, struct aws_echo_server_options *options);
+```
+"""
+function aws_echo_server_new(allocator, options)
+    ccall((:aws_echo_server_new, libaws_c_io), Ptr{aws_echo_server}, (Ptr{aws_allocator}, Ptr{aws_echo_server_options}), allocator, options)
+end
+
+"""
+    aws_echo_server_acquire(server)
+
+Adds a reference to an echo server
+
+# Arguments
+* `server`: server to add a reference to
+# Returns
+the server input param value
+### Prototype
+```c
+static struct aws_echo_server *aws_echo_server_acquire(struct aws_echo_server *server);
+```
+"""
+function aws_echo_server_acquire(server)
+    ccall((:aws_echo_server_acquire, libaws_c_io), Ptr{aws_echo_server}, (Ptr{aws_echo_server},), server)
+end
+
+"""
+    aws_echo_server_release(server)
+
+Removes a reference from an echo server
+
+# Arguments
+* `server`: server to remove a reference from
+### Prototype
+```c
+static void aws_echo_server_release(struct aws_echo_server *server);
+```
+"""
+function aws_echo_server_release(server)
+    ccall((:aws_echo_server_release, libaws_c_io), Cvoid, (Ptr{aws_echo_server},), server)
+end
+
+"""
+    aws_echo_server_begin_accept(server)
+
+Cause an echo server to start listening and accepting incoming connections
+
+# Arguments
+* `server`: server to start listening on
+# Returns
+success/failure
+### Prototype
+```c
+static int aws_echo_server_begin_accept(struct aws_echo_server *server);
+```
+"""
+function aws_echo_server_begin_accept(server)
+    ccall((:aws_echo_server_begin_accept, libaws_c_io), Cint, (Ptr{aws_echo_server},), server)
+end
+
+"""
+    aws_echo_server_get_listener_port(server)
+
+Gets the listener port for a server. Only valid after the socket listener has been succesfully set up.
+
+# Arguments
+* `server`: the server to get the listener port for
+# Returns
+the port the server is listening on
+### Prototype
+```c
+static uint32_t aws_echo_server_get_listener_port(struct aws_echo_server *server);
+```
+"""
+function aws_echo_server_get_listener_port(server)
+    ccall((:aws_echo_server_get_listener_port, libaws_c_io), UInt32, (Ptr{aws_echo_server},), server)
+end
+
+"""
+    aws_echo_server_test_context_init(context, allocator, elg)
+
+Initializes a test context wrapper around an echo server
+
+# Arguments
+* `context`: context to initialize
+* `allocator`: allocator touse
+* `elg`: event loop group the server should use
+### Prototype
+```c
+static void aws_echo_server_test_context_init( struct aws_echo_server_test_context *context, struct aws_allocator *allocator, struct aws_event_loop_group *elg);
+```
+"""
+function aws_echo_server_test_context_init(context, allocator, elg)
+    ccall((:aws_echo_server_test_context_init, libaws_c_io), Cvoid, (Ptr{aws_echo_server_test_context}, Ptr{aws_allocator}, Ptr{aws_event_loop_group}), context, allocator, elg)
+end
+
+"""
+    aws_echo_server_test_context_clean_up(context)
+
+Cleans up an echo server test context. This includes shutting down the server and blocking until the async destruction process has completed.
+
+# Arguments
+* `context`: test context to clean up
+### Prototype
+```c
+static void aws_echo_server_test_context_clean_up(struct aws_echo_server_test_context *context);
+```
+"""
+function aws_echo_server_test_context_clean_up(context)
+    ccall((:aws_echo_server_test_context_clean_up, libaws_c_io), Cvoid, (Ptr{aws_echo_server_test_context},), context)
+end
+
+"""
+    aws_echo_server_test_context_wait_on_server_setup(context)
+
+Waits for the context's echo server to fully set up its listener socket. accept must have been called first.
+
+# Arguments
+* `context`: test context to wait on
+### Prototype
+```c
+static void aws_echo_server_test_context_wait_on_server_setup(struct aws_echo_server_test_context *context);
+```
+"""
+function aws_echo_server_test_context_wait_on_server_setup(context)
+    ccall((:aws_echo_server_test_context_wait_on_server_setup, libaws_c_io), Cvoid, (Ptr{aws_echo_server_test_context},), context)
+end
+
+"""
+    aws_echo_connection_state
+
+Documentation not found.
+"""
+@cenum aws_echo_connection_state::UInt32 begin
+    AWS_ECHO_CS_ACTIVE = 0
+    AWS_ECHO_CS_SHUTTING_DOWN = 1
+    AWS_ECHO_CS_SHUTDOWN = 2
+end
+
+"""
+    aws_echo_connection
+
+Documentation not found.
+"""
+struct aws_echo_connection
+    allocator::Ptr{aws_allocator}
+    ref_count::aws_ref_count
+    id::UInt64
+    server::Ptr{aws_echo_server}
+    state::aws_echo_connection_state
+    event_loop::Ptr{aws_event_loop}
+    channel::Ptr{aws_channel}
+    channel_handler::aws_channel_handler
+    shutdown_error_code::Cint
+    on_shutdown::Ptr{Cvoid}
+    on_shutdown_user_data::Ptr{Cvoid}
+end
+
+"""
+    s_aws_echo_server_config_new(allocator, options)
+
+Documentation not found.
+### Prototype
+```c
+static struct aws_echo_server_config *s_aws_echo_server_config_new( struct aws_allocator *allocator, struct aws_echo_server_options *options);
+```
+"""
+function s_aws_echo_server_config_new(allocator, options)
+    ccall((:s_aws_echo_server_config_new, libaws_c_io), Ptr{aws_echo_server_config}, (Ptr{aws_allocator}, Ptr{aws_echo_server_options}), allocator, options)
+end
+
+"""
+    s_aws_echo_server_config_destroy(config)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_echo_server_config_destroy(struct aws_echo_server_config *config);
+```
+"""
+function s_aws_echo_server_config_destroy(config)
+    ccall((:s_aws_echo_server_config_destroy, libaws_c_io), Cvoid, (Ptr{aws_echo_server_config},), config)
+end
+
+"""
+    s_aws_echo_connection_update_error_code(connection, error_code)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_echo_connection_update_error_code(struct aws_echo_connection *connection, int error_code);
+```
+"""
+function s_aws_echo_connection_update_error_code(connection, error_code)
+    ccall((:s_aws_echo_connection_update_error_code, libaws_c_io), Cvoid, (Ptr{aws_echo_connection}, Cint), connection, error_code)
+end
+
+"""
+    s_aws_echo_connection_on_channel_destroyed(connection)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_echo_connection_on_channel_destroyed(struct aws_echo_connection *connection);
+```
+"""
+function s_aws_echo_connection_on_channel_destroyed(connection)
+    ccall((:s_aws_echo_connection_on_channel_destroyed, libaws_c_io), Cvoid, (Ptr{aws_echo_connection},), connection)
+end
+
+"""
+    aws_echo_connection_shutdown_task
+
+Documentation not found.
+"""
+struct aws_echo_connection_shutdown_task
+    data::NTuple{88, UInt8}
+end
+
+function Base.getproperty(x::Ptr{aws_echo_connection_shutdown_task}, f::Symbol)
+    f === :allocator && return Ptr{Ptr{aws_allocator}}(x + 0)
+    f === :task && return Ptr{aws_task}(x + 8)
+    f === :connection && return Ptr{Ptr{aws_echo_connection}}(x + 72)
+    f === :error_code && return Ptr{Cint}(x + 80)
+    return getfield(x, f)
+end
+
+function Base.getproperty(x::aws_echo_connection_shutdown_task, f::Symbol)
+    r = Ref{aws_echo_connection_shutdown_task}(x)
+    ptr = Base.unsafe_convert(Ptr{aws_echo_connection_shutdown_task}, r)
+    fptr = getproperty(ptr, f)
+    GC.@preserve r unsafe_load(fptr)
+end
+
+function Base.setproperty!(x::Ptr{aws_echo_connection_shutdown_task}, f::Symbol, v)
+    unsafe_store!(getproperty(x, f), v)
+end
+
+function Base.propertynames(x::aws_echo_connection_shutdown_task, private::Bool = false)
+    (:allocator, :task, :connection, :error_code, if private
+            fieldnames(typeof(x))
+        else
+            ()
+        end...)
+end
+
+"""
+    s_aws_echo_connection_shutdown_task_destroy(task)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_echo_connection_shutdown_task_destroy(struct aws_echo_connection_shutdown_task *task);
+```
+"""
+function s_aws_echo_connection_shutdown_task_destroy(task)
+    ccall((:s_aws_echo_connection_shutdown_task_destroy, libaws_c_io), Cvoid, (Ptr{aws_echo_connection_shutdown_task},), task)
+end
+
+"""
+    s_aws_echo_connection_shutdown_task_fn(task, arg, status)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_echo_connection_shutdown_task_fn(struct aws_task *task, void *arg, enum aws_task_status status);
+```
+"""
+function s_aws_echo_connection_shutdown_task_fn(task, arg, status)
+    ccall((:s_aws_echo_connection_shutdown_task_fn, libaws_c_io), Cvoid, (Ptr{aws_task}, Ptr{Cvoid}, aws_task_status), task, arg, status)
+end
+
+"""
+    s_aws_echo_connection_shutdown_task_new(allocator, connection, error_code)
+
+Documentation not found.
+### Prototype
+```c
+static struct aws_echo_connection_shutdown_task *s_aws_echo_connection_shutdown_task_new( struct aws_allocator *allocator, struct aws_echo_connection *connection, int error_code);
+```
+"""
+function s_aws_echo_connection_shutdown_task_new(allocator, connection, error_code)
+    ccall((:s_aws_echo_connection_shutdown_task_new, libaws_c_io), Ptr{aws_echo_connection_shutdown_task}, (Ptr{aws_allocator}, Ptr{aws_echo_connection}, Cint), allocator, connection, error_code)
+end
+
+"""
+    s_aws_echo_connection_shutdown(connection, error_code)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_echo_connection_shutdown(struct aws_echo_connection *connection, int error_code);
+```
+"""
+function s_aws_echo_connection_shutdown(connection, error_code)
+    ccall((:s_aws_echo_connection_shutdown, libaws_c_io), Cvoid, (Ptr{aws_echo_connection}, Cint), connection, error_code)
+end
+
+"""
+    s_shut_down_echo_server(server)
+
+Documentation not found.
+### Prototype
+```c
+static void s_shut_down_echo_server(struct aws_echo_server *server);
+```
+"""
+function s_shut_down_echo_server(server)
+    ccall((:s_shut_down_echo_server, libaws_c_io), Cvoid, (Ptr{aws_echo_server},), server)
+end
+
+"""
+    s_on_echo_server_external_ref_count_zero(user_data)
+
+Documentation not found.
+### Prototype
+```c
+static void s_on_echo_server_external_ref_count_zero(void *user_data);
+```
+"""
+function s_on_echo_server_external_ref_count_zero(user_data)
+    ccall((:s_on_echo_server_external_ref_count_zero, libaws_c_io), Cvoid, (Ptr{Cvoid},), user_data)
+end
+
+"""
+    s_on_echo_server_internal_ref_count_zero(user_data)
+
+Documentation not found.
+### Prototype
+```c
+static void s_on_echo_server_internal_ref_count_zero(void *user_data);
+```
+"""
+function s_on_echo_server_internal_ref_count_zero(user_data)
+    ccall((:s_on_echo_server_internal_ref_count_zero, libaws_c_io), Cvoid, (Ptr{Cvoid},), user_data)
+end
+
+"""
+    s_aws_echo_server_bootstrap_on_listener_setup_fn(bootstrap, error_code, user_data)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_echo_server_bootstrap_on_listener_setup_fn( struct aws_server_bootstrap *bootstrap, int error_code, void *user_data);
+```
+"""
+function s_aws_echo_server_bootstrap_on_listener_setup_fn(bootstrap, error_code, user_data)
+    ccall((:s_aws_echo_server_bootstrap_on_listener_setup_fn, libaws_c_io), Cvoid, (Ptr{aws_server_bootstrap}, Cint, Ptr{Cvoid}), bootstrap, error_code, user_data)
+end
+
+"""
+    aws_echo_connection_options
+
+Documentation not found.
+"""
+struct aws_echo_connection_options
+    server::Ptr{aws_echo_server}
+    channel::Ptr{aws_channel}
+    id::UInt64
+end
+
+"""
+    s_aws_echo_server_on_connection_shutdown(connection, error_code, user_data)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_echo_server_on_connection_shutdown( struct aws_echo_connection *connection, int error_code, void *user_data);
+```
+"""
+function s_aws_echo_server_on_connection_shutdown(connection, error_code, user_data)
+    ccall((:s_aws_echo_server_on_connection_shutdown, libaws_c_io), Cvoid, (Ptr{aws_echo_connection}, Cint, Ptr{Cvoid}), connection, error_code, user_data)
+end
+
+"""
+    s_aws_echo_connection_destroy(user_data)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_echo_connection_destroy(void *user_data);
+```
+"""
+function s_aws_echo_connection_destroy(user_data)
+    ccall((:s_aws_echo_connection_destroy, libaws_c_io), Cvoid, (Ptr{Cvoid},), user_data)
+end
+
+"""
+    s_aws_echo_connection_new(allocator, options)
+
+Documentation not found.
+### Prototype
+```c
+static struct aws_echo_connection *s_aws_echo_connection_new( struct aws_allocator *allocator, struct aws_echo_connection_options *options);
+```
+"""
+function s_aws_echo_connection_new(allocator, options)
+    ccall((:s_aws_echo_connection_new, libaws_c_io), Ptr{aws_echo_connection}, (Ptr{aws_allocator}, Ptr{aws_echo_connection_options}), allocator, options)
+end
+
+"""
+    s_echo_connection_handler_process_read_message(handler, slot, message)
+
+Documentation not found.
+### Prototype
+```c
+static int s_echo_connection_handler_process_read_message( struct aws_channel_handler *handler, struct aws_channel_slot *slot, struct aws_io_message *message);
+```
+"""
+function s_echo_connection_handler_process_read_message(handler, slot, message)
+    ccall((:s_echo_connection_handler_process_read_message, libaws_c_io), Cint, (Ptr{aws_channel_handler}, Ptr{aws_channel_slot}, Ptr{aws_io_message}), handler, slot, message)
+end
+
+"""
+    s_echo_connection_handler_shutdown(handler, slot, dir, error_code, free_scarce_resources_immediately)
+
+Documentation not found.
+### Prototype
+```c
+static int s_echo_connection_handler_shutdown( struct aws_channel_handler *handler, struct aws_channel_slot *slot, enum aws_channel_direction dir, int error_code, bool free_scarce_resources_immediately);
+```
+"""
+function s_echo_connection_handler_shutdown(handler, slot, dir, error_code, free_scarce_resources_immediately)
+    ccall((:s_echo_connection_handler_shutdown, libaws_c_io), Cint, (Ptr{aws_channel_handler}, Ptr{aws_channel_slot}, aws_channel_direction, Cint, Bool), handler, slot, dir, error_code, free_scarce_resources_immediately)
+end
+
+"""
+    s_echo_connection_handler_initial_window_size(handler)
+
+Documentation not found.
+### Prototype
+```c
+static size_t s_echo_connection_handler_initial_window_size(struct aws_channel_handler *handler);
+```
+"""
+function s_echo_connection_handler_initial_window_size(handler)
+    ccall((:s_echo_connection_handler_initial_window_size, libaws_c_io), Csize_t, (Ptr{aws_channel_handler},), handler)
+end
+
+"""
+    s_echo_connection_handler_message_overhead(handler)
+
+Documentation not found.
+### Prototype
+```c
+static size_t s_echo_connection_handler_message_overhead(struct aws_channel_handler *handler);
+```
+"""
+function s_echo_connection_handler_message_overhead(handler)
+    ccall((:s_echo_connection_handler_message_overhead, libaws_c_io), Csize_t, (Ptr{aws_channel_handler},), handler)
+end
+
+"""
+    s_echo_connection_handler_destroy(handler)
+
+Documentation not found.
+### Prototype
+```c
+static void s_echo_connection_handler_destroy(struct aws_channel_handler *handler);
+```
+"""
+function s_echo_connection_handler_destroy(handler)
+    ccall((:s_echo_connection_handler_destroy, libaws_c_io), Cvoid, (Ptr{aws_channel_handler},), handler)
+end
+
+"""
+    s_aws_echo_server_bootstrap_on_accept_channel_setup_fn(bootstrap, error_code, channel, user_data)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_echo_server_bootstrap_on_accept_channel_setup_fn( struct aws_server_bootstrap *bootstrap, int error_code, struct aws_channel *channel, void *user_data);
+```
+"""
+function s_aws_echo_server_bootstrap_on_accept_channel_setup_fn(bootstrap, error_code, channel, user_data)
+    ccall((:s_aws_echo_server_bootstrap_on_accept_channel_setup_fn, libaws_c_io), Cvoid, (Ptr{aws_server_bootstrap}, Cint, Ptr{aws_channel}, Ptr{Cvoid}), bootstrap, error_code, channel, user_data)
+end
+
+"""
+    s_aws_echo_server_bootstrap_on_accept_channel_shutdown_fn(bootstrap, error_code, channel, user_data)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_echo_server_bootstrap_on_accept_channel_shutdown_fn( struct aws_server_bootstrap *bootstrap, int error_code, struct aws_channel *channel, void *user_data);
+```
+"""
+function s_aws_echo_server_bootstrap_on_accept_channel_shutdown_fn(bootstrap, error_code, channel, user_data)
+    ccall((:s_aws_echo_server_bootstrap_on_accept_channel_shutdown_fn, libaws_c_io), Cvoid, (Ptr{aws_server_bootstrap}, Cint, Ptr{aws_channel}, Ptr{Cvoid}), bootstrap, error_code, channel, user_data)
+end
+
+"""
+    s_aws_echo_server_bootstrap_on_server_listener_destroy_fn(bootstrap, user_data)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_echo_server_bootstrap_on_server_listener_destroy_fn( struct aws_server_bootstrap *bootstrap, void *user_data);
+```
+"""
+function s_aws_echo_server_bootstrap_on_server_listener_destroy_fn(bootstrap, user_data)
+    ccall((:s_aws_echo_server_bootstrap_on_server_listener_destroy_fn, libaws_c_io), Cvoid, (Ptr{aws_server_bootstrap}, Ptr{Cvoid}), bootstrap, user_data)
+end
+
+"""
+    s_aws_echo_server_test_context_on_server_setup(server, error_code, user_data)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_echo_server_test_context_on_server_setup( struct aws_echo_server *server, int error_code, void *user_data);
+```
+"""
+function s_aws_echo_server_test_context_on_server_setup(server, error_code, user_data)
+    ccall((:s_aws_echo_server_test_context_on_server_setup, libaws_c_io), Cvoid, (Ptr{aws_echo_server}, Cint, Ptr{Cvoid}), server, error_code, user_data)
+end
+
+"""
+    s_aws_echo_server_test_context_on_server_destroy(server, user_data)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_echo_server_test_context_on_server_destroy(struct aws_echo_server *server, void *user_data);
+```
+"""
+function s_aws_echo_server_test_context_on_server_destroy(server, user_data)
+    ccall((:s_aws_echo_server_test_context_on_server_destroy, libaws_c_io), Cvoid, (Ptr{aws_echo_server}, Ptr{Cvoid}), server, user_data)
+end
+
+"""
+    s_check_echo_server_setup(user_data)
+
+Documentation not found.
+### Prototype
+```c
+static bool s_check_echo_server_setup(void *user_data);
+```
+"""
+function s_check_echo_server_setup(user_data)
+    ccall((:s_check_echo_server_setup, libaws_c_io), Bool, (Ptr{Cvoid},), user_data)
+end
+
+"""
+    s_check_echo_server_destroyed(user_data)
+
+Documentation not found.
+### Prototype
+```c
+static bool s_check_echo_server_destroyed(void *user_data);
+```
+"""
+function s_check_echo_server_destroyed(user_data)
+    ccall((:s_check_echo_server_destroyed, libaws_c_io), Bool, (Ptr{Cvoid},), user_data)
+end
+
+"""
+    s_aws_echo_server_test_context_wait_on_server_shutdown(context)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_echo_server_test_context_wait_on_server_shutdown(struct aws_echo_server_test_context *context);
+```
+"""
+function s_aws_echo_server_test_context_wait_on_server_shutdown(context)
+    ccall((:s_aws_echo_server_test_context_wait_on_server_shutdown, libaws_c_io), Cvoid, (Ptr{aws_echo_server_test_context},), context)
 end
 
 """
@@ -6941,6 +7902,1150 @@ function testing_channel_push_write_str(channel, str)
 end
 
 """
+    aws_socks5_server_fault_mode
+
+tells the server to fail in particular ways
+"""
+@cenum aws_socks5_server_fault_mode::UInt32 begin
+    AWS_SOCKS5_SFM_NONE = 0
+    AWS_SOCKS5_SFM_BAD_VERSION = 1
+    AWS_SOCKS5_SFM_REMOTE_UNAVAILABLE = 2
+    AWS_SOCKS5_SFM_REMOTE_TIMEOUT = 3
+end
+
+"""
+    aws_socks5_server_auth_options
+
+Configuration options for socks5 server authentication controls
+"""
+struct aws_socks5_server_auth_options
+    allow_no_auth::Bool
+    allow_basic_auth::Bool
+    basic_username::Ptr{aws_byte_cursor}
+    basic_password::Ptr{aws_byte_cursor}
+end
+
+# typedef void ( aws_socks5_server_on_setup_fn ) ( struct aws_socks5_server * server , int error_code , void * user_data )
+"""
+Documentation not found.
+"""
+const aws_socks5_server_on_setup_fn = Cvoid
+
+# typedef void ( aws_socks5_server_on_destroy_fn ) ( struct aws_socks5_server * server , void * user_data )
+"""
+Documentation not found.
+"""
+const aws_socks5_server_on_destroy_fn = Cvoid
+
+"""
+    aws_socks5_server_options
+
+Configuration options for creating a socks5 server
+"""
+struct aws_socks5_server_options
+    elg::Ptr{aws_event_loop_group}
+    to_remote_bootstrap::Ptr{aws_client_bootstrap}
+    listener_bootstrap::Ptr{aws_server_bootstrap}
+    host_name::Ptr{Cchar}
+    port::UInt16
+    socket_options::aws_socket_options
+    auth_options::aws_socks5_server_auth_options
+    fault_mode::aws_socks5_server_fault_mode
+    on_setup::Ptr{aws_socks5_server_on_setup_fn}
+    on_destroy::Ptr{aws_socks5_server_on_destroy_fn}
+    user_data::Ptr{Cvoid}
+end
+
+"""
+    aws_socks5_server_test_context_options
+
+Configuration options for a socks5 server wrapper that adds wait functionality
+"""
+struct aws_socks5_server_test_context_options
+    elg::Ptr{aws_event_loop_group}
+    override_auth_options::Ptr{aws_socks5_server_auth_options}
+    fault_mode::aws_socks5_server_fault_mode
+end
+
+"""
+    aws_socks5_server_auth_config
+
+**** Implementation *****
+"""
+struct aws_socks5_server_auth_config
+    allocator::Ptr{aws_allocator}
+    allow_no_auth::Bool
+    allow_basic_auth::Bool
+    basic_username::aws_byte_buf
+    basic_password::aws_byte_buf
+end
+
+"""
+    aws_socks5_server_config
+
+Documentation not found.
+"""
+struct aws_socks5_server_config
+    allocator::Ptr{aws_allocator}
+    elg::Ptr{aws_event_loop_group}
+    to_remote_bootstrap::Ptr{aws_client_bootstrap}
+    listener_bootstrap::Ptr{aws_server_bootstrap}
+    host_name::Ptr{aws_string}
+    port::UInt16
+    socket_options::aws_socket_options
+    auth_config::Ptr{aws_socks5_server_auth_config}
+    fault_mode::aws_socks5_server_fault_mode
+    on_setup::Ptr{aws_socks5_server_on_setup_fn}
+    on_destroy::Ptr{aws_socks5_server_on_destroy_fn}
+    user_data::Ptr{Cvoid}
+end
+
+"""
+    aws_socks5_server_state
+
+Documentation not found.
+"""
+@cenum aws_socks5_server_state::UInt32 begin
+    AWS_SOCKS5_SS_INITIAL = 0
+    AWS_SOCKS5_SS_PENDING_LISTENER = 1
+    AWS_SOCKS5_SS_LISTENING = 2
+    AWS_SOCKS5_SS_SHUTTING_DOWN = 3
+    AWS_SOCKS5_SS_SHUTDOWN = 4
+end
+
+"""
+    __JL_Ctag_299
+
+Documentation not found.
+"""
+struct __JL_Ctag_299
+    state::aws_socks5_server_state
+    next_id::UInt64
+    tunnels_by_id::aws_hash_table
+    listener_socket::Ptr{aws_socket}
+    connections_created_count::Csize_t
+end
+function Base.getproperty(x::Ptr{__JL_Ctag_299}, f::Symbol)
+    f === :state && return Ptr{aws_socks5_server_state}(x + 0)
+    f === :next_id && return Ptr{UInt64}(x + 8)
+    f === :tunnels_by_id && return Ptr{aws_hash_table}(x + 16)
+    f === :listener_socket && return Ptr{Ptr{aws_socket}}(x + 24)
+    f === :connections_created_count && return Ptr{Csize_t}(x + 32)
+    return getfield(x, f)
+end
+
+function Base.getproperty(x::__JL_Ctag_299, f::Symbol)
+    r = Ref{__JL_Ctag_299}(x)
+    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_299}, r)
+    fptr = getproperty(ptr, f)
+    GC.@preserve r unsafe_load(fptr)
+end
+
+function Base.setproperty!(x::Ptr{__JL_Ctag_299}, f::Symbol, v)
+    unsafe_store!(getproperty(x, f), v)
+end
+
+
+"""
+    aws_socks5_server
+
+Documentation not found.
+"""
+struct aws_socks5_server
+    data::NTuple{152, UInt8}
+end
+
+function Base.getproperty(x::Ptr{aws_socks5_server}, f::Symbol)
+    f === :allocator && return Ptr{Ptr{aws_allocator}}(x + 0)
+    f === :external_ref_count && return Ptr{aws_ref_count}(x + 8)
+    f === :internal_ref_count && return Ptr{aws_ref_count}(x + 32)
+    f === :config && return Ptr{Ptr{aws_socks5_server_config}}(x + 56)
+    f === :lock && return Ptr{aws_mutex}(x + 64)
+    f === :sync && return Ptr{__JL_Ctag_299}(x + 112)
+    return getfield(x, f)
+end
+
+function Base.getproperty(x::aws_socks5_server, f::Symbol)
+    r = Ref{aws_socks5_server}(x)
+    ptr = Base.unsafe_convert(Ptr{aws_socks5_server}, r)
+    fptr = getproperty(ptr, f)
+    GC.@preserve r unsafe_load(fptr)
+end
+
+function Base.setproperty!(x::Ptr{aws_socks5_server}, f::Symbol, v)
+    unsafe_store!(getproperty(x, f), v)
+end
+
+function Base.propertynames(x::aws_socks5_server, private::Bool = false)
+    (:allocator, :external_ref_count, :internal_ref_count, :config, :lock, :sync, if private
+            fieldnames(typeof(x))
+        else
+            ()
+        end...)
+end
+
+"""
+    aws_socks5_server_test_context
+
+Documentation not found.
+"""
+struct aws_socks5_server_test_context
+    data::NTuple{168, UInt8}
+end
+
+function Base.getproperty(x::Ptr{aws_socks5_server_test_context}, f::Symbol)
+    f === :allocator && return Ptr{Ptr{aws_allocator}}(x + 0)
+    f === :elg && return Ptr{Ptr{aws_event_loop_group}}(x + 8)
+    f === :resolver && return Ptr{Ptr{aws_host_resolver}}(x + 16)
+    f === :client_bootstrap && return Ptr{Ptr{aws_client_bootstrap}}(x + 24)
+    f === :server_bootstrap && return Ptr{Ptr{aws_server_bootstrap}}(x + 32)
+    f === :lock && return Ptr{aws_mutex}(x + 40)
+    f === :signal && return Ptr{aws_condition_variable}(x + 88)
+    f === :sync && return Ptr{__JL_Ctag_297}(x + 144)
+    f === :server && return Ptr{Ptr{aws_socks5_server}}(x + 160)
+    return getfield(x, f)
+end
+
+function Base.getproperty(x::aws_socks5_server_test_context, f::Symbol)
+    r = Ref{aws_socks5_server_test_context}(x)
+    ptr = Base.unsafe_convert(Ptr{aws_socks5_server_test_context}, r)
+    fptr = getproperty(ptr, f)
+    GC.@preserve r unsafe_load(fptr)
+end
+
+function Base.setproperty!(x::Ptr{aws_socks5_server_test_context}, f::Symbol, v)
+    unsafe_store!(getproperty(x, f), v)
+end
+
+function Base.propertynames(x::aws_socks5_server_test_context, private::Bool = false)
+    (:allocator, :elg, :resolver, :client_bootstrap, :server_bootstrap, :lock, :signal, :sync, :server, if private
+            fieldnames(typeof(x))
+        else
+            ()
+        end...)
+end
+
+"""
+    aws_socks5_server_new(allocator, options)
+
+Creates a new socks5 server
+
+# Arguments
+* `allocator`: allocator to use
+* `options`: server configuration options
+### Prototype
+```c
+static struct aws_socks5_server *aws_socks5_server_new( struct aws_allocator *allocator, struct aws_socks5_server_options *options);
+```
+"""
+function aws_socks5_server_new(allocator, options)
+    ccall((:aws_socks5_server_new, libaws_c_io), Ptr{aws_socks5_server}, (Ptr{aws_allocator}, Ptr{aws_socks5_server_options}), allocator, options)
+end
+
+"""
+    aws_socks5_server_acquire(server)
+
+Adds a reference to a socks5 server
+
+# Arguments
+* `server`: server to add a reference to
+# Returns
+the server input param value
+### Prototype
+```c
+static struct aws_socks5_server *aws_socks5_server_acquire(struct aws_socks5_server *server);
+```
+"""
+function aws_socks5_server_acquire(server)
+    ccall((:aws_socks5_server_acquire, libaws_c_io), Ptr{aws_socks5_server}, (Ptr{aws_socks5_server},), server)
+end
+
+"""
+    aws_socks5_server_release(server)
+
+Removes a reference from a socks5 server
+
+# Arguments
+* `server`: server to remove a reference from
+### Prototype
+```c
+static void aws_socks5_server_release(struct aws_socks5_server *server);
+```
+"""
+function aws_socks5_server_release(server)
+    ccall((:aws_socks5_server_release, libaws_c_io), Cvoid, (Ptr{aws_socks5_server},), server)
+end
+
+"""
+    aws_socks5_server_begin_accept(server)
+
+Trigger the server to start listening for incoming connection requests
+
+# Arguments
+* `server`: server to begin listening on
+# Returns
+success/failure
+### Prototype
+```c
+static int aws_socks5_server_begin_accept(struct aws_socks5_server *server);
+```
+"""
+function aws_socks5_server_begin_accept(server)
+    ccall((:aws_socks5_server_begin_accept, libaws_c_io), Cint, (Ptr{aws_socks5_server},), server)
+end
+
+"""
+    aws_socks5_server_get_listener_port(server)
+
+Gets what port the server is listening on; will crash if the server is not listening
+
+# Arguments
+* `server`: server to query the listener port for
+# Returns
+the port the server is listening on
+### Prototype
+```c
+static uint32_t aws_socks5_server_get_listener_port(struct aws_socks5_server *server);
+```
+"""
+function aws_socks5_server_get_listener_port(server)
+    ccall((:aws_socks5_server_get_listener_port, libaws_c_io), UInt32, (Ptr{aws_socks5_server},), server)
+end
+
+"""
+    aws_socks5_server_get_connections_created(server)
+
+Gets how many tunnels have been created over the server's lifetime. Useful as a simple verification that a test is actually connecting through the server and not skipping it.
+
+# Arguments
+* `server`: server to check tunnel creation count for
+# Returns
+total number of tunnels created so far
+### Prototype
+```c
+static size_t aws_socks5_server_get_connections_created(struct aws_socks5_server *server);
+```
+"""
+function aws_socks5_server_get_connections_created(server)
+    ccall((:aws_socks5_server_get_connections_created, libaws_c_io), Csize_t, (Ptr{aws_socks5_server},), server)
+end
+
+"""
+    aws_socks5_server_test_context_init(context, allocator, options)
+
+Initialize a test context that wraps a socks5 server with wait functionality
+
+# Arguments
+* `context`: context to initialize
+* `allocator`: allocator to use
+* `options`: context configuration options
+### Prototype
+```c
+static void aws_socks5_server_test_context_init( struct aws_socks5_server_test_context *context, struct aws_allocator *allocator, struct aws_socks5_server_test_context_options *options);
+```
+"""
+function aws_socks5_server_test_context_init(context, allocator, options)
+    ccall((:aws_socks5_server_test_context_init, libaws_c_io), Cvoid, (Ptr{aws_socks5_server_test_context}, Ptr{aws_allocator}, Ptr{aws_socks5_server_test_context_options}), context, allocator, options)
+end
+
+"""
+    aws_socks5_server_test_context_clean_up(context)
+
+Cleans up a socks5 server test context. This includes shutting down the listener socket, destroying all active tunnels and waiting for final server destruction.
+
+# Arguments
+* `context`: test context to clean up
+### Prototype
+```c
+static void aws_socks5_server_test_context_clean_up(struct aws_socks5_server_test_context *context);
+```
+"""
+function aws_socks5_server_test_context_clean_up(context)
+    ccall((:aws_socks5_server_test_context_clean_up, libaws_c_io), Cvoid, (Ptr{aws_socks5_server_test_context},), context)
+end
+
+"""
+    aws_socks5_server_test_context_wait_on_server_setup(context)
+
+Waits for a context's socks5 server to finish setting up its socket listener. accept must have been called earlier.
+
+# Arguments
+* `context`: test context to wait on
+### Prototype
+```c
+static void aws_socks5_server_test_context_wait_on_server_setup(struct aws_socks5_server_test_context *context);
+```
+"""
+function aws_socks5_server_test_context_wait_on_server_setup(context)
+    ccall((:aws_socks5_server_test_context_wait_on_server_setup, libaws_c_io), Cvoid, (Ptr{aws_socks5_server_test_context},), context)
+end
+
+"""
+    aws_socks5_tunnel_state
+
+Documentation not found.
+"""
+@cenum aws_socks5_tunnel_state::UInt32 begin
+    AWS_SOCKS5_TS_PENDING_METHOD_LIST = 0
+    AWS_SOCKS5_TS_PENDING_BASIC_AUTH_RECORD = 1
+    AWS_SOCKS5_TS_PENDING_COMMAND = 2
+    AWS_SOCKS5_TS_PENDING_REMOTE_CONNECTION = 3
+    AWS_SOCKS5_TS_PASS_THROUGH = 4
+    AWS_SOCKS5_TS_SHUTTING_DOWN = 5
+    AWS_SOCKS5_TS_SHUTDOWN = 6
+end
+
+"""
+    aws_socks5_auth_method_ids
+
+Documentation not found.
+"""
+@cenum aws_socks5_auth_method_ids::UInt32 begin
+    AWS_SOCKS5_AMI_NONE = 0
+    AWS_SOCKS5_AMI_BASIC = 2
+    AWS_SOCSK5_AMI_NO_ACCEPTABLE = 255
+end
+
+"""
+    aws_socks5_command_ids
+
+Documentation not found.
+"""
+@cenum aws_socks5_command_ids::UInt32 begin
+    AWS_SOCKS5_COMMAND_CONNECT = 1
+    AWS_SOCKS5_COMMAND_BIND = 2
+    AWS_SOCKS5_COMMAND_ASSOCIATE = 3
+end
+
+"""
+    aws_socks5_address_type
+
+Documentation not found.
+"""
+@cenum aws_socks5_address_type::UInt32 begin
+    AWS_SOCKS5_AT_IPV4 = 1
+    AWS_SOCKS5_AT_DOMAIN_NAME = 3
+    AWS_SOCKS5_AT_IPV6 = 4
+end
+
+"""
+    aws_socks5_connect_response_code
+
+Documentation not found.
+"""
+@cenum aws_socks5_connect_response_code::UInt32 begin
+    AWS_SOCKS5_CRC_SUCCEEDED = 0
+    AWS_SOCKS5_CRC_HOST_UNREACHABLE = 4
+end
+
+"""
+    aws_socks5_tunnel
+
+Documentation not found.
+"""
+struct aws_socks5_tunnel
+    allocator::Ptr{aws_allocator}
+    ref_count::aws_ref_count
+    id::UInt64
+    server::Ptr{aws_socks5_server}
+    state::aws_socks5_tunnel_state
+    selected_auth_method::aws_socks5_auth_method_ids
+    remote_host_name::Ptr{aws_string}
+    remote_port::UInt16
+    event_loop::Ptr{aws_event_loop}
+    to_client::Ptr{aws_channel}
+    to_client_handler::aws_channel_handler
+    to_remote::Ptr{aws_channel}
+    to_remote_handler::aws_channel_handler
+    handshake_data::aws_byte_buf
+    shutdown_error_code::Cint
+    pending_remote::Bool
+    on_shutdown::Ptr{Cvoid}
+    on_shutdown_user_data::Ptr{Cvoid}
+end
+
+"""
+    s_aws_socks5_server_auth_config_new(allocator, options)
+
+Documentation not found.
+### Prototype
+```c
+static struct aws_socks5_server_auth_config *s_aws_socks5_server_auth_config_new( struct aws_allocator *allocator, struct aws_socks5_server_auth_options *options);
+```
+"""
+function s_aws_socks5_server_auth_config_new(allocator, options)
+    ccall((:s_aws_socks5_server_auth_config_new, libaws_c_io), Ptr{aws_socks5_server_auth_config}, (Ptr{aws_allocator}, Ptr{aws_socks5_server_auth_options}), allocator, options)
+end
+
+"""
+    s_aws_socks5_server_auth_config_destroy(config)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_socks5_server_auth_config_destroy(struct aws_socks5_server_auth_config *config);
+```
+"""
+function s_aws_socks5_server_auth_config_destroy(config)
+    ccall((:s_aws_socks5_server_auth_config_destroy, libaws_c_io), Cvoid, (Ptr{aws_socks5_server_auth_config},), config)
+end
+
+"""
+    s_aws_socks5_server_config_new(allocator, options)
+
+Documentation not found.
+### Prototype
+```c
+static struct aws_socks5_server_config *s_aws_socks5_server_config_new( struct aws_allocator *allocator, struct aws_socks5_server_options *options);
+```
+"""
+function s_aws_socks5_server_config_new(allocator, options)
+    ccall((:s_aws_socks5_server_config_new, libaws_c_io), Ptr{aws_socks5_server_config}, (Ptr{aws_allocator}, Ptr{aws_socks5_server_options}), allocator, options)
+end
+
+"""
+    s_aws_socks5_server_config_destroy(config)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_socks5_server_config_destroy(struct aws_socks5_server_config *config);
+```
+"""
+function s_aws_socks5_server_config_destroy(config)
+    ccall((:s_aws_socks5_server_config_destroy, libaws_c_io), Cvoid, (Ptr{aws_socks5_server_config},), config)
+end
+
+"""
+    s_aws_socks5_tunnel_update_error_code(tunnel, error_code)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_socks5_tunnel_update_error_code(struct aws_socks5_tunnel *tunnel, int error_code);
+```
+"""
+function s_aws_socks5_tunnel_update_error_code(tunnel, error_code)
+    ccall((:s_aws_socks5_tunnel_update_error_code, libaws_c_io), Cvoid, (Ptr{aws_socks5_tunnel}, Cint), tunnel, error_code)
+end
+
+"""
+    s_aws_socks5_tunnel_change_state(tunnel, new_state)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_socks5_tunnel_change_state(struct aws_socks5_tunnel *tunnel, enum aws_socks5_tunnel_state new_state);
+```
+"""
+function s_aws_socks5_tunnel_change_state(tunnel, new_state)
+    ccall((:s_aws_socks5_tunnel_change_state, libaws_c_io), Cvoid, (Ptr{aws_socks5_tunnel}, aws_socks5_tunnel_state), tunnel, new_state)
+end
+
+"""
+    s_aws_socks5_tunnel_on_channel_destroyed(tunnel, channel)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_socks5_tunnel_on_channel_destroyed(struct aws_socks5_tunnel *tunnel, struct aws_channel *channel);
+```
+"""
+function s_aws_socks5_tunnel_on_channel_destroyed(tunnel, channel)
+    ccall((:s_aws_socks5_tunnel_on_channel_destroyed, libaws_c_io), Cvoid, (Ptr{aws_socks5_tunnel}, Ptr{aws_channel}), tunnel, channel)
+end
+
+"""
+    aws_socks5_tunnel_shutdown_task
+
+Documentation not found.
+"""
+struct aws_socks5_tunnel_shutdown_task
+    data::NTuple{88, UInt8}
+end
+
+function Base.getproperty(x::Ptr{aws_socks5_tunnel_shutdown_task}, f::Symbol)
+    f === :allocator && return Ptr{Ptr{aws_allocator}}(x + 0)
+    f === :task && return Ptr{aws_task}(x + 8)
+    f === :tunnel && return Ptr{Ptr{aws_socks5_tunnel}}(x + 72)
+    f === :error_code && return Ptr{Cint}(x + 80)
+    return getfield(x, f)
+end
+
+function Base.getproperty(x::aws_socks5_tunnel_shutdown_task, f::Symbol)
+    r = Ref{aws_socks5_tunnel_shutdown_task}(x)
+    ptr = Base.unsafe_convert(Ptr{aws_socks5_tunnel_shutdown_task}, r)
+    fptr = getproperty(ptr, f)
+    GC.@preserve r unsafe_load(fptr)
+end
+
+function Base.setproperty!(x::Ptr{aws_socks5_tunnel_shutdown_task}, f::Symbol, v)
+    unsafe_store!(getproperty(x, f), v)
+end
+
+function Base.propertynames(x::aws_socks5_tunnel_shutdown_task, private::Bool = false)
+    (:allocator, :task, :tunnel, :error_code, if private
+            fieldnames(typeof(x))
+        else
+            ()
+        end...)
+end
+
+"""
+    s_aws_socks5_tunnel_shutdown_task_destroy(task)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_socks5_tunnel_shutdown_task_destroy(struct aws_socks5_tunnel_shutdown_task *task);
+```
+"""
+function s_aws_socks5_tunnel_shutdown_task_destroy(task)
+    ccall((:s_aws_socks5_tunnel_shutdown_task_destroy, libaws_c_io), Cvoid, (Ptr{aws_socks5_tunnel_shutdown_task},), task)
+end
+
+"""
+    s_aws_socks5_tunnel_shut_down(tunnel, error_code)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_socks5_tunnel_shut_down(struct aws_socks5_tunnel *tunnel, int error_code);
+```
+"""
+function s_aws_socks5_tunnel_shut_down(tunnel, error_code)
+    ccall((:s_aws_socks5_tunnel_shut_down, libaws_c_io), Cvoid, (Ptr{aws_socks5_tunnel}, Cint), tunnel, error_code)
+end
+
+"""
+    s_aws_socks5_tunnel_shutdown_task_fn(task, arg, status)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_socks5_tunnel_shutdown_task_fn(struct aws_task *task, void *arg, enum aws_task_status status);
+```
+"""
+function s_aws_socks5_tunnel_shutdown_task_fn(task, arg, status)
+    ccall((:s_aws_socks5_tunnel_shutdown_task_fn, libaws_c_io), Cvoid, (Ptr{aws_task}, Ptr{Cvoid}, aws_task_status), task, arg, status)
+end
+
+"""
+    s_aws_socks5_tunnel_shutdown_task_new(allocator, tunnel, error_code)
+
+Documentation not found.
+### Prototype
+```c
+static struct aws_socks5_tunnel_shutdown_task *s_aws_socks5_tunnel_shutdown_task_new( struct aws_allocator *allocator, struct aws_socks5_tunnel *tunnel, int error_code);
+```
+"""
+function s_aws_socks5_tunnel_shutdown_task_new(allocator, tunnel, error_code)
+    ccall((:s_aws_socks5_tunnel_shutdown_task_new, libaws_c_io), Ptr{aws_socks5_tunnel_shutdown_task}, (Ptr{aws_allocator}, Ptr{aws_socks5_tunnel}, Cint), allocator, tunnel, error_code)
+end
+
+"""
+    s_aws_socks5_tunnel_shutdown(tunnel, error_code)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_socks5_tunnel_shutdown(struct aws_socks5_tunnel *tunnel, int error_code);
+```
+"""
+function s_aws_socks5_tunnel_shutdown(tunnel, error_code)
+    ccall((:s_aws_socks5_tunnel_shutdown, libaws_c_io), Cvoid, (Ptr{aws_socks5_tunnel}, Cint), tunnel, error_code)
+end
+
+"""
+    s_shut_down_server(server)
+
+Documentation not found.
+### Prototype
+```c
+static void s_shut_down_server(struct aws_socks5_server *server);
+```
+"""
+function s_shut_down_server(server)
+    ccall((:s_shut_down_server, libaws_c_io), Cvoid, (Ptr{aws_socks5_server},), server)
+end
+
+"""
+    s_on_server_external_ref_count_zero(user_data)
+
+Documentation not found.
+### Prototype
+```c
+static void s_on_server_external_ref_count_zero(void *user_data);
+```
+"""
+function s_on_server_external_ref_count_zero(user_data)
+    ccall((:s_on_server_external_ref_count_zero, libaws_c_io), Cvoid, (Ptr{Cvoid},), user_data)
+end
+
+"""
+    s_on_server_internal_ref_count_zero(user_data)
+
+Documentation not found.
+### Prototype
+```c
+static void s_on_server_internal_ref_count_zero(void *user_data);
+```
+"""
+function s_on_server_internal_ref_count_zero(user_data)
+    ccall((:s_on_server_internal_ref_count_zero, libaws_c_io), Cvoid, (Ptr{Cvoid},), user_data)
+end
+
+"""
+    s_aws_socks5_server_init_vtables()
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_socks5_server_init_vtables(void);
+```
+"""
+function s_aws_socks5_server_init_vtables()
+    ccall((:s_aws_socks5_server_init_vtables, libaws_c_io), Cvoid, ())
+end
+
+"""
+    s_aws_socks5_server_bootstrap_on_listener_setup_fn(bootstrap, error_code, user_data)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_socks5_server_bootstrap_on_listener_setup_fn( struct aws_server_bootstrap *bootstrap, int error_code, void *user_data);
+```
+"""
+function s_aws_socks5_server_bootstrap_on_listener_setup_fn(bootstrap, error_code, user_data)
+    ccall((:s_aws_socks5_server_bootstrap_on_listener_setup_fn, libaws_c_io), Cvoid, (Ptr{aws_server_bootstrap}, Cint, Ptr{Cvoid}), bootstrap, error_code, user_data)
+end
+
+"""
+    aws_socks5_tunnel_options
+
+Documentation not found.
+"""
+struct aws_socks5_tunnel_options
+    server::Ptr{aws_socks5_server}
+    to_client_channel::Ptr{aws_channel}
+    id::UInt64
+end
+
+"""
+    s_aws_socks5_server_on_tunnel_shutdown(tunnel, error_code, user_data)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_socks5_server_on_tunnel_shutdown(struct aws_socks5_tunnel *tunnel, int error_code, void *user_data);
+```
+"""
+function s_aws_socks5_server_on_tunnel_shutdown(tunnel, error_code, user_data)
+    ccall((:s_aws_socks5_server_on_tunnel_shutdown, libaws_c_io), Cvoid, (Ptr{aws_socks5_tunnel}, Cint, Ptr{Cvoid}), tunnel, error_code, user_data)
+end
+
+"""
+    s_aws_socks5_tunnel_destroy(user_data)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_socks5_tunnel_destroy(void *user_data);
+```
+"""
+function s_aws_socks5_tunnel_destroy(user_data)
+    ccall((:s_aws_socks5_tunnel_destroy, libaws_c_io), Cvoid, (Ptr{Cvoid},), user_data)
+end
+
+"""
+    s_aws_socks5_tunnel_new(allocator, options)
+
+Documentation not found.
+### Prototype
+```c
+static struct aws_socks5_tunnel *s_aws_socks5_tunnel_new( struct aws_allocator *allocator, struct aws_socks5_tunnel_options *options);
+```
+"""
+function s_aws_socks5_tunnel_new(allocator, options)
+    ccall((:s_aws_socks5_tunnel_new, libaws_c_io), Ptr{aws_socks5_tunnel}, (Ptr{aws_allocator}, Ptr{aws_socks5_tunnel_options}), allocator, options)
+end
+
+"""
+    s_methods_contains(methods, method)
+
+Documentation not found.
+### Prototype
+```c
+static bool s_methods_contains(struct aws_byte_cursor methods, uint8_t method);
+```
+"""
+function s_methods_contains(methods, method)
+    ccall((:s_methods_contains, libaws_c_io), Bool, (aws_byte_cursor, UInt8), methods, method)
+end
+
+"""
+    aws_socks5_version_code
+
+Documentation not found.
+"""
+@cenum aws_socks5_version_code::UInt32 begin
+    AWS_SOCKS5_VERSION_5 = 5
+    AWS_SOCKS5_VERSION_BAD = 127
+end
+
+"""
+    s_send_method_selection(tunnel, method)
+
+Documentation not found.
+### Prototype
+```c
+static int s_send_method_selection(struct aws_socks5_tunnel *tunnel, enum aws_socks5_auth_method_ids method);
+```
+"""
+function s_send_method_selection(tunnel, method)
+    ccall((:s_send_method_selection, libaws_c_io), Cint, (Ptr{aws_socks5_tunnel}, aws_socks5_auth_method_ids), tunnel, method)
+end
+
+"""
+    s_handle_pending_method_list(tunnel, message)
+
+Documentation not found.
+### Prototype
+```c
+static int s_handle_pending_method_list(struct aws_socks5_tunnel *tunnel, struct aws_io_message *message);
+```
+"""
+function s_handle_pending_method_list(tunnel, message)
+    ccall((:s_handle_pending_method_list, libaws_c_io), Cint, (Ptr{aws_socks5_tunnel}, Ptr{aws_io_message}), tunnel, message)
+end
+
+"""
+    s_handle_basic_auth_record(tunnel, message)
+
+Documentation not found.
+### Prototype
+```c
+static int s_handle_basic_auth_record(struct aws_socks5_tunnel *tunnel, struct aws_io_message *message);
+```
+"""
+function s_handle_basic_auth_record(tunnel, message)
+    ccall((:s_handle_basic_auth_record, libaws_c_io), Cint, (Ptr{aws_socks5_tunnel}, Ptr{aws_io_message}), tunnel, message)
+end
+
+"""
+    s_socks5_tunnel_to_remote_handler_process_read_message(handler, slot, message)
+
+Documentation not found.
+### Prototype
+```c
+static int s_socks5_tunnel_to_remote_handler_process_read_message( struct aws_channel_handler *handler, struct aws_channel_slot *slot, struct aws_io_message *message);
+```
+"""
+function s_socks5_tunnel_to_remote_handler_process_read_message(handler, slot, message)
+    ccall((:s_socks5_tunnel_to_remote_handler_process_read_message, libaws_c_io), Cint, (Ptr{aws_channel_handler}, Ptr{aws_channel_slot}, Ptr{aws_io_message}), handler, slot, message)
+end
+
+"""
+    s_socks5_tunnel_to_remote_handler_shutdown(handler, slot, dir, error_code, free_scarce_resources_immediately)
+
+Documentation not found.
+### Prototype
+```c
+static int s_socks5_tunnel_to_remote_handler_shutdown( struct aws_channel_handler *handler, struct aws_channel_slot *slot, enum aws_channel_direction dir, int error_code, bool free_scarce_resources_immediately);
+```
+"""
+function s_socks5_tunnel_to_remote_handler_shutdown(handler, slot, dir, error_code, free_scarce_resources_immediately)
+    ccall((:s_socks5_tunnel_to_remote_handler_shutdown, libaws_c_io), Cint, (Ptr{aws_channel_handler}, Ptr{aws_channel_slot}, aws_channel_direction, Cint, Bool), handler, slot, dir, error_code, free_scarce_resources_immediately)
+end
+
+"""
+    s_socks5_tunnel_to_remote_handler_initial_window_size(handler)
+
+Documentation not found.
+### Prototype
+```c
+static size_t s_socks5_tunnel_to_remote_handler_initial_window_size(struct aws_channel_handler *handler);
+```
+"""
+function s_socks5_tunnel_to_remote_handler_initial_window_size(handler)
+    ccall((:s_socks5_tunnel_to_remote_handler_initial_window_size, libaws_c_io), Csize_t, (Ptr{aws_channel_handler},), handler)
+end
+
+"""
+    s_socks5_tunnel_to_remote_handler_message_overhead(handler)
+
+Documentation not found.
+### Prototype
+```c
+static size_t s_socks5_tunnel_to_remote_handler_message_overhead(struct aws_channel_handler *handler);
+```
+"""
+function s_socks5_tunnel_to_remote_handler_message_overhead(handler)
+    ccall((:s_socks5_tunnel_to_remote_handler_message_overhead, libaws_c_io), Csize_t, (Ptr{aws_channel_handler},), handler)
+end
+
+"""
+    s_socks5_tunnel_to_remote_handler_destroy(handler)
+
+Documentation not found.
+### Prototype
+```c
+static void s_socks5_tunnel_to_remote_handler_destroy(struct aws_channel_handler *handler);
+```
+"""
+function s_socks5_tunnel_to_remote_handler_destroy(handler)
+    ccall((:s_socks5_tunnel_to_remote_handler_destroy, libaws_c_io), Cvoid, (Ptr{aws_channel_handler},), handler)
+end
+
+"""
+    s_send_connect_response(tunnel, code)
+
+Documentation not found.
+### Prototype
+```c
+static void s_send_connect_response(struct aws_socks5_tunnel *tunnel, enum aws_socks5_connect_response_code code);
+```
+"""
+function s_send_connect_response(tunnel, code)
+    ccall((:s_send_connect_response, libaws_c_io), Cvoid, (Ptr{aws_socks5_tunnel}, aws_socks5_connect_response_code), tunnel, code)
+end
+
+"""
+    s_aws_socks5_tunnel_on_remote_channel_setup_fn(bootstrap, error_code, channel, user_data)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_socks5_tunnel_on_remote_channel_setup_fn( struct aws_client_bootstrap *bootstrap, int error_code, struct aws_channel *channel, void *user_data);
+```
+"""
+function s_aws_socks5_tunnel_on_remote_channel_setup_fn(bootstrap, error_code, channel, user_data)
+    ccall((:s_aws_socks5_tunnel_on_remote_channel_setup_fn, libaws_c_io), Cvoid, (Ptr{aws_client_bootstrap}, Cint, Ptr{aws_channel}, Ptr{Cvoid}), bootstrap, error_code, channel, user_data)
+end
+
+"""
+    s_aws_client_bootstrap_on_channel_shutdown_fn(bootstrap, error_code, channel, user_data)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_client_bootstrap_on_channel_shutdown_fn( struct aws_client_bootstrap *bootstrap, int error_code, struct aws_channel *channel, void *user_data);
+```
+"""
+function s_aws_client_bootstrap_on_channel_shutdown_fn(bootstrap, error_code, channel, user_data)
+    ccall((:s_aws_client_bootstrap_on_channel_shutdown_fn, libaws_c_io), Cvoid, (Ptr{aws_client_bootstrap}, Cint, Ptr{aws_channel}, Ptr{Cvoid}), bootstrap, error_code, channel, user_data)
+end
+
+"""
+    s_aws_socks5_tunnel_connect_to_remote(tunnel)
+
+Documentation not found.
+### Prototype
+```c
+static int s_aws_socks5_tunnel_connect_to_remote(struct aws_socks5_tunnel *tunnel);
+```
+"""
+function s_aws_socks5_tunnel_connect_to_remote(tunnel)
+    ccall((:s_aws_socks5_tunnel_connect_to_remote, libaws_c_io), Cint, (Ptr{aws_socks5_tunnel},), tunnel)
+end
+
+"""
+    s_handle_command(tunnel, message)
+
+Documentation not found.
+### Prototype
+```c
+static int s_handle_command(struct aws_socks5_tunnel *tunnel, struct aws_io_message *message);
+```
+"""
+function s_handle_command(tunnel, message)
+    ccall((:s_handle_command, libaws_c_io), Cint, (Ptr{aws_socks5_tunnel}, Ptr{aws_io_message}), tunnel, message)
+end
+
+"""
+    s_handle_pass_through(tunnel, message)
+
+Documentation not found.
+### Prototype
+```c
+static int s_handle_pass_through(struct aws_socks5_tunnel *tunnel, struct aws_io_message *message);
+```
+"""
+function s_handle_pass_through(tunnel, message)
+    ccall((:s_handle_pass_through, libaws_c_io), Cint, (Ptr{aws_socks5_tunnel}, Ptr{aws_io_message}), tunnel, message)
+end
+
+"""
+    s_socks5_tunnel_to_client_handler_process_read_message(handler, slot, message)
+
+Documentation not found.
+### Prototype
+```c
+static int s_socks5_tunnel_to_client_handler_process_read_message( struct aws_channel_handler *handler, struct aws_channel_slot *slot, struct aws_io_message *message);
+```
+"""
+function s_socks5_tunnel_to_client_handler_process_read_message(handler, slot, message)
+    ccall((:s_socks5_tunnel_to_client_handler_process_read_message, libaws_c_io), Cint, (Ptr{aws_channel_handler}, Ptr{aws_channel_slot}, Ptr{aws_io_message}), handler, slot, message)
+end
+
+"""
+    s_socks5_tunnel_to_client_handler_shutdown(handler, slot, dir, error_code, free_scarce_resources_immediately)
+
+Documentation not found.
+### Prototype
+```c
+static int s_socks5_tunnel_to_client_handler_shutdown( struct aws_channel_handler *handler, struct aws_channel_slot *slot, enum aws_channel_direction dir, int error_code, bool free_scarce_resources_immediately);
+```
+"""
+function s_socks5_tunnel_to_client_handler_shutdown(handler, slot, dir, error_code, free_scarce_resources_immediately)
+    ccall((:s_socks5_tunnel_to_client_handler_shutdown, libaws_c_io), Cint, (Ptr{aws_channel_handler}, Ptr{aws_channel_slot}, aws_channel_direction, Cint, Bool), handler, slot, dir, error_code, free_scarce_resources_immediately)
+end
+
+"""
+    s_socks5_tunnel_to_client_handler_initial_window_size(handler)
+
+Documentation not found.
+### Prototype
+```c
+static size_t s_socks5_tunnel_to_client_handler_initial_window_size(struct aws_channel_handler *handler);
+```
+"""
+function s_socks5_tunnel_to_client_handler_initial_window_size(handler)
+    ccall((:s_socks5_tunnel_to_client_handler_initial_window_size, libaws_c_io), Csize_t, (Ptr{aws_channel_handler},), handler)
+end
+
+"""
+    s_socks5_tunnel_to_client_handler_message_overhead(handler)
+
+Documentation not found.
+### Prototype
+```c
+static size_t s_socks5_tunnel_to_client_handler_message_overhead(struct aws_channel_handler *handler);
+```
+"""
+function s_socks5_tunnel_to_client_handler_message_overhead(handler)
+    ccall((:s_socks5_tunnel_to_client_handler_message_overhead, libaws_c_io), Csize_t, (Ptr{aws_channel_handler},), handler)
+end
+
+"""
+    s_socks5_tunnel_to_client_handler_destroy(handler)
+
+Documentation not found.
+### Prototype
+```c
+static void s_socks5_tunnel_to_client_handler_destroy(struct aws_channel_handler *handler);
+```
+"""
+function s_socks5_tunnel_to_client_handler_destroy(handler)
+    ccall((:s_socks5_tunnel_to_client_handler_destroy, libaws_c_io), Cvoid, (Ptr{aws_channel_handler},), handler)
+end
+
+"""
+    s_aws_socks5_server_bootstrap_on_accept_channel_setup_fn(bootstrap, error_code, channel, user_data)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_socks5_server_bootstrap_on_accept_channel_setup_fn( struct aws_server_bootstrap *bootstrap, int error_code, struct aws_channel *channel, void *user_data);
+```
+"""
+function s_aws_socks5_server_bootstrap_on_accept_channel_setup_fn(bootstrap, error_code, channel, user_data)
+    ccall((:s_aws_socks5_server_bootstrap_on_accept_channel_setup_fn, libaws_c_io), Cvoid, (Ptr{aws_server_bootstrap}, Cint, Ptr{aws_channel}, Ptr{Cvoid}), bootstrap, error_code, channel, user_data)
+end
+
+"""
+    s_aws_socks5_server_bootstrap_on_accept_channel_shutdown_fn(bootstrap, error_code, channel, user_data)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_socks5_server_bootstrap_on_accept_channel_shutdown_fn( struct aws_server_bootstrap *bootstrap, int error_code, struct aws_channel *channel, void *user_data);
+```
+"""
+function s_aws_socks5_server_bootstrap_on_accept_channel_shutdown_fn(bootstrap, error_code, channel, user_data)
+    ccall((:s_aws_socks5_server_bootstrap_on_accept_channel_shutdown_fn, libaws_c_io), Cvoid, (Ptr{aws_server_bootstrap}, Cint, Ptr{aws_channel}, Ptr{Cvoid}), bootstrap, error_code, channel, user_data)
+end
+
+"""
+    s_aws_socks5_server_bootstrap_on_server_listener_destroy_fn(bootstrap, user_data)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_socks5_server_bootstrap_on_server_listener_destroy_fn( struct aws_server_bootstrap *bootstrap, void *user_data);
+```
+"""
+function s_aws_socks5_server_bootstrap_on_server_listener_destroy_fn(bootstrap, user_data)
+    ccall((:s_aws_socks5_server_bootstrap_on_server_listener_destroy_fn, libaws_c_io), Cvoid, (Ptr{aws_server_bootstrap}, Ptr{Cvoid}), bootstrap, user_data)
+end
+
+"""
+    s_aws_socks5_server_test_context_on_server_setup(server, error_code, user_data)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_socks5_server_test_context_on_server_setup( struct aws_socks5_server *server, int error_code, void *user_data);
+```
+"""
+function s_aws_socks5_server_test_context_on_server_setup(server, error_code, user_data)
+    ccall((:s_aws_socks5_server_test_context_on_server_setup, libaws_c_io), Cvoid, (Ptr{aws_socks5_server}, Cint, Ptr{Cvoid}), server, error_code, user_data)
+end
+
+"""
+    s_aws_socks5_server_test_context_on_server_destroy(server, user_data)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_socks5_server_test_context_on_server_destroy(struct aws_socks5_server *server, void *user_data);
+```
+"""
+function s_aws_socks5_server_test_context_on_server_destroy(server, user_data)
+    ccall((:s_aws_socks5_server_test_context_on_server_destroy, libaws_c_io), Cvoid, (Ptr{aws_socks5_server}, Ptr{Cvoid}), server, user_data)
+end
+
+"""
+    s_check_server_setup(user_data)
+
+Documentation not found.
+### Prototype
+```c
+static bool s_check_server_setup(void *user_data);
+```
+"""
+function s_check_server_setup(user_data)
+    ccall((:s_check_server_setup, libaws_c_io), Bool, (Ptr{Cvoid},), user_data)
+end
+
+"""
+    s_check_server_destroyed(user_data)
+
+Documentation not found.
+### Prototype
+```c
+static bool s_check_server_destroyed(void *user_data);
+```
+"""
+function s_check_server_destroyed(user_data)
+    ccall((:s_check_server_destroyed, libaws_c_io), Bool, (Ptr{Cvoid},), user_data)
+end
+
+"""
+    s_aws_socks5_server_test_context_wait_on_server_shutdown(context)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_socks5_server_test_context_wait_on_server_shutdown(struct aws_socks5_server_test_context *context);
+```
+"""
+function s_aws_socks5_server_test_context_wait_on_server_shutdown(context)
+    ccall((:s_aws_socks5_server_test_context_wait_on_server_shutdown, libaws_c_io), Cvoid, (Ptr{aws_socks5_server_test_context},), context)
+end
+
+"""
     aws_input_stream_tester
 
 Documentation not found.
@@ -7060,12 +9165,1077 @@ function aws_input_stream_new_tester(alloc, options)
     ccall((:aws_input_stream_new_tester, libaws_c_io), Ptr{aws_input_stream}, (Ptr{aws_allocator}, Ptr{aws_input_stream_tester_options}), alloc, options)
 end
 
+# typedef void ( * aws_tcp_client_on_connection_result_callback ) ( int error_code , void * user_data )
 """
-    __JL_Ctag_219
+Documentation not found.
+"""
+const aws_tcp_client_on_connection_result_callback = Ptr{Cvoid}
+
+# typedef void ( * aws_tcp_client_on_disconnection_callback ) ( int error_code , void * user_data )
+"""
+Documentation not found.
+"""
+const aws_tcp_client_on_disconnection_callback = Ptr{Cvoid}
+
+# typedef void ( * aws_tcp_client_on_data_callback ) ( struct aws_byte_cursor data , void * user_data )
+"""
+Documentation not found.
+"""
+const aws_tcp_client_on_data_callback = Ptr{Cvoid}
+
+# typedef void ( * aws_tcp_client_on_destroyed_callback ) ( void * user_data )
+"""
+Documentation not found.
+"""
+const aws_tcp_client_on_destroyed_callback = Ptr{Cvoid}
+
+"""
+    aws_tcp_client_options
+
+Configuration options for TCP client construction
+"""
+struct aws_tcp_client_options
+    remote_host_name::aws_byte_cursor
+    remote_port::UInt32
+    proxy_config::Ptr{aws_l4_proxy_config}
+    bootstrap::Ptr{aws_client_bootstrap}
+    socket_options::aws_socket_options
+    on_connection_result_callback::aws_tcp_client_on_connection_result_callback
+    on_disconnection_callback::aws_tcp_client_on_disconnection_callback
+    on_data_callback::aws_tcp_client_on_data_callback
+    on_destroyed_callback::aws_tcp_client_on_destroyed_callback
+    user_data::Ptr{Cvoid}
+    window_size::Csize_t
+end
+
+"""
+    aws_tcp_client_test_context_options
+
+Configuration options for a tcp client test context
+"""
+struct aws_tcp_client_test_context_options
+    remote_host_name::aws_byte_cursor
+    remote_port::UInt32
+    proxy_config::Ptr{aws_l4_proxy_config}
+    elg::Ptr{aws_event_loop_group}
+    window_size::Csize_t
+end
+
+"""
+    __JL_Ctag_295
 
 Documentation not found.
 """
-struct __JL_Ctag_219
+struct __JL_Ctag_295
+    connection_attempt_completed::Bool
+    connection_error_code::Cint
+    disconnection_completed::Bool
+    disconnection_error_code::Cint
+    destruction_completed::Bool
+    sent_data::aws_byte_buf
+    received_data::aws_byte_buf
+end
+function Base.getproperty(x::Ptr{__JL_Ctag_295}, f::Symbol)
+    f === :connection_attempt_completed && return Ptr{Bool}(x + 0)
+    f === :connection_error_code && return Ptr{Cint}(x + 4)
+    f === :disconnection_completed && return Ptr{Bool}(x + 8)
+    f === :disconnection_error_code && return Ptr{Cint}(x + 12)
+    f === :destruction_completed && return Ptr{Bool}(x + 16)
+    f === :sent_data && return Ptr{aws_byte_buf}(x + 24)
+    f === :received_data && return Ptr{aws_byte_buf}(x + 56)
+    return getfield(x, f)
+end
+
+function Base.getproperty(x::__JL_Ctag_295, f::Symbol)
+    r = Ref{__JL_Ctag_295}(x)
+    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_295}, r)
+    fptr = getproperty(ptr, f)
+    GC.@preserve r unsafe_load(fptr)
+end
+
+function Base.setproperty!(x::Ptr{__JL_Ctag_295}, f::Symbol, v)
+    unsafe_store!(getproperty(x, f), v)
+end
+
+
+"""
+    aws_tcp_client_config
+
+**** Static implementation *****
+"""
+struct aws_tcp_client_config
+    allocator::Ptr{aws_allocator}
+    remote_host_name::Ptr{aws_string}
+    remote_port::UInt32
+    proxy_config::Ptr{aws_l4_proxy_config}
+    bootstrap::Ptr{aws_client_bootstrap}
+    socket_options::aws_socket_options
+    on_connection_result_callback::aws_tcp_client_on_connection_result_callback
+    on_disconnection_callback::aws_tcp_client_on_disconnection_callback
+    on_data_callback::aws_tcp_client_on_data_callback
+    on_destroyed_callback::aws_tcp_client_on_destroyed_callback
+    user_data::Ptr{Cvoid}
+    window_size::Csize_t
+end
+
+"""
+    aws_tcp_client_state
+
+Documentation not found.
+"""
+@cenum aws_tcp_client_state::UInt32 begin
+    AWS_TCS_CONNECTING = 0
+    AWS_TCS_CONNECTED = 1
+    AWS_TCS_DISCONNECTING = 2
+    AWS_TCS_DISCONNECTED = 3
+end
+
+"""
+    aws_tcp_client
+
+Documentation not found.
+"""
+struct aws_tcp_client
+    data::NTuple{264, UInt8}
+end
+
+function Base.getproperty(x::Ptr{aws_tcp_client}, f::Symbol)
+    f === :allocator && return Ptr{Ptr{aws_allocator}}(x + 0)
+    f === :internal_ref_count && return Ptr{aws_ref_count}(x + 8)
+    f === :external_ref_count && return Ptr{aws_ref_count}(x + 32)
+    f === :config && return Ptr{Ptr{aws_tcp_client_config}}(x + 56)
+    f === :loop && return Ptr{Ptr{aws_event_loop}}(x + 64)
+    f === :channel && return Ptr{Ptr{aws_channel}}(x + 72)
+    f === :channel_handler && return Ptr{aws_channel_handler}(x + 80)
+    f === :state && return Ptr{aws_tcp_client_state}(x + 112)
+    f === :shutdown_error_code && return Ptr{Cint}(x + 116)
+    f === :outbound_data_queue && return Ptr{aws_linked_list}(x + 120)
+    f === :write_task && return Ptr{aws_channel_task}(x + 152)
+    f === :is_write_scheduled && return Ptr{Bool}(x + 256)
+    return getfield(x, f)
+end
+
+function Base.getproperty(x::aws_tcp_client, f::Symbol)
+    r = Ref{aws_tcp_client}(x)
+    ptr = Base.unsafe_convert(Ptr{aws_tcp_client}, r)
+    fptr = getproperty(ptr, f)
+    GC.@preserve r unsafe_load(fptr)
+end
+
+function Base.setproperty!(x::Ptr{aws_tcp_client}, f::Symbol, v)
+    unsafe_store!(getproperty(x, f), v)
+end
+
+function Base.propertynames(x::aws_tcp_client, private::Bool = false)
+    (:allocator, :internal_ref_count, :external_ref_count, :config, :loop, :channel, :channel_handler, :state, :shutdown_error_code, :outbound_data_queue, :write_task, :is_write_scheduled, if private
+            fieldnames(typeof(x))
+        else
+            ()
+        end...)
+end
+
+"""
+    aws_tcp_client_test_context
+
+Wraps a tcp client with test-related functionality for waiting on async events like connection, disconnection, and incoming data.
+"""
+struct aws_tcp_client_test_context
+    data::NTuple{232, UInt8}
+end
+
+function Base.getproperty(x::Ptr{aws_tcp_client_test_context}, f::Symbol)
+    f === :allocator && return Ptr{Ptr{aws_allocator}}(x + 0)
+    f === :elg && return Ptr{Ptr{aws_event_loop_group}}(x + 8)
+    f === :bootstrap && return Ptr{Ptr{aws_client_bootstrap}}(x + 16)
+    f === :resolver && return Ptr{Ptr{aws_host_resolver}}(x + 24)
+    f === :lock && return Ptr{aws_mutex}(x + 32)
+    f === :signal && return Ptr{aws_condition_variable}(x + 80)
+    f === :sync && return Ptr{__JL_Ctag_295}(x + 136)
+    f === :client && return Ptr{Ptr{aws_tcp_client}}(x + 224)
+    return getfield(x, f)
+end
+
+function Base.getproperty(x::aws_tcp_client_test_context, f::Symbol)
+    r = Ref{aws_tcp_client_test_context}(x)
+    ptr = Base.unsafe_convert(Ptr{aws_tcp_client_test_context}, r)
+    fptr = getproperty(ptr, f)
+    GC.@preserve r unsafe_load(fptr)
+end
+
+function Base.setproperty!(x::Ptr{aws_tcp_client_test_context}, f::Symbol, v)
+    unsafe_store!(getproperty(x, f), v)
+end
+
+function Base.propertynames(x::aws_tcp_client_test_context, private::Bool = false)
+    (:allocator, :elg, :bootstrap, :resolver, :lock, :signal, :sync, :client, if private
+            fieldnames(typeof(x))
+        else
+            ()
+        end...)
+end
+
+"""
+    aws_tcp_client_new(allocator, options)
+
+Creates a new TCP client
+
+# Arguments
+* `allocator`: - allocator to use
+* `options`: - client options to use
+### Prototype
+```c
+static struct aws_tcp_client *aws_tcp_client_new( struct aws_allocator *allocator, struct aws_tcp_client_options *options);
+```
+"""
+function aws_tcp_client_new(allocator, options)
+    ccall((:aws_tcp_client_new, libaws_c_io), Ptr{aws_tcp_client}, (Ptr{aws_allocator}, Ptr{aws_tcp_client_options}), allocator, options)
+end
+
+"""
+    aws_tcp_client_acquire(client)
+
+Increments the reference count of a client
+
+# Arguments
+* `client`: client to add a reference to
+# Returns
+the input client value
+### Prototype
+```c
+static struct aws_tcp_client *aws_tcp_client_acquire(struct aws_tcp_client *client);
+```
+"""
+function aws_tcp_client_acquire(client)
+    ccall((:aws_tcp_client_acquire, libaws_c_io), Ptr{aws_tcp_client}, (Ptr{aws_tcp_client},), client)
+end
+
+"""
+    aws_tcp_client_release(client)
+
+Decrements the reference count of a client
+
+# Arguments
+* `client`: client to remove a reference from
+# Returns
+NULL
+### Prototype
+```c
+static struct aws_tcp_client *aws_tcp_client_release(struct aws_tcp_client *client);
+```
+"""
+function aws_tcp_client_release(client)
+    ccall((:aws_tcp_client_release, libaws_c_io), Ptr{aws_tcp_client}, (Ptr{aws_tcp_client},), client)
+end
+
+"""
+    aws_tcp_client_connect(client)
+
+Starts the client's async connection process to the configured remote.
+
+# Arguments
+* `client`: client to connect with
+### Prototype
+```c
+static void aws_tcp_client_connect(struct aws_tcp_client *client);
+```
+"""
+function aws_tcp_client_connect(client)
+    ccall((:aws_tcp_client_connect, libaws_c_io), Cvoid, (Ptr{aws_tcp_client},), client)
+end
+
+"""
+    aws_tcp_client_disconnect(client)
+
+Starts the client's async disconnect (if currently connected) process
+
+# Arguments
+* `client`: client to disconnect
+### Prototype
+```c
+static void aws_tcp_client_disconnect(struct aws_tcp_client *client);
+```
+"""
+function aws_tcp_client_disconnect(client)
+    ccall((:aws_tcp_client_disconnect, libaws_c_io), Cvoid, (Ptr{aws_tcp_client},), client)
+end
+
+"""
+    aws_tcp_client_send(client, data)
+
+Queues data to be sent to the remote host
+
+# Arguments
+* `client`: client to send data through
+* `data`: data to send
+### Prototype
+```c
+static void aws_tcp_client_send(struct aws_tcp_client *client, struct aws_byte_cursor data);
+```
+"""
+function aws_tcp_client_send(client, data)
+    ccall((:aws_tcp_client_send, libaws_c_io), Cvoid, (Ptr{aws_tcp_client}, aws_byte_cursor), client, data)
+end
+
+"""
+    aws_tcp_client_test_context_init(context, allocator, options)
+
+Initializes the test wrapper around a tcp client
+
+# Arguments
+* `context`: test context to initialize
+* `allocator`: allocator to use
+* `options`: test context configuration options to use
+### Prototype
+```c
+static void aws_tcp_client_test_context_init( struct aws_tcp_client_test_context *context, struct aws_allocator *allocator, struct aws_tcp_client_test_context_options *options);
+```
+"""
+function aws_tcp_client_test_context_init(context, allocator, options)
+    ccall((:aws_tcp_client_test_context_init, libaws_c_io), Cvoid, (Ptr{aws_tcp_client_test_context}, Ptr{aws_allocator}, Ptr{aws_tcp_client_test_context_options}), context, allocator, options)
+end
+
+"""
+    aws_tcp_client_test_context_clean_up(context)
+
+Cleans up a tcp client test wrapper. This includes blocking on disconnection and async destruction.
+
+# Arguments
+* `context`: test context to clean up
+### Prototype
+```c
+static void aws_tcp_client_test_context_clean_up(struct aws_tcp_client_test_context *context);
+```
+"""
+function aws_tcp_client_test_context_clean_up(context)
+    ccall((:aws_tcp_client_test_context_clean_up, libaws_c_io), Cvoid, (Ptr{aws_tcp_client_test_context},), context)
+end
+
+"""
+    aws_tcp_client_test_context_wait_on_connection_result(context)
+
+Blocks on a client's connection attempt resolving.
+
+# Arguments
+* `context`: client test context to wait on
+# Returns
+the error code associated with the connection attempt
+### Prototype
+```c
+static int aws_tcp_client_test_context_wait_on_connection_result(struct aws_tcp_client_test_context *context);
+```
+"""
+function aws_tcp_client_test_context_wait_on_connection_result(context)
+    ccall((:aws_tcp_client_test_context_wait_on_connection_result, libaws_c_io), Cint, (Ptr{aws_tcp_client_test_context},), context)
+end
+
+"""
+    aws_tcp_client_test_context_wait_on_disconnection_result(context)
+
+Blocks on a client's disconnection event.
+
+# Arguments
+* `context`: client test context to wait on
+# Returns
+the error code associated with the disconnection
+### Prototype
+```c
+static int aws_tcp_client_test_context_wait_on_disconnection_result(struct aws_tcp_client_test_context *context);
+```
+"""
+function aws_tcp_client_test_context_wait_on_disconnection_result(context)
+    ccall((:aws_tcp_client_test_context_wait_on_disconnection_result, libaws_c_io), Cint, (Ptr{aws_tcp_client_test_context},), context)
+end
+
+"""
+    aws_tcp_client_test_context_send_data(context, data)
+
+Sends data through the client associated with a test context
+
+# Arguments
+* `context`: context whose client will be used to send data
+* `data`: data to send
+### Prototype
+```c
+static void aws_tcp_client_test_context_send_data( struct aws_tcp_client_test_context *context, struct aws_byte_cursor data);
+```
+"""
+function aws_tcp_client_test_context_send_data(context, data)
+    ccall((:aws_tcp_client_test_context_send_data, libaws_c_io), Cvoid, (Ptr{aws_tcp_client_test_context}, aws_byte_cursor), context, data)
+end
+
+"""
+    aws_tcp_client_test_context_wait_on_received_bytes(context, received_bytes)
+
+Blocks on receiving a specific amount of bytes from the remote host connected to by the context's client
+
+# Arguments
+* `context`: context whose client must receive an amount of data
+* `received_bytes`: amount of data to wait for
+### Prototype
+```c
+static void aws_tcp_client_test_context_wait_on_received_bytes( struct aws_tcp_client_test_context *context, size_t received_bytes);
+```
+"""
+function aws_tcp_client_test_context_wait_on_received_bytes(context, received_bytes)
+    ccall((:aws_tcp_client_test_context_wait_on_received_bytes, libaws_c_io), Cvoid, (Ptr{aws_tcp_client_test_context}, Csize_t), context, received_bytes)
+end
+
+"""
+    aws_tcp_client_test_context_get_sent_bytes(context, bytes)
+
+Copies all data sent by the client into a buffer
+
+# Arguments
+* `context`: context to retrieve the sent data from
+* `bytes`: output parameter to place the sent data into
+### Prototype
+```c
+static void aws_tcp_client_test_context_get_sent_bytes( struct aws_tcp_client_test_context *context, struct aws_byte_buf *bytes);
+```
+"""
+function aws_tcp_client_test_context_get_sent_bytes(context, bytes)
+    ccall((:aws_tcp_client_test_context_get_sent_bytes, libaws_c_io), Cvoid, (Ptr{aws_tcp_client_test_context}, Ptr{aws_byte_buf}), context, bytes)
+end
+
+"""
+    aws_tcp_client_test_context_get_received_bytes(context, bytes)
+
+Copies all data received by the client into a buffer
+
+# Arguments
+* `context`: context to retrieve the received data from
+* `bytes`: output parameter to place the received data into
+### Prototype
+```c
+static void aws_tcp_client_test_context_get_received_bytes( struct aws_tcp_client_test_context *context, struct aws_byte_buf *bytes);
+```
+"""
+function aws_tcp_client_test_context_get_received_bytes(context, bytes)
+    ccall((:aws_tcp_client_test_context_get_received_bytes, libaws_c_io), Cvoid, (Ptr{aws_tcp_client_test_context}, Ptr{aws_byte_buf}), context, bytes)
+end
+
+"""
+    aws_tcp_client_test_context_reset_data(context)
+
+Resets the sent and received data to empty buffers.
+
+# Arguments
+* `context`: context to reset the send/received data for
+### Prototype
+```c
+static void aws_tcp_client_test_context_reset_data(struct aws_tcp_client_test_context *context);
+```
+"""
+function aws_tcp_client_test_context_reset_data(context)
+    ccall((:aws_tcp_client_test_context_reset_data, libaws_c_io), Cvoid, (Ptr{aws_tcp_client_test_context},), context)
+end
+
+"""
+    s_aws_tcp_client_config_new(allocator, options)
+
+Documentation not found.
+### Prototype
+```c
+static struct aws_tcp_client_config *s_aws_tcp_client_config_new( struct aws_allocator *allocator, struct aws_tcp_client_options *options);
+```
+"""
+function s_aws_tcp_client_config_new(allocator, options)
+    ccall((:s_aws_tcp_client_config_new, libaws_c_io), Ptr{aws_tcp_client_config}, (Ptr{aws_allocator}, Ptr{aws_tcp_client_options}), allocator, options)
+end
+
+"""
+    s_aws_tcp_client_config_destroy(config)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_tcp_client_config_destroy(struct aws_tcp_client_config *config);
+```
+"""
+function s_aws_tcp_client_config_destroy(config)
+    ccall((:s_aws_tcp_client_config_destroy, libaws_c_io), Cvoid, (Ptr{aws_tcp_client_config},), config)
+end
+
+"""
+    aws_tcp_client_outbound_data
+
+Documentation not found.
+"""
+struct aws_tcp_client_outbound_data
+    allocator::Ptr{aws_allocator}
+    node::aws_linked_list_node
+    data::aws_byte_buf
+    remaining::aws_byte_cursor
+end
+
+"""
+    s_aws_tcp_client_outbound_data_new(allocator, data)
+
+Documentation not found.
+### Prototype
+```c
+static struct aws_tcp_client_outbound_data *s_aws_tcp_client_outbound_data_new( struct aws_allocator *allocator, struct aws_byte_cursor data);
+```
+"""
+function s_aws_tcp_client_outbound_data_new(allocator, data)
+    ccall((:s_aws_tcp_client_outbound_data_new, libaws_c_io), Ptr{aws_tcp_client_outbound_data}, (Ptr{aws_allocator}, aws_byte_cursor), allocator, data)
+end
+
+"""
+    s_aws_tcp_client_outbound_data_destroy(data)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_tcp_client_outbound_data_destroy(struct aws_tcp_client_outbound_data *data);
+```
+"""
+function s_aws_tcp_client_outbound_data_destroy(data)
+    ccall((:s_aws_tcp_client_outbound_data_destroy, libaws_c_io), Cvoid, (Ptr{aws_tcp_client_outbound_data},), data)
+end
+
+"""
+    s_aws_tcp_client_schedule_write_if_needed(client)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_tcp_client_schedule_write_if_needed(struct aws_tcp_client *client);
+```
+"""
+function s_aws_tcp_client_schedule_write_if_needed(client)
+    ccall((:s_aws_tcp_client_schedule_write_if_needed, libaws_c_io), Cvoid, (Ptr{aws_tcp_client},), client)
+end
+
+"""
+    s_aws_tcp_client_on_message_write_completed(channel, message, error_code, user_data)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_tcp_client_on_message_write_completed( struct aws_channel *channel, struct aws_io_message *message, int error_code, void *user_data);
+```
+"""
+function s_aws_tcp_client_on_message_write_completed(channel, message, error_code, user_data)
+    ccall((:s_aws_tcp_client_on_message_write_completed, libaws_c_io), Cvoid, (Ptr{aws_channel}, Ptr{aws_io_message}, Cint, Ptr{Cvoid}), channel, message, error_code, user_data)
+end
+
+"""
+    s_aws_tcp_client_write_task_fn(channel_task, arg, status)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_tcp_client_write_task_fn( struct aws_channel_task *channel_task, void *arg, enum aws_task_status status);
+```
+"""
+function s_aws_tcp_client_write_task_fn(channel_task, arg, status)
+    ccall((:s_aws_tcp_client_write_task_fn, libaws_c_io), Cvoid, (Ptr{aws_channel_task}, Ptr{Cvoid}, aws_task_status), channel_task, arg, status)
+end
+
+"""
+    s_aws_tcp_client_update_error_code(client, error_code)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_tcp_client_update_error_code(struct aws_tcp_client *client, int error_code);
+```
+"""
+function s_aws_tcp_client_update_error_code(client, error_code)
+    ccall((:s_aws_tcp_client_update_error_code, libaws_c_io), Cvoid, (Ptr{aws_tcp_client}, Cint), client, error_code)
+end
+
+"""
+    s_aws_tcp_client_on_internal_ref_count_zero(data)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_tcp_client_on_internal_ref_count_zero(void *data);
+```
+"""
+function s_aws_tcp_client_on_internal_ref_count_zero(data)
+    ccall((:s_aws_tcp_client_on_internal_ref_count_zero, libaws_c_io), Cvoid, (Ptr{Cvoid},), data)
+end
+
+"""
+    aws_tcp_client_task
+
+Documentation not found.
+"""
+struct aws_tcp_client_task
+    data::NTuple{80, UInt8}
+end
+
+function Base.getproperty(x::Ptr{aws_tcp_client_task}, f::Symbol)
+    f === :allocator && return Ptr{Ptr{aws_allocator}}(x + 0)
+    f === :client && return Ptr{Ptr{aws_tcp_client}}(x + 8)
+    f === :task && return Ptr{aws_task}(x + 16)
+    return getfield(x, f)
+end
+
+function Base.getproperty(x::aws_tcp_client_task, f::Symbol)
+    r = Ref{aws_tcp_client_task}(x)
+    ptr = Base.unsafe_convert(Ptr{aws_tcp_client_task}, r)
+    fptr = getproperty(ptr, f)
+    GC.@preserve r unsafe_load(fptr)
+end
+
+function Base.setproperty!(x::Ptr{aws_tcp_client_task}, f::Symbol, v)
+    unsafe_store!(getproperty(x, f), v)
+end
+
+function Base.propertynames(x::aws_tcp_client_task, private::Bool = false)
+    (:allocator, :client, :task, if private
+            fieldnames(typeof(x))
+        else
+            ()
+        end...)
+end
+
+"""
+    s_aws_tcp_client_task_destroy(task)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_tcp_client_task_destroy(struct aws_tcp_client_task *task);
+```
+"""
+function s_aws_tcp_client_task_destroy(task)
+    ccall((:s_aws_tcp_client_task_destroy, libaws_c_io), Cvoid, (Ptr{aws_tcp_client_task},), task)
+end
+
+"""
+    s_aws_tcp_client_task_new(allocator, client, task_fn)
+
+Documentation not found.
+### Prototype
+```c
+static struct aws_tcp_client_task *s_aws_tcp_client_task_new( struct aws_allocator *allocator, struct aws_tcp_client *client, aws_task_fn *task_fn);
+```
+"""
+function s_aws_tcp_client_task_new(allocator, client, task_fn)
+    ccall((:s_aws_tcp_client_task_new, libaws_c_io), Ptr{aws_tcp_client_task}, (Ptr{aws_allocator}, Ptr{aws_tcp_client}, Ptr{aws_task_fn}), allocator, client, task_fn)
+end
+
+"""
+    s_on_external_ref_count_zero_task_fn(task, arg, status)
+
+Documentation not found.
+### Prototype
+```c
+static void s_on_external_ref_count_zero_task_fn(struct aws_task *task, void *arg, enum aws_task_status status);
+```
+"""
+function s_on_external_ref_count_zero_task_fn(task, arg, status)
+    ccall((:s_on_external_ref_count_zero_task_fn, libaws_c_io), Cvoid, (Ptr{aws_task}, Ptr{Cvoid}, aws_task_status), task, arg, status)
+end
+
+"""
+    s_aws_tcp_client_on_external_ref_count_zero(data)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_tcp_client_on_external_ref_count_zero(void *data);
+```
+"""
+function s_aws_tcp_client_on_external_ref_count_zero(data)
+    ccall((:s_aws_tcp_client_on_external_ref_count_zero, libaws_c_io), Cvoid, (Ptr{Cvoid},), data)
+end
+
+"""
+    s_aws_tcp_client_do_connection_result_callback(client, error_code)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_tcp_client_do_connection_result_callback(struct aws_tcp_client *client, int error_code);
+```
+"""
+function s_aws_tcp_client_do_connection_result_callback(client, error_code)
+    ccall((:s_aws_tcp_client_do_connection_result_callback, libaws_c_io), Cvoid, (Ptr{aws_tcp_client}, Cint), client, error_code)
+end
+
+"""
+    s_tcp_client_channel_handler_process_read_message(handler, slot, message)
+
+Documentation not found.
+### Prototype
+```c
+static int s_tcp_client_channel_handler_process_read_message( struct aws_channel_handler *handler, struct aws_channel_slot *slot, struct aws_io_message *message);
+```
+"""
+function s_tcp_client_channel_handler_process_read_message(handler, slot, message)
+    ccall((:s_tcp_client_channel_handler_process_read_message, libaws_c_io), Cint, (Ptr{aws_channel_handler}, Ptr{aws_channel_slot}, Ptr{aws_io_message}), handler, slot, message)
+end
+
+"""
+    s_tcp_client_channel_handler_shutdown(handler, slot, dir, error_code, free_scarce_resources_immediately)
+
+Documentation not found.
+### Prototype
+```c
+static int s_tcp_client_channel_handler_shutdown( struct aws_channel_handler *handler, struct aws_channel_slot *slot, enum aws_channel_direction dir, int error_code, bool free_scarce_resources_immediately);
+```
+"""
+function s_tcp_client_channel_handler_shutdown(handler, slot, dir, error_code, free_scarce_resources_immediately)
+    ccall((:s_tcp_client_channel_handler_shutdown, libaws_c_io), Cint, (Ptr{aws_channel_handler}, Ptr{aws_channel_slot}, aws_channel_direction, Cint, Bool), handler, slot, dir, error_code, free_scarce_resources_immediately)
+end
+
+"""
+    s_tcp_client_increment_read_window(handler, slot, size)
+
+Documentation not found.
+### Prototype
+```c
+static int s_tcp_client_increment_read_window( struct aws_channel_handler *handler, struct aws_channel_slot *slot, size_t size);
+```
+"""
+function s_tcp_client_increment_read_window(handler, slot, size)
+    ccall((:s_tcp_client_increment_read_window, libaws_c_io), Cint, (Ptr{aws_channel_handler}, Ptr{aws_channel_slot}, Csize_t), handler, slot, size)
+end
+
+"""
+    s_tcp_client_channel_handler_initial_window_size(handler)
+
+Documentation not found.
+### Prototype
+```c
+static size_t s_tcp_client_channel_handler_initial_window_size(struct aws_channel_handler *handler);
+```
+"""
+function s_tcp_client_channel_handler_initial_window_size(handler)
+    ccall((:s_tcp_client_channel_handler_initial_window_size, libaws_c_io), Csize_t, (Ptr{aws_channel_handler},), handler)
+end
+
+"""
+    s_tcp_client_channel_handler_message_overhead(handler)
+
+Documentation not found.
+### Prototype
+```c
+static size_t s_tcp_client_channel_handler_message_overhead(struct aws_channel_handler *handler);
+```
+"""
+function s_tcp_client_channel_handler_message_overhead(handler)
+    ccall((:s_tcp_client_channel_handler_message_overhead, libaws_c_io), Csize_t, (Ptr{aws_channel_handler},), handler)
+end
+
+"""
+    s_tcp_client_channel_handler_destroy(handler)
+
+Documentation not found.
+### Prototype
+```c
+static void s_tcp_client_channel_handler_destroy(struct aws_channel_handler *handler);
+```
+"""
+function s_tcp_client_channel_handler_destroy(handler)
+    ccall((:s_tcp_client_channel_handler_destroy, libaws_c_io), Cvoid, (Ptr{aws_channel_handler},), handler)
+end
+
+"""
+    s_aws_tcp_client_on_channel_setup_fn(bootstrap, error_code, channel, user_data)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_tcp_client_on_channel_setup_fn( struct aws_client_bootstrap *bootstrap, int error_code, struct aws_channel *channel, void *user_data);
+```
+"""
+function s_aws_tcp_client_on_channel_setup_fn(bootstrap, error_code, channel, user_data)
+    ccall((:s_aws_tcp_client_on_channel_setup_fn, libaws_c_io), Cvoid, (Ptr{aws_client_bootstrap}, Cint, Ptr{aws_channel}, Ptr{Cvoid}), bootstrap, error_code, channel, user_data)
+end
+
+"""
+    s_aws_tcp_client_on_channel_shutdown_fn(bootstrap, error_code, channel, user_data)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_tcp_client_on_channel_shutdown_fn( struct aws_client_bootstrap *bootstrap, int error_code, struct aws_channel *channel, void *user_data);
+```
+"""
+function s_aws_tcp_client_on_channel_shutdown_fn(bootstrap, error_code, channel, user_data)
+    ccall((:s_aws_tcp_client_on_channel_shutdown_fn, libaws_c_io), Cvoid, (Ptr{aws_client_bootstrap}, Cint, Ptr{aws_channel}, Ptr{Cvoid}), bootstrap, error_code, channel, user_data)
+end
+
+"""
+    s_aws_tcp_client_connect(client)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_tcp_client_connect(struct aws_tcp_client *client);
+```
+"""
+function s_aws_tcp_client_connect(client)
+    ccall((:s_aws_tcp_client_connect, libaws_c_io), Cvoid, (Ptr{aws_tcp_client},), client)
+end
+
+"""
+    s_aws_tcp_client_connect_task_fn(task, arg, status)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_tcp_client_connect_task_fn(struct aws_task *task, void *arg, enum aws_task_status status);
+```
+"""
+function s_aws_tcp_client_connect_task_fn(task, arg, status)
+    ccall((:s_aws_tcp_client_connect_task_fn, libaws_c_io), Cvoid, (Ptr{aws_task}, Ptr{Cvoid}, aws_task_status), task, arg, status)
+end
+
+"""
+    s_aws_tcp_client_disconnect(client)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_tcp_client_disconnect(struct aws_tcp_client *client);
+```
+"""
+function s_aws_tcp_client_disconnect(client)
+    ccall((:s_aws_tcp_client_disconnect, libaws_c_io), Cvoid, (Ptr{aws_tcp_client},), client)
+end
+
+"""
+    s_aws_tcp_client_disconnect_task_fn(task, arg, status)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_tcp_client_disconnect_task_fn(struct aws_task *task, void *arg, enum aws_task_status status);
+```
+"""
+function s_aws_tcp_client_disconnect_task_fn(task, arg, status)
+    ccall((:s_aws_tcp_client_disconnect_task_fn, libaws_c_io), Cvoid, (Ptr{aws_task}, Ptr{Cvoid}, aws_task_status), task, arg, status)
+end
+
+"""
+    aws_tcp_client_send_task
+
+Documentation not found.
+"""
+struct aws_tcp_client_send_task
+    data::NTuple{112, UInt8}
+end
+
+function Base.getproperty(x::Ptr{aws_tcp_client_send_task}, f::Symbol)
+    f === :allocator && return Ptr{Ptr{aws_allocator}}(x + 0)
+    f === :client && return Ptr{Ptr{aws_tcp_client}}(x + 8)
+    f === :data && return Ptr{aws_byte_buf}(x + 16)
+    f === :task && return Ptr{aws_task}(x + 48)
+    return getfield(x, f)
+end
+
+function Base.getproperty(x::aws_tcp_client_send_task, f::Symbol)
+    r = Ref{aws_tcp_client_send_task}(x)
+    ptr = Base.unsafe_convert(Ptr{aws_tcp_client_send_task}, r)
+    fptr = getproperty(ptr, f)
+    GC.@preserve r unsafe_load(fptr)
+end
+
+function Base.setproperty!(x::Ptr{aws_tcp_client_send_task}, f::Symbol, v)
+    unsafe_store!(getproperty(x, f), v)
+end
+
+function Base.propertynames(x::aws_tcp_client_send_task, private::Bool = false)
+    (:allocator, :client, :data, :task, if private
+            fieldnames(typeof(x))
+        else
+            ()
+        end...)
+end
+
+"""
+    s_aws_tcp_client_send_task_destroy(task)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_tcp_client_send_task_destroy(struct aws_tcp_client_send_task *task);
+```
+"""
+function s_aws_tcp_client_send_task_destroy(task)
+    ccall((:s_aws_tcp_client_send_task_destroy, libaws_c_io), Cvoid, (Ptr{aws_tcp_client_send_task},), task)
+end
+
+"""
+    s_aws_tcp_client_send(client, data)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_tcp_client_send(struct aws_tcp_client *client, struct aws_byte_cursor data);
+```
+"""
+function s_aws_tcp_client_send(client, data)
+    ccall((:s_aws_tcp_client_send, libaws_c_io), Cvoid, (Ptr{aws_tcp_client}, aws_byte_cursor), client, data)
+end
+
+"""
+    s_aws_tcp_client_send_task_fn(task, arg, status)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_tcp_client_send_task_fn(struct aws_task *task, void *arg, enum aws_task_status status);
+```
+"""
+function s_aws_tcp_client_send_task_fn(task, arg, status)
+    ccall((:s_aws_tcp_client_send_task_fn, libaws_c_io), Cvoid, (Ptr{aws_task}, Ptr{Cvoid}, aws_task_status), task, arg, status)
+end
+
+"""
+    s_aws_tcp_client_send_task_new(allocator, client, data)
+
+Documentation not found.
+### Prototype
+```c
+static struct aws_tcp_client_send_task *s_aws_tcp_client_send_task_new( struct aws_allocator *allocator, struct aws_tcp_client *client, struct aws_byte_cursor data);
+```
+"""
+function s_aws_tcp_client_send_task_new(allocator, client, data)
+    ccall((:s_aws_tcp_client_send_task_new, libaws_c_io), Ptr{aws_tcp_client_send_task}, (Ptr{aws_allocator}, Ptr{aws_tcp_client}, aws_byte_cursor), allocator, client, data)
+end
+
+"""
+    s_aws_tcp_client_test_context_on_connection_result_callback(error_code, user_data)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_tcp_client_test_context_on_connection_result_callback(int error_code, void *user_data);
+```
+"""
+function s_aws_tcp_client_test_context_on_connection_result_callback(error_code, user_data)
+    ccall((:s_aws_tcp_client_test_context_on_connection_result_callback, libaws_c_io), Cvoid, (Cint, Ptr{Cvoid}), error_code, user_data)
+end
+
+"""
+    s_aws_tcp_client_test_context_on_disconnection_callback(error_code, user_data)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_tcp_client_test_context_on_disconnection_callback(int error_code, void *user_data);
+```
+"""
+function s_aws_tcp_client_test_context_on_disconnection_callback(error_code, user_data)
+    ccall((:s_aws_tcp_client_test_context_on_disconnection_callback, libaws_c_io), Cvoid, (Cint, Ptr{Cvoid}), error_code, user_data)
+end
+
+"""
+    s_aws_tcp_client_test_context_on_data_callback(data, user_data)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_tcp_client_test_context_on_data_callback(struct aws_byte_cursor data, void *user_data);
+```
+"""
+function s_aws_tcp_client_test_context_on_data_callback(data, user_data)
+    ccall((:s_aws_tcp_client_test_context_on_data_callback, libaws_c_io), Cvoid, (aws_byte_cursor, Ptr{Cvoid}), data, user_data)
+end
+
+"""
+    s_aws_tcp_client_test_context_on_destroyed_callback(user_data)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_tcp_client_test_context_on_destroyed_callback(void *user_data);
+```
+"""
+function s_aws_tcp_client_test_context_on_destroyed_callback(user_data)
+    ccall((:s_aws_tcp_client_test_context_on_destroyed_callback, libaws_c_io), Cvoid, (Ptr{Cvoid},), user_data)
+end
+
+"""
+    s_aws_tcp_client_test_context_is_destroyed(user_data)
+
+Documentation not found.
+### Prototype
+```c
+static bool s_aws_tcp_client_test_context_is_destroyed(void *user_data);
+```
+"""
+function s_aws_tcp_client_test_context_is_destroyed(user_data)
+    ccall((:s_aws_tcp_client_test_context_is_destroyed, libaws_c_io), Bool, (Ptr{Cvoid},), user_data)
+end
+
+"""
+    s_aws_tcp_client_test_context_wait_on_destroyed(context)
+
+Documentation not found.
+### Prototype
+```c
+static void s_aws_tcp_client_test_context_wait_on_destroyed(struct aws_tcp_client_test_context *context);
+```
+"""
+function s_aws_tcp_client_test_context_wait_on_destroyed(context)
+    ccall((:s_aws_tcp_client_test_context_wait_on_destroyed, libaws_c_io), Cvoid, (Ptr{aws_tcp_client_test_context},), context)
+end
+
+"""
+    s_aws_tcp_client_test_context_has_connection_result(user_data)
+
+Documentation not found.
+### Prototype
+```c
+static bool s_aws_tcp_client_test_context_has_connection_result(void *user_data);
+```
+"""
+function s_aws_tcp_client_test_context_has_connection_result(user_data)
+    ccall((:s_aws_tcp_client_test_context_has_connection_result, libaws_c_io), Bool, (Ptr{Cvoid},), user_data)
+end
+
+"""
+    s_aws_tcp_client_test_context_has_disconnection_result(user_data)
+
+Documentation not found.
+### Prototype
+```c
+static bool s_aws_tcp_client_test_context_has_disconnection_result(void *user_data);
+```
+"""
+function s_aws_tcp_client_test_context_has_disconnection_result(user_data)
+    ccall((:s_aws_tcp_client_test_context_has_disconnection_result, libaws_c_io), Bool, (Ptr{Cvoid},), user_data)
+end
+
+"""
+    aws_tcp_client_test_received_bytes_context
+
+Documentation not found.
+"""
+struct aws_tcp_client_test_received_bytes_context
+    context::Ptr{aws_tcp_client_test_context}
+    received_bytes::Csize_t
+end
+
+"""
+    s_aws_tcp_client_test_context_has_received_bytes(user_data)
+
+Documentation not found.
+### Prototype
+```c
+static bool s_aws_tcp_client_test_context_has_received_bytes(void *user_data);
+```
+"""
+function s_aws_tcp_client_test_context_has_received_bytes(user_data)
+    ccall((:s_aws_tcp_client_test_context_has_received_bytes, libaws_c_io), Bool, (Ptr{Cvoid},), user_data)
+end
+
+"""
+    __JL_Ctag_293
+
+Documentation not found.
+"""
+struct __JL_Ctag_293
     __lock::Cint
     __futex::Cuint
     __total_seq::Culonglong
@@ -7075,7 +10245,7 @@ struct __JL_Ctag_219
     __nwaiters::Cuint
     __broadcast_seq::Cuint
 end
-function Base.getproperty(x::Ptr{__JL_Ctag_219}, f::Symbol)
+function Base.getproperty(x::Ptr{__JL_Ctag_293}, f::Symbol)
     f === :__lock && return Ptr{Cint}(x + 0)
     f === :__futex && return Ptr{Cuint}(x + 4)
     f === :__total_seq && return Ptr{Culonglong}(x + 8)
@@ -7087,14 +10257,43 @@ function Base.getproperty(x::Ptr{__JL_Ctag_219}, f::Symbol)
     return getfield(x, f)
 end
 
-function Base.getproperty(x::__JL_Ctag_219, f::Symbol)
-    r = Ref{__JL_Ctag_219}(x)
-    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_219}, r)
+function Base.getproperty(x::__JL_Ctag_293, f::Symbol)
+    r = Ref{__JL_Ctag_293}(x)
+    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_293}, r)
     fptr = getproperty(ptr, f)
     GC.@preserve r unsafe_load(fptr)
 end
 
-function Base.setproperty!(x::Ptr{__JL_Ctag_219}, f::Symbol, v)
+function Base.setproperty!(x::Ptr{__JL_Ctag_293}, f::Symbol, v)
+    unsafe_store!(getproperty(x, f), v)
+end
+
+
+"""
+    __JL_Ctag_301
+
+Documentation not found.
+"""
+struct __JL_Ctag_301
+    server_setup::Bool
+    setup_error_code::Cint
+    server_shutdown::Bool
+end
+function Base.getproperty(x::Ptr{__JL_Ctag_301}, f::Symbol)
+    f === :server_setup && return Ptr{Bool}(x + 0)
+    f === :setup_error_code && return Ptr{Cint}(x + 4)
+    f === :server_shutdown && return Ptr{Bool}(x + 8)
+    return getfield(x, f)
+end
+
+function Base.getproperty(x::__JL_Ctag_301, f::Symbol)
+    r = Ref{__JL_Ctag_301}(x)
+    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_301}, r)
+    fptr = getproperty(ptr, f)
+    GC.@preserve r unsafe_load(fptr)
+end
+
+function Base.setproperty!(x::Ptr{__JL_Ctag_301}, f::Symbol, v)
     unsafe_store!(getproperty(x, f), v)
 end
 
